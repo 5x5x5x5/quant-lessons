@@ -7,7 +7,7 @@ code_ref: "trading/packages/gex/src/gex/greeks.py"
 
 # Theta, vega, rho
 
-Delta and gamma get the top billing because they track the underlying — the thing the options market is actually about. But the Black-Scholes PDE has four partial derivatives, and the other two — $\Theta$ (time) and there's one implicit in $\sigma$ (vega) — are equally load-bearing for any hedging book. Rho (rates) is usually a footnote for short-dated equity options, but a necessary one.
+Delta and gamma receive the most attention because they track the underlying. The Black-Scholes PDE has additional partial derivatives — $\Theta$ (time) and an implicit one in $\sigma$ (vega) — that are equally important for managing a hedging book. Rho (rate sensitivity) is typically secondary for short-dated equity options but is necessary to complete the picture.
 
 ## Theta — time decay
 
@@ -15,61 +15,61 @@ $$
 \Theta = \frac{\partial V}{\partial t}.
 $$
 
-Theta measures how much an option's value changes per unit of time elapsed, holding everything else constant. For long options, $\Theta < 0$: as time passes, with $S$ and $\sigma$ unchanged, the option loses value.
+Theta measures how much an option's value changes per unit of elapsed time, with other inputs held constant. For long options, $\Theta < 0$: value declines as time passes, with $S$ and $\sigma$ unchanged.
 
-Why? Because time value is exactly the premium you pay for *future* uncertainty, and less future means less uncertainty. An ATM call with 30 days to go has more time value than an ATM call with 2 days to go; the difference is collected as theta, day by day.
+The intuition: time value represents the premium paid for future uncertainty, and remaining time decreases as expiry approaches. An ATM call with 30 days to expiry carries more time value than an ATM call with 2 days; the difference is realized as theta, day by day.
 
-For a European call under Black-Scholes, theta splits into two contributions:
+For a European call under Black-Scholes, theta decomposes into two terms:
 
 $$
 \Theta_\text{call} = -\frac{S \phi(d_1) \sigma}{2\sqrt{T}} - r K e^{-rT} N(d_2).
 $$
 
-The first term is the gamma-scalping-cost term (large for ATM short-dated options — a familiar face). The second is a smaller rates term. The first term dominates for most practical positions.
+The first term is the gamma-scalping-cost term, large for ATM short-dated options. The second is a smaller rates term. The first term dominates in most practical positions.
 
-Theta is **expressed in dollars per day** by convention (divide the analytical $\Theta$ by 365 to get "theta per calendar day" or by 252 to get "theta per trading day"; conventions vary). Traders quote positions by their net daily theta — "this book earns $50k per day in theta" means the sum of theta across all positions, multiplied by contract sizes.
+Theta is conventionally reported in dollars per day. Dividing the analytical $\Theta$ by 365 gives theta per calendar day; dividing by 252 gives theta per trading day. Conventions vary. Traders describe positions by their net daily theta — for example, "this book earns \$50k per day in theta" is the sum of theta across positions, multiplied by contract sizes.
 
-### The theta-gamma trade-off
+### Theta-gamma trade-off
 
-[The previous lesson](gamma.md) showed that a delta-hedged long option earns $\tfrac{1}{2}\Gamma (dS)^2$ from motion and loses $|\Theta| dt$ from time. The break-even is realized variance equals implied variance. Both $\Theta$ and $\Gamma$ peak for ATM short-dated options — the same "explosive" region. You don't get one without the other.
+[The previous lesson](gamma.md) showed that a delta-hedged long option earns $\tfrac{1}{2}\Gamma (dS)^2$ from motion and loses $|\Theta| dt$ from time, with break-even when realized variance equals implied variance. Both $\Theta$ and $\Gamma$ peak for ATM short-dated options — the same region. The two Greeks cannot be separated.
 
-Short options (short calls, short puts, covered calls, credit spreads) are **long theta, short gamma**. Every quiet day earns the position the theta decay of the options it shorted. Every move costs gamma. Short-vol strategies live in this trade.
+Short-option positions (short calls, short puts, covered calls, credit spreads) are long theta and short gamma. Quiet days accrue theta; each move costs gamma. Short-volatility strategies operate in this trade-off.
 
-The stylized "iron condor sells time" framing is literally true: you are capturing theta at the expense of bearing gamma risk across the tails. When the underlying stays in the condor's wings, theta prints; when it breaks through, gamma cost breaks the trade.
+The characterization of an iron condor as "selling time" is literally correct: the position captures theta while bearing gamma risk in the tails. When the underlying remains within the condor's wings, theta accrues; when it breaks through, gamma cost dominates.
 
-## Vega — sensitivity to implied vol
+## Vega — sensitivity to implied volatility
 
 $$
 \mathcal{V} = \frac{\partial V}{\partial \sigma}.
 $$
 
-Vega measures how much an option's value changes per unit change in **implied volatility**. Not realized — the number that comes out of inverting the BS formula against market premium.
+Vega measures how much an option's value changes per unit change in implied volatility — the $\sigma$ recovered by inverting Black-Scholes against a market premium, not the realized volatility of the underlying.
 
-For a European call or put (they have the same vega):
+For a European call or put (vega is identical for the two):
 
 $$
 \mathcal{V} = S \phi(d_1) \sqrt{T}.
 $$
 
-Units: typically quoted as "dollars per 1 vol point," i.e., per 1 percentage point change in implied vol. If vega = $0.30$, a 1 vol-point rise in IV (say from 20% to 21%) changes the option's value by $\$0.30$.
+Units are conventionally "dollars per 1 vol point" — the P&L change per 1 percentage point change in IV. A vega of \$0.30 means a 1-point rise in IV (from 20% to 21%, for example) changes the option's value by \$0.30.
 
 ### Where vega is large
 
-$\phi(d_1) \sqrt{T}$ says:
+$\phi(d_1) \sqrt{T}$ implies:
 
-- **ATM** options have the highest vega (just like gamma and theta).
-- **Long-dated** options have higher vega than short-dated ones — the $\sqrt{T}$ factor grows with expiry. A 1-year option has roughly $\sqrt{365/30} \approx 3.5\times$ the vega of a 30-day option at otherwise matched parameters. (LEAPS are vega monsters.)
-- Very deep ITM or OTM options have low vega — their value is insensitive to small changes in $\sigma$ because the payoff is already nearly certain or nearly certainly zero.
+- ATM options have the highest vega, as they do for gamma and theta.
+- Long-dated options have higher vega than short-dated options — the $\sqrt{T}$ factor grows with expiry. A 1-year option has approximately $\sqrt{365/30} \approx 3.5\times$ the vega of a 30-day option at otherwise matched parameters. LEAPS are particularly vega-heavy.
+- Very deep ITM or OTM options have low vega — their value is insensitive to small changes in $\sigma$ because the payoff is nearly certain or nearly zero.
 
 ### Vol hedging
 
-A delta-hedged book is not vol-hedged. If implied vol rises by 1 point across the board, every long option in the book gains value by its vega; every short option loses by its vega. The net **vega position** of the book is the signed sum. A vol-hedged book has net vega near zero, typically achieved by offsetting long and short options at similar strikes and expiries.
+A delta-hedged book is not vol-hedged. If implied vol rises uniformly by 1 point, each long option gains value by its vega and each short option loses by its vega. The book's net vega position is the signed sum. A vol-hedged book has net vega near zero, typically achieved by offsetting long and short options at similar strikes and expiries.
 
-Delta neutralizes first-order underlying moves; vega hedging neutralizes first-order implied-vol moves. A market maker running a proper book manages both. When neither is hedged, the position is called "naked," and the P&L is the sum of directional P&L + vol P&L + gamma-scalping P&L — three risk factors for a single position.
+Delta neutralizes first-order moves in the underlying; vega hedging neutralizes first-order moves in implied volatility. A properly managed market-maker book controls both. Without either, the position carries directional, vol, and gamma-scalping P&L simultaneously — three risk factors in one position.
 
-### Vega risk vs vol surface risk
+### Vega risk versus vol-surface risk
 
-An important subtlety: vega as defined above assumes a **parallel shift** in implied vol — the whole surface moves up or down by one point. In reality, IV moves regime by regime: the short end moves differently from the long end (term structure change), OTM puts move differently from OTM calls (skew change). Each of those is a separate risk factor not captured by a single vega number. Real vol books quote vega *bucketed* by expiry and by delta bucket, and they hedge the buckets separately.
+A subtlety: vega as defined above assumes a parallel shift in implied volatility — the entire surface moves up or down uniformly. In practice, IV evolves regime by regime. The short end moves differently from the long end (term-structure changes), and OTM puts move differently from OTM calls (skew changes). Each is a separate risk factor not captured by a single vega number. Vol-trading books quote vega bucketed by expiry and delta, hedging buckets separately.
 
 ## Rho — sensitivity to rates
 
@@ -83,39 +83,41 @@ $$
 \rho_\text{call} = K T e^{-rT} N(d_2).
 $$
 
-Note the $T$ up front — rho scales with time to expiry. For a put, rho is negative. Higher rates increase the forward price of the underlying (higher $Se^{rT}$), making calls more valuable and puts less valuable.
+The $T$ in the numerator implies that rho scales with time to expiry. For a put, rho is negative. Higher rates raise the forward price of the underlying ($Se^{rT}$), increasing call value and decreasing put value.
 
-For most short-dated equity options, rho is small enough to ignore. A 1% change in rates might change a 30-day option's price by a few cents. For long-dated options (LEAPS), rho is non-negligible; for rate-vol linked products (some structured notes, some vol derivatives), it's central.
+For most short-dated equity options, rho is small enough to ignore. A 1% rate move typically changes a 30-day option's price by a few cents. For long-dated options (LEAPS), rho becomes non-negligible; for rate-vol-linked products (certain structured notes and vol derivatives), rho is central.
 
-You will not hear professional options traders talking about rho in daily conversation the way they talk about delta and vega. Rho becomes urgent in specific regimes — when rates are moving meaningfully (2022-era Fed cycle, for example), when expiries are long, when the book contains rate-sensitive overlays.
+Rho rarely appears in daily options-trading discussions at the level of delta or vega. It becomes significant when rates are moving meaningfully (the 2022 Fed cycle is a representative example), when expiries are long, or when the book includes rate-sensitive overlays.
 
-## Second-order Greeks — where they bite
+## Second-order Greeks
 
-Every first-order Greek has its own sensitivity to other inputs. Most are ignorable; a few matter for specific regimes.
+Each first-order Greek has its own sensitivity to other inputs. Most are negligible; a few are material in specific regimes.
 
 ### Charm: $\partial \Delta / \partial t$
 
-How delta changes with time, holding $S$ constant. For short-dated options with strikes near the money, charm is small at the start of the day but grows as expiry approaches. The practical effect: ATM options' deltas drift across an expiry session even when the underlying is flat. This "charm flow" contributes to the end-of-day hedging dance on 0DTE and expiry-Friday sessions. Dealers with known positions can forecast their own hedging needs from charm, and market structure occasionally reflects those flows visibly.
+How delta changes with time, holding $S$ constant. For short-dated options with near-the-money strikes, charm is small early in the day but grows as expiry approaches. ATM option deltas drift across an expiry session even when the underlying is flat; this "charm flow" contributes to end-of-day hedging dynamics on 0DTE and expiry-Friday sessions. Dealers with known positions can forecast their own hedging requirements from charm, and market structure occasionally shows these flows visibly.
 
 ### Vanna: $\partial \Delta / \partial \sigma$
 
-How delta changes with implied vol. Not obvious: a change in vol reshapes the option's delta profile, because $d_1$ depends on $\sigma$. Practical consequence: when IV spikes sharply on a news event, a delta-hedged book suddenly has the wrong hedge. Vol hedging and delta hedging interact through vanna.
+How delta changes with implied volatility. A change in vol reshapes the delta profile because $d_1$ depends on $\sigma$. When IV spikes sharply on a news event, a delta-hedged book is suddenly mis-hedged at first order; vol and delta hedging interact through vanna.
 
-### Volga (volvol): $\partial \mathcal{V} / \partial \sigma$
+### Volga (vol-of-vol): $\partial \mathcal{V} / \partial \sigma$
 
-How vega changes with vol — the second derivative of price with respect to $\sigma$. For strangles and risk reversals, volga determines whether the position is long or short vol-of-vol. Strategies that explicitly trade vol convexity (dispersion trading, variance swaps, some VIX-futures trades) are volga trades.
+How vega changes with vol — the second derivative of price with respect to $\sigma$. For strangles and risk reversals, volga determines whether the position is long or short vol convexity. Strategies that explicitly trade vol convexity (dispersion trading, variance swaps, some VIX-futures strategies) are volga trades.
 
-For a starting quant, the rule of thumb is: worry about delta and vega every day, gamma and theta every trade, rho when rates are moving, second-order Greeks when you have a reason to think the surface is reshaping.
+A practical heuristic: manage delta and vega continuously, gamma and theta per trade, rho when rates are moving, and second-order Greeks when the surface is reshaping.
 
-## What you can now reason about
+## Summary
 
-- Why being short options is mathematically equivalent to being long theta and short gamma — the decay you collect is paid for by the risk you take.
-- The difference between vega (parallel IV shift) and vol-surface risk (term-structure and skew changes) — a single vega number hides a lot of structure.
-- Why traders mostly ignore rho for short-dated equity options but track it carefully for LEAPS and in rate-volatile regimes.
+The reader can now reason about:
+
+- Why short-option positions are mathematically equivalent to long theta and short gamma — the decay captured is compensation for the risk taken.
+- The distinction between vega (parallel IV shift) and vol-surface risk (term-structure and skew changes) — a single vega number hides substantial structure.
+- Why rho is typically secondary for short-dated equity options but is tracked carefully for LEAPS and in rate-volatile regimes.
 
 ## Implemented at
 
-`trading/packages/gex/src/gex/greeks.py` — the current module exports `bs_d1`, `bs_gamma`, and `bs_delta_call`. Theta, vega, and rho are not computed because the GEX pipeline's regime classification operates on gamma, not on vol or time sensitivity. When a future strategy needs them — a vega-hedged overlay, a theta-driven expiry play — they extend the same module using the same BS scaffolding already in place.
+`trading/packages/gex/src/gex/greeks.py` — the current module exports `bs_d1`, `bs_gamma`, and `bs_delta_call`. Theta, vega, and rho are not computed because the GEX pipeline's regime classification operates on gamma alone. Future strategies requiring these sensitivities (a vega-hedged overlay, a theta-driven expiry play) would extend the same module using the existing Black-Scholes scaffolding.
 
 ---
 
