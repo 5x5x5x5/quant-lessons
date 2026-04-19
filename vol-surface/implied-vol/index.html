@@ -781,6 +781,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implied vol vs realized
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -797,6 +815,113 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#inverting-black-scholes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inverting Black-Scholes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iv-is-a-forecast-not-a-measurement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV is a forecast, not a measurement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-variance-risk-premium" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The variance risk premium
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vix-a-model-free-iv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VIX — a model-free IV
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#realized-vol-the-honest-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Realized vol, the honest way
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-it-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Putting it together
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you can now reason about
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implemented-at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implemented at
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1486,6 +1611,102 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#inverting-black-scholes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inverting Black-Scholes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iv-is-a-forecast-not-a-measurement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV is a forecast, not a measurement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-variance-risk-premium" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The variance risk premium
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vix-a-model-free-iv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VIX — a model-free IV
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#realized-vol-the-honest-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Realized vol, the honest way
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-it-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Putting it together
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you can now reason about
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implemented-at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implemented at
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1505,17 +1726,87 @@
 
 
 <h1 id="implied-vol-vs-realized">Implied vol vs realized<a class="headerlink" href="#implied-vol-vs-realized" title="Permanent link">&para;</a></h1>
-<blockquote>
-<p><strong>Status:</strong> Draft pending.</p>
-</blockquote>
-<p><strong>Scope:</strong> Implied volatility = the <span class="arithmatex">\(\sigma\)</span> input to Black-Scholes that reproduces the market price of an option. It's a <strong>forecast</strong>: "if returns were log-normal with this σ going forward, the option would be worth this much." Contrast with <strong>realized</strong> vol (historical std of returns). Introduce the <strong>variance risk premium</strong>: IV &gt; realized on average because option sellers demand a premium for bearing tail risk.</p>
-<p><strong>You'll be able to reason about:</strong></p>
+<p>Black-Scholes takes five inputs and produces a price. Four of them — <span class="arithmatex">\(S\)</span>, <span class="arithmatex">\(K\)</span>, <span class="arithmatex">\(r\)</span>, <span class="arithmatex">\(T\)</span> — are observable or contractual. The fifth, <span class="arithmatex">\(\sigma\)</span>, is not. The market solves this elegantly: <strong>observed option premiums define the <span class="arithmatex">\(\sigma\)</span></strong>. The <span class="arithmatex">\(\sigma\)</span> you back out by inverting the BS formula against market price is <strong>implied volatility</strong> (IV). It is a forecast — the market's consensus guess about future realized vol over the option's remaining life.</p>
+<p>This lesson is about what IV actually measures, how it differs from realized vol, and the single most persistent spread in options markets: the variance risk premium.</p>
+<h2 id="inverting-black-scholes">Inverting Black-Scholes<a class="headerlink" href="#inverting-black-scholes" title="Permanent link">&para;</a></h2>
+<p>You observe a market premium <span class="arithmatex">\(C^\text{mkt}\)</span> for a call with known <span class="arithmatex">\(S\)</span>, <span class="arithmatex">\(K\)</span>, <span class="arithmatex">\(r\)</span>, <span class="arithmatex">\(T\)</span>. Find the <span class="arithmatex">\(\sigma\)</span> such that</p>
+<div class="arithmatex">\[
+C_\text{BS}(S, K, r, T, \sigma) = C^\text{mkt}.
+\]</div>
+<p>The BS formula is monotonic in <span class="arithmatex">\(\sigma\)</span> (higher vol = higher call price, always), so the inversion has a unique solution. Numerical solvers find it in microseconds. That <span class="arithmatex">\(\sigma\)</span> is the option's implied vol.</p>
+<p>Every option on the chain has its own implied vol. If Black-Scholes were fully correct, every option on a given underlying would have the same IV — one <span class="arithmatex">\(\sigma\)</span> to price them all. In practice, IVs vary across strikes (skew, smile) and across expiries (term structure). The deviations from a constant IV <em>are</em> what the next two lessons cover.</p>
+<h2 id="iv-is-a-forecast-not-a-measurement">IV is a forecast, not a measurement<a class="headerlink" href="#iv-is-a-forecast-not-a-measurement" title="Permanent link">&para;</a></h2>
+<p>This is the subtle point that distinguishes IV from anything computable from price history. An option's IV answers the question: <strong>what volatility over the next <span class="arithmatex">\(T\)</span> days would justify the price I am paying?</strong> It is inherently forward-looking.</p>
+<p>In practice it combines three things:</p>
+<ol>
+<li>The market's best estimate of future realized vol.</li>
+<li>A risk premium for bearing vol risk (sellers demand compensation for tail events).</li>
+<li>Supply/demand imbalances specific to that option (buyer of specific protection, dealer inventory).</li>
+</ol>
+<p>You cannot separate these components from a single IV quote. What you <em>can</em> do is compare IV to subsequent realized vol, over and over, and estimate an average gap.</p>
+<h2 id="the-variance-risk-premium">The variance risk premium<a class="headerlink" href="#the-variance-risk-premium" title="Permanent link">&para;</a></h2>
+<p>Do it, and a robust pattern appears: <strong>IV tends to exceed subsequent realized vol on average</strong>, especially for short-dated equity index options. The difference has a name — the variance risk premium (VRP).</p>
+<table>
+<thead>
+<tr>
+<th>Approximate figures, SPX 30-day, decade-average</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mean VIX (implied)</td>
+<td>~18%</td>
+</tr>
+<tr>
+<td>Mean realized 30-day vol</td>
+<td>~14%</td>
+</tr>
+<tr>
+<td>Mean spread (premium)</td>
+<td>~4 percentage points</td>
+</tr>
+</tbody>
+</table>
+<p>The spread is not constant. It compresses to near zero (and occasionally inverts) in quiet, confident regimes; it blows out to 10+ points around events. But the unconditional average has been meaningfully positive across multi-decade samples.</p>
+<p>Why does the premium exist? The economic argument: selling options is equivalent to selling insurance. The seller takes a small premium in exchange for accepting convex losses in tail events. Risk-averse agents demand more premium than actuarially fair to bear that risk. Over time, the insurance is more expensive than its expected payoff — and the sellers, on average, profit.</p>
+<p><strong>Short-vol strategies systematically harvest the VRP.</strong> Sell naked puts, sell strangles, sell variance swaps — the unconditional return is positive. The catch is the tail: occasional losses that wipe out years of accumulated small gains. Long-Term Capital in 1998, Volmageddon in February 2018, COVID in March 2020 — all had short-vol books as central characters. The VRP is real, but it is not free money; it is compensation for a risk that occasionally materializes.</p>
+<h2 id="vix-a-model-free-iv">VIX — a model-free IV<a class="headerlink" href="#vix-a-model-free-iv" title="Permanent link">&para;</a></h2>
+<p>VIX, the CBOE Volatility Index, is the market's best-known IV summary. It reports a 30-day implied volatility estimate on the S&amp;P 500, and it does so <strong>without assuming Black-Scholes</strong>. The construction:</p>
+<div class="arithmatex">\[
+\text{VIX}^2 = \frac{2 e^{rT}}{T} \sum_{i} \frac{\Delta K_i}{K_i^2} Q(K_i) - \frac{1}{T}\left(\frac{F}{K_0} - 1\right)^2.
+\]</div>
+<p>Here <span class="arithmatex">\(Q(K_i)\)</span> is the OTM option price at strike <span class="arithmatex">\(K_i\)</span> (puts below forward, calls above), <span class="arithmatex">\(\Delta K_i\)</span> is the strike spacing, <span class="arithmatex">\(F\)</span> is the forward price, and <span class="arithmatex">\(K_0\)</span> is the first strike below <span class="arithmatex">\(F\)</span>. The formula comes from <strong>static replication of a variance swap</strong> via a continuum of OTM options — a mathematical identity that says: the fair strike of a variance swap equals a specific weighted integral of OTM option prices.</p>
+<p>Two things to appreciate:</p>
+<ol>
+<li><strong>No Black-Scholes.</strong> The formula uses observed option prices directly and makes no assumption about the dynamics of <span class="arithmatex">\(S\)</span>. This is why VIX is called "model-free." (It still assumes the variance swap replication formula is exact, which requires a continuum of strikes and no jumps; in practice the discretization introduces small errors.)</li>
+<li><strong>It's a variance, not a vol.</strong> VIX is the square root of the formula above, reported in annualized vol points. When the market says "VIX is 20," it means 20% annualized vol.</li>
+</ol>
+<p>VIX is computed in real time from a specific set of SPX options (30 days out, using the two nearest maturities weighted to bracket exactly 30). Analogous indices exist for 9-day (VIX9D) and 3-month (VIX3M), which the <a href="../term-structure/">term structure lesson</a> uses to measure the slope of the IV curve.</p>
+<h2 id="realized-vol-the-honest-way">Realized vol, the honest way<a class="headerlink" href="#realized-vol-the-honest-way" title="Permanent link">&para;</a></h2>
+<p>If IV is a forecast, realized vol is the measurement. Given a return series, the standard textbook estimate is the EWM or rolling std of log returns, annualized by <span class="arithmatex">\(\sqrt{252}\)</span>.</p>
+<p>But the "true" realized vol of a process is a more subtle object than the sample std you compute from daily closes. The issues:</p>
 <ul>
-<li>Why short-vol strategies have positive <em>expected</em> return but punishing tail risk.</li>
-<li>How VIX is constructed — a 30-day model-free IV estimate from SPX options weighted across strikes.</li>
-<li>Why a <em>single</em> IV number is reductive — the surface varies by strike and maturity (next two lessons).</li>
+<li><strong>Sampling frequency.</strong> Daily close-to-close returns miss intraday volatility. Higher-frequency estimators (Parkinson using H-L, Garman-Klass using O/H/L/C, realized variance from intraday returns) use more of the data and have lower estimation error.</li>
+<li><strong>Jumps.</strong> A close-to-close estimator blends continuous volatility and jumps together. Bipower variation separates the two, at the cost of more complex estimation.</li>
+<li><strong>Microstructure noise.</strong> Very-high-frequency returns have noise from bid-ask bounce; realized variance overestimates true volatility if you sample too fast without correction.</li>
 </ul>
-<p><strong>Implemented at:</strong> — (IV is input to <code>greeks.py</code>; it's consumed, not computed, in the GEX pipeline.)</p>
+<p>For comparing to IV, the standard choice is daily close-to-close log returns annualized by <span class="arithmatex">\(\sqrt{252}\)</span>, same sampling frequency as VIX's horizon. It's not the sharpest estimator, but it's the one people report, and IV-vs-RV comparisons need to use compatible units.</p>
+<h2 id="putting-it-together">Putting it together<a class="headerlink" href="#putting-it-together" title="Permanent link">&para;</a></h2>
+<p>The two quantities serve different purposes:</p>
+<ul>
+<li><strong>Realized vol</strong> answers: how volatile was the underlying over the past <span class="arithmatex">\(T\)</span> days? Measurable, backward-looking.</li>
+<li><strong>Implied vol</strong> answers: how volatile is the market pricing the underlying to be over the next <span class="arithmatex">\(T\)</span> days? Forward-looking, with a premium baked in.</li>
+</ul>
+<p>The spread between them — the VRP — is what short-vol strategies harvest. The shape of the IV surface — term structure and skew, covered next — is what the deviations from "one number" look like. The regime classifier in <code>packages/gex/src/gex/regime.py</code> uses both IV level (via VIX) and slope (VIX/VIX3M) as regime inputs.</p>
+<h2 id="what-you-can-now-reason-about">What you can now reason about<a class="headerlink" href="#what-you-can-now-reason-about" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Why "vol" ambiguously refers to two entirely different things — a measurement and a forecast — and why conflating them is the fastest way to misread any options-market commentary.</li>
+<li>Why short-vol strategies have positive <em>expected</em> returns but awful tail properties — they are harvesting a real premium, for a real reason.</li>
+<li>How VIX is constructed model-free from option prices via the variance-swap replication formula, and why it is a statement about the option market, not about Black-Scholes specifically.</li>
+</ul>
+<h2 id="implemented-at">Implemented at<a class="headerlink" href="#implemented-at" title="Permanent link">&para;</a></h2>
+<p>The GEX pipeline consumes IV as an input — it does not recompute it from quoted premiums in this project. Sources in <code>trading/packages/gex/src/gex/data/options.py</code> provide IV per-contract from the upstream chain feed. The VIX series itself is pulled via <code>data/vix.py::fetch_vix_history</code>, and the regime classifier in <code>regime.py:classify_regime</code> uses VIX/VIX3M and VIX9D/VIX slopes as inversion triggers. Those slopes are the subject of <a href="../term-structure/">the next lesson</a>.</p>
 <hr />
 <p><strong>Next:</strong> <a href="../term-structure/">Term structure of volatility →</a></p>
 
