@@ -1095,6 +1095,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Walk-forward vs k-fold
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1111,6 +1129,124 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-naive-k-fold-is-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why naive k-fold is wrong
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#walk-forward-the-right-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Walk-forward: the right shape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expanding-vs-sliding-train-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expanding vs sliding train windows
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stride-and-overlap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stride and overlap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#walk-forward-as-the-outer-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Walk-forward as the outer loop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-walk-forward-does-not-prevent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What walk-forward does not prevent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-expanding-train-failure-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The expanding-train failure mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you can now reason about
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implemented-at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implemented at
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1486,6 +1622,113 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-naive-k-fold-is-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why naive k-fold is wrong
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#walk-forward-the-right-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Walk-forward: the right shape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expanding-vs-sliding-train-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expanding vs sliding train windows
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stride-and-overlap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stride and overlap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#walk-forward-as-the-outer-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Walk-forward as the outer loop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-walk-forward-does-not-prevent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What walk-forward does not prevent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-expanding-train-failure-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The expanding-train failure mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you can now reason about
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implemented-at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implemented at
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1505,17 +1748,82 @@
 
 
 <h1 id="walk-forward-vs-k-fold">Walk-forward vs k-fold<a class="headerlink" href="#walk-forward-vs-k-fold" title="Permanent link">&para;</a></h1>
-<blockquote>
-<p><strong>Status:</strong> Draft pending.</p>
-</blockquote>
-<p><strong>Scope:</strong> Naive k-fold shuffles and is wrong for time series — training data can include information from the future relative to the test set. <strong>Walk-forward</strong>: train on <span class="arithmatex">\([0, t]\)</span>, test on <span class="arithmatex">\((t, t + h]\)</span>, advance <span class="arithmatex">\(t\)</span> by a stride. <strong>Expanding</strong> train windows grow with each step; <strong>sliding</strong> windows have fixed lookback. Stride and overlap decisions. Why walk-forward is the outer evaluation loop, not an inner model-selection loop.</p>
-<p><strong>You'll be able to reason about:</strong></p>
+<p>Any backtest answers a counterfactual: "If I had deployed this strategy at time <span class="arithmatex">\(t\)</span>, knowing only what was available then, how would it have performed?" The protocol for answering that question is cross-validation. But the standard CV machinery from machine learning — random k-fold — quietly fails on time series. Walk-forward is the fix.</p>
+<h2 id="why-naive-k-fold-is-wrong">Why naive k-fold is wrong<a class="headerlink" href="#why-naive-k-fold-is-wrong" title="Permanent link">&para;</a></h2>
+<p>Standard k-fold cross-validation shuffles the dataset, splits into <span class="arithmatex">\(k\)</span> folds, trains on <span class="arithmatex">\(k-1\)</span> folds, tests on the held-out one. This procedure assumes the data points are <strong>iid</strong> — independently and identically distributed. For iid data, the fold you test on is a fair sample of the same distribution that produced the training data.</p>
+<p>Financial time series are <em>not</em> iid, and k-fold fails in two ways:</p>
+<ol>
+<li>
+<p><strong>Temporal leakage.</strong> In shuffled k-fold, your training fold contains data from <em>after</em> your test fold (in wall-clock time). A model trained on that sees the future. Its realized test performance reflects knowledge that wouldn't have been available at prediction time.</p>
+</li>
+<li>
+<p><strong>Regime mixing.</strong> Real markets alternate regimes (low vol, high vol, trending, mean-reverting). If your test fold randomly samples from all regimes and your training fold does too, the model learns a regime-average rather than a live-trading-regime response. The test statistic overstates how robust the model will be in a specific regime you actually encounter.</p>
+</li>
+</ol>
+<p>These aren't minor effects. A k-fold Sharpe on a trading strategy can be double the live-trading Sharpe on the same signal — entirely because of temporal leakage masquerading as out-of-sample evidence.</p>
+<h2 id="walk-forward-the-right-shape">Walk-forward: the right shape<a class="headerlink" href="#walk-forward-the-right-shape" title="Permanent link">&para;</a></h2>
+<p>Walk-forward respects time order. At each step:</p>
+<ol>
+<li>Train on data from the start through time <span class="arithmatex">\(t\)</span> (or from <span class="arithmatex">\(t - \text{window}\)</span> through <span class="arithmatex">\(t\)</span> if using a fixed-length train window).</li>
+<li>Test on data from <span class="arithmatex">\(t\)</span> to <span class="arithmatex">\(t + h\)</span> (horizon).</li>
+<li>Advance <span class="arithmatex">\(t\)</span> by a stride and repeat.</li>
+</ol>
+<p>Pictorially, with an expanding train window and horizon <span class="arithmatex">\(h = 3\)</span>, stride <span class="arithmatex">\(s = 3\)</span>:</p>
+<div class="highlight"><pre><span></span><code>fold 1: TRAIN [ 0 ... 9 ]        TEST [ 10, 11, 12 ]
+fold 2: TRAIN [ 0 ... 12 ]       TEST [ 13, 14, 15 ]
+fold 3: TRAIN [ 0 ... 15 ]       TEST [ 16, 17, 18 ]
+fold 4: TRAIN [ 0 ... 18 ]       TEST [ 19, 20, 21 ]
+...
+</code></pre></div>
+<p>Every test fold is <strong>strictly after</strong> its training fold in wall-clock time. No temporal leakage. Every test observation answers "what would this model have said about this period, given only what was available before it?"</p>
+<h2 id="expanding-vs-sliding-train-windows">Expanding vs sliding train windows<a class="headerlink" href="#expanding-vs-sliding-train-windows" title="Permanent link">&para;</a></h2>
+<p>Two common variations:</p>
 <ul>
-<li>Why you shouldn't tune hyperparameters on the full-sample Sharpe — a classic in-sample / out-of-sample mistake that looks innocent.</li>
-<li>The tradeoff between expanding (more data, newer data gets small weight) and sliding (adaptive, forgets old regimes).</li>
-<li>Why even walk-forward needs a final held-out period before deflated-Sharpe accounting is honest.</li>
+<li><strong>Expanding</strong>: train window grows with each step, always using everything up to <span class="arithmatex">\(t\)</span>. More data over time (generally favors more stable estimates), but old regimes have increasing weight as a fraction of training data.</li>
+<li><strong>Sliding</strong> (or "rolling"): train window has fixed length <span class="arithmatex">\(W\)</span>, so training data is always <span class="arithmatex">\([t - W, t]\)</span>. Adaptive to regime changes — old data ages out — but uses less data at any given time.</li>
 </ul>
-<p><strong>Implemented at:</strong> <code>trading/packages/harness/src/harness/backtest.py</code> — <code>WalkForwardConfig</code>, <code>WalkForward.split</code>.</p>
+<p>Which is right? It depends. For a strategy whose edge is stationary across regimes, expanding wins — more data is usually better. For a strategy whose edge is regime-dependent, sliding wins — forgetting the old regime lets the model adapt. In doubt, run both and report both.</p>
+<p>The harness's <code>WalkForwardConfig</code> has a boolean <code>expanding</code> field (defaults True). Flipping to False gives the sliding variant with train length set to <code>initial_train</code>.</p>
+<h2 id="stride-and-overlap">Stride and overlap<a class="headerlink" href="#stride-and-overlap" title="Permanent link">&para;</a></h2>
+<p>The <strong>stride</strong> controls how much the anchor advances between folds. Equal to test horizon (<span class="arithmatex">\(s = h\)</span>) produces non-overlapping test folds — simplest, most defensible. Less than horizon (<span class="arithmatex">\(s &lt; h\)</span>) produces overlapping test folds, each making use of a new piece of data plus some already-seen data. Greater than horizon (<span class="arithmatex">\(s &gt; h\)</span>) leaves gaps.</p>
+<p>For most backtests, use <span class="arithmatex">\(s = h\)</span>. Overlapping test folds look like more data but don't give you independent observations — you're re-measuring the same thing with small perturbations. Non-overlapping is cleaner.</p>
+<h2 id="walk-forward-as-the-outer-loop">Walk-forward as the outer loop<a class="headerlink" href="#walk-forward-as-the-outer-loop" title="Permanent link">&para;</a></h2>
+<p>Walk-forward is the <strong>outer</strong> evaluation loop. Inside each fold, you may still need cross-validation for model selection — which hyperparameters, which features, which thresholds. That inner CV is a separate design choice, and it has its own leakage hazards (<a href="../purging-embargo/">next lesson on purging</a>).</p>
+<p>A clean protocol:</p>
+<ol>
+<li>Walk-forward defines the outer train/test splits.</li>
+<li>Inside each outer train set, use purged k-fold to select hyperparameters on held-out purged-k-folds.</li>
+<li>Retrain on the full outer train set using the selected hyperparameters.</li>
+<li>Evaluate on the outer test fold.</li>
+<li>Advance the walk-forward anchor.</li>
+</ol>
+<p>Violating this structure — using the outer test fold to pick hyperparameters, for example — is subtle look-ahead that won't survive into live trading.</p>
+<h2 id="what-walk-forward-does-not-prevent">What walk-forward does not prevent<a class="headerlink" href="#what-walk-forward-does-not-prevent" title="Permanent link">&para;</a></h2>
+<p>A realistic view of what walk-forward still leaves on the table:</p>
+<ul>
+<li><strong>Label-horizon leakage.</strong> If a training label at time <span class="arithmatex">\(t\)</span> depends on prices through <span class="arithmatex">\(t + 5\)</span>, that label can overlap with the test fold even when <span class="arithmatex">\(t\)</span> itself is in the train set. Purging (<a href="../purging-embargo/">next lesson</a>) is the fix.</li>
+<li><strong>Data-snooping bias.</strong> Walk-forward evaluates <em>one</em> strategy. If you tried 100 strategies and picked this one, the test performance is biased upward by the selection. Walk-forward doesn't know how many strategies you tried. <a href="../deflated-sharpe/">Deflated Sharpe</a> is the downstream correction.</li>
+<li><strong>Future information baked into features.</strong> Using a feature whose computation reaches into the future (forward-looking corporate action adjustments, some index methodology data) leaks regardless of your CV. Audit features against "what did I know at <span class="arithmatex">\(t\)</span>?"</li>
+<li><strong>Survivorship bias.</strong> Running a backtest on today's index constituents (rather than the constituents at each historical date) silently excludes companies that went bust. Walk-forward on today's list looks better than it should.</li>
+</ul>
+<p>Walk-forward is necessary but not sufficient. It catches the easiest-to-miss leakage (temporal) but not the subtler kinds.</p>
+<h2 id="the-expanding-train-failure-mode">The expanding-train failure mode<a class="headerlink" href="#the-expanding-train-failure-mode" title="Permanent link">&para;</a></h2>
+<p>One more subtlety worth naming. Expanding-train walk-forward means early folds train on tiny datasets. Fold 1 might have 252 observations; by fold 20, there are 1,512. Early-fold model quality is genuinely worse, not because the strategy doesn't work, but because the estimator is noisy on small samples.</p>
+<p>This biases the cumulative out-of-sample Sharpe downward in the early folds. The bias unwinds as the train set grows, which means realized backtest performance improves over time even if the underlying edge is stationary. Don't mistake this for "the edge is getting stronger" — it's the estimator getting less noisy.</p>
+<p>The <code>initial_train</code> parameter sets the size of the first training window, and should be large enough that the model has reasonable out-of-sample behavior from fold 1. For daily bars, 252 (one year) is a typical minimum; 504 is more conservative.</p>
+<h2 id="what-you-can-now-reason-about">What you can now reason about<a class="headerlink" href="#what-you-can-now-reason-about" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Why random k-fold cross-validation produces optimistic Sharpes on time series — the shuffling gives training data access to the future.</li>
+<li>The distinction between expanding and sliding train windows, and when each is right (stationary edge vs regime-dependent edge).</li>
+<li>Why walk-forward is necessary but not sufficient — it catches temporal leakage but not survivorship bias, data snooping, or forward-looking features.</li>
+</ul>
+<h2 id="implemented-at">Implemented at<a class="headerlink" href="#implemented-at" title="Permanent link">&para;</a></h2>
+<p><code>trading/packages/harness/src/harness/backtest.py</code>:</p>
+<ul>
+<li>Line 22: <code>WalkForwardConfig(initial_train, test_horizon, stride, expanding=True)</code>.</li>
+<li>Line 40: <code>WalkForward.split(n_samples)</code> — generator that yields <code>(train_idx, test_idx)</code> pairs.</li>
+</ul>
+<p>The module docstring notes explicitly: <code>WalkForward does NOT execute the strategy — it yields index pairs. The caller trains, predicts, and computes PnL per window</code>. This separation is deliberate; it keeps the harness agnostic to model type, feature construction, and cost modeling.</p>
 <hr />
 <p><strong>Next:</strong> <a href="../purging-embargo/">Purging, embargo, and label horizons →</a></p>
 
