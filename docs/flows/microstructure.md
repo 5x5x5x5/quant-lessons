@@ -7,9 +7,9 @@ code_ref: "pending — trading/packages/microstructure/"
 
 # Microstructure and order flow
 
-Everything in this curriculum so far assumes you care about bars — daily, hourly, maybe 5-minute. Microstructure is what happens *inside* a bar. At this scale, the tape doesn't move smoothly; it ticks. Every tick is a transaction between a buyer and a seller, happening at a specific price in a specific order book, possibly triggering a chain of further transactions. Read at this scale, the tape tells a different story than the bar chart does.
+The curriculum to this point has assumed the analysis operates on bars — daily, hourly, or 5-minute. Microstructure is the activity within a bar. At this scale, prices move in discrete ticks rather than continuously. Each tick represents a transaction between a buyer and a seller at a specific price in a specific order book, potentially triggering a chain of further transactions. The view at this scale differs substantially from the bar-chart view.
 
-This is where prop traders live. Retail almost never does, because the data is expensive, the latency matters, and the backtest fidelity is hard to achieve. The edge is real but the moat to get there is real too.
+Microstructure is the domain of proprietary trading firms. Retail participation is rare because the required data is expensive, latency matters, and backtest fidelity is difficult to achieve. The edge is real but the barriers to access are substantial.
 
 ## The order book
 
@@ -26,25 +26,25 @@ bid 2:   1800   100.96
 bid 3:   2500   100.94
 ```
 
-The **best bid** and **best ask** (Level 1) are what most quote feeds report. The **depth** behind them (Level 2, sometimes deeper) is where the information lives. Which side has more size? Where do the orders thin out? A 100,000-share buy order submitted into a book with only 50,000 of ask depth will blow through multiple price levels, producing a price spike visible on the bar chart as "the close ran up." Knowing the depth tells you that in advance.
+The best bid and best ask (Level 1) are what most quote feeds report. The depth behind them (Level 2, sometimes deeper) contains the additional information. Which side has more size? Where do orders thin out? A 100,000-share buy order submitted into a book with only 50,000 of ask depth will traverse multiple price levels, producing a price spike visible on the bar chart as "the close ran up." Depth information identifies this condition in advance.
 
 ## Trade classification: Lee-Ready
 
-When a trade prints on the tape at some price $P$, was the aggressor the buyer or the seller? Equivalently, did someone hit the bid (sell aggression), or lift the ask (buy aggression)?
+When a trade prints at price $P$, which side was the aggressor — the buyer or the seller? Equivalently, was the bid hit (sell aggression) or the ask lifted (buy aggression)?
 
-The answer isn't in the raw tick feed directly — trades print without a tag. The **Lee-Ready algorithm** infers direction from price location and timing:
+The raw tick feed does not carry this tag. The **Lee-Ready algorithm** infers direction from price location and timing:
 
-1. If the trade price is above the midpoint, classify as a buy (lifted the ask, or above-mid in the nearest tick).
+1. If the trade price is above the midpoint, classify as a buy (ask lifted, or closest tick above mid).
 2. If below the midpoint, classify as a sell.
-3. If exactly at the midpoint, use the tick rule: compare to the previous trade's price. Higher → buy; lower → sell. If equal, use the previous classification.
+3. If at the midpoint exactly, apply the tick rule: compare with the previous trade price. Higher previous trade implies buy; lower implies sell. When equal, carry forward the previous classification.
 
-Lee-Ready (1991) is the default classification in equity microstructure research. Accuracy is high for active stocks (>90% for liquid names) but degrades for illiquid names or during fast markets where quotes lag trades.
+Lee-Ready (1991) is the standard classification method in equity microstructure research. Accuracy is high for active stocks (above 90% for liquid names) and degrades for illiquid names or fast markets where quotes lag trades.
 
-Modern alternatives (BVC, tick-sign, direct venue-tagged classifications) exist and offer marginal improvements. For a first implementation, Lee-Ready is the right starting point.
+Alternative methods (BVC, tick-sign, venue-tagged classifications) offer marginal improvements. For a first implementation, Lee-Ready is the appropriate starting point.
 
 ## Volume footprint
 
-Given trade-direction classification, aggregate volume at each price level and split into bid-volume vs ask-volume. A **footprint chart** visualizes this:
+Given trade-direction classifications, aggregate volume at each price level into bid-volume and ask-volume components. A **footprint chart** visualizes the result:
 
 ```
 price     bid-vol    ask-vol
@@ -55,41 +55,41 @@ price     bid-vol    ask-vol
 100.92     500        150      ← bid-heavy at this level
 ```
 
-The pattern across a bar (say, a 5-minute interval) shows where buying was aggressive and where selling was aggressive. A bar that closes up with bid-heavy volume at the bottom and ask-heavy at the top tells a different story than a bar that closes up with ask-heavy throughout: the first suggests short-covering absorbed, the second suggests continued demand.
+The pattern across a bar (for example, a 5-minute interval) shows where buying and selling were aggressive. A bar that closes up with bid-heavy volume at the bottom and ask-heavy volume at the top differs from a bar that closes up with ask-heavy volume throughout: the first suggests absorbed short-covering, the second suggests continued demand.
 
-Reading footprints well is a skill. The interpretation space is rich — stacked imbalances (multiple consecutive price levels all heavily ask-biased), absorption (heavy volume without price movement at a key level), and divergence (price makes a new high while cumulative ask-volume decays) are all patterns practitioners track.
+Reading footprints effectively is a skill. The interpretive space includes stacked imbalances (multiple consecutive price levels all heavily ask-biased), absorption (heavy volume without price movement at a key level), and divergence (price makes a new high while cumulative ask-volume decays).
 
 ## Cumulative delta
 
-Sum the signed volume (+ask_volume, -bid_volume) across a period to get **cumulative delta**. When cumulative delta rises, more aggressive buying than selling happened. When it falls, the opposite.
+Summing signed volume (+ask_volume, −bid_volume) across a period produces **cumulative delta**. Rising cumulative delta indicates more aggressive buying than selling; falling cumulative delta indicates the reverse.
 
-The useful signal is when cumulative delta **diverges** from price. If price makes a new intraday high but cumulative delta doesn't, the move was thin — more short-covering than genuine demand, likely to fade. Likewise, a new low on thin cumulative delta often retraces.
+The useful signal appears when cumulative delta diverges from price. If price makes a new intraday high but cumulative delta does not, the move is thin — more short-covering than genuine demand — and is likely to fade. Similarly, a new low on thin cumulative delta often retraces.
 
-Delta divergence is among the most-cited microstructure signals in retail education. The reality is that it works in some regimes (typically ranging or late-trend) and fails in others (early-trend or sudden-regime-change breakouts). It's not a free signal, but it's a meaningful input to a broader signal set.
+Delta divergence is among the most-cited microstructure signals in retail education. Its reliability varies by regime: it tends to work in ranging or late-trend markets and fails in early-trend or sudden-regime-change breakouts. The signal is not free, but it is a meaningful input to a broader signal set.
 
-## Market Profile / TPO
+## Market Profile (TPO)
 
-Another view on the same underlying data. **Time-price opportunity (TPO)** charts show, for a given session, the set of price levels traded during each 30-minute period. Over a full session, each price level gets a count of how many 30-minute slots it was traded in.
+A related view of the same underlying data. **Time-price opportunity (TPO)** charts show, for a given session, the set of price levels traded during each 30-minute period. Over a full session, each price level receives a count of the 30-minute slots during which it was traded.
 
 From the count distribution:
 
 - **Point of Control (POC)**: the price level traded for the most time.
-- **Value Area High (VAH)** and **Low (VAL)**: the upper and lower bounds of the 70% band (typically) around the POC.
-- **Single prints**: price levels that traded in only one 30-minute period, often at session extremes.
+- **Value Area High (VAH)** and **Low (VAL)**: the upper and lower bounds of the band (typically 70%) around the POC.
+- **Single prints**: price levels traded in only one 30-minute period, often at session extremes.
 
-Market Profile interpretation is old-school (Peter Steidlmayer's 1980s work) but durable. The key intuition: **prices that traded heavily in the past tend to act as magnets in the future.** POCs from yesterday's session often draw price back to them today. Single-print extremes are areas where price passed through without finding counterparty agreement, often fast-filled if revisited.
+Market Profile interpretation originates in Peter Steidlmayer's 1980s work and remains relevant. The central intuition: prices that traded heavily in the past tend to act as magnets in the future. The prior session's POC often attracts price the following day. Single-print extremes — areas where price passed through without finding counterparty agreement — are often filled quickly when revisited.
 
-## Why this edge is durable
+## Sources of durable edge
 
-Microstructure strategies — as distinct from technical analysis on bar charts — have durable edge for three reasons:
+Microstructure strategies, as distinct from technical analysis on bar charts, retain durable edge for three reasons:
 
-1. **Data costs create a moat.** Clean L2 tick data from exchanges is expensive (Databento starts at thousands per month for SPX alone; direct exchange feeds are five to six figures annually). This prices most retail out of the game. The strategies that survive the cost are the ones that make back multiples of data cost in P&L; the ones that don't, die. Adverse selection keeps the competitive field small.
+1. **Data costs.** Clean L2 tick data from exchanges is expensive (Databento starts at thousands per month for SPX alone; direct exchange feeds are five to six figures annually). This cost excludes most retail participants. Strategies that survive the data cost generate returns that exceed it; those that do not are discontinued. Adverse selection keeps the competitive field small.
 
-2. **Latency matters.** A signal computed on yesterday's close is available to everyone. A signal computed from this millisecond's order book is available only to infrastructure that can do that computation fast. Co-location in exchange data centers is not optional for the sharpest strategies.
+2. **Latency.** A signal computed on yesterday's close is available to all participants. A signal computed from the current order book is available only to infrastructure capable of producing it quickly. Co-location in exchange data centers is necessary for the sharpest strategies.
 
-3. **Simulation is hard.** Backtesting a microstructure strategy requires simulating your own order interaction with the book — queue position, fill probability, slippage, adverse selection. Cheap simulators use midpoint fills and systematically overstate strategy quality; a strategy that looks profitable on midpoint fills often bleeds in reality. Building a faithful L2 simulator is a significant engineering effort on its own.
+3. **Simulation difficulty.** Backtesting a microstructure strategy requires simulating order interaction with the book — queue position, fill probability, slippage, adverse selection. Midpoint-fill simulators systematically overstate strategy quality; a strategy that appears profitable at midpoint often loses money live. A faithful L2 simulator requires substantial engineering effort.
 
-The first two moats shrink over time (data gets cheaper, hosted services offer co-location); the third stays.
+The first two barriers shrink over time as data becomes cheaper and co-location becomes more accessible. The third persists.
 
 ## What the trading project plans
 
@@ -107,19 +107,21 @@ The package isn't scaffolded yet, and getting it right will require paid data. W
 
 ## Retail-accessible microstructure
 
-A cheaper entry point: free or low-cost data sources provide enough microstructure information for *some* strategies:
+Lower-cost data sources provide enough microstructure information for some strategies:
 
-- **1-minute OHLCV with volume**: Yahoo, IEX, Alpaca free-tier. Too coarse for real microstructure work, but volume-at-price can be approximated.
-- **Level 1 tick data**: tick-level trades without book depth. Lee-Ready works (tick rule fallback dominates when book state isn't known).
-- **IBKR delayed L2**: 15-minute delayed Level 2 for most U.S. equities, free. Insufficient for live trading; useful for building and sanity-checking strategy logic.
+- **1-minute OHLCV with volume**: Yahoo, IEX, Alpaca free tier. Too coarse for full microstructure work, but volume-at-price can be approximated.
+- **Level 1 tick data**: tick-level trades without book depth. Lee-Ready is usable (the tick-rule fallback dominates when book state is unknown).
+- **IBKR delayed L2**: 15-minute delayed Level 2 for most U.S. equities, free. Insufficient for live trading but useful for building and sanity-checking strategy logic.
 
-A strategy built on these substrates won't compete with prop shops. But it can still exhibit meaningful alpha patterns — especially in less-liquid markets (small caps, some crypto pairs) where the moat against institutions is smaller.
+Strategies built on these substrates will not compete with proprietary trading firms. They can still exhibit meaningful alpha patterns, particularly in less liquid markets (small caps, certain crypto pairs) where the barrier against institutional competition is smaller.
 
-## What you can now reason about
+## Summary
 
-- Why microstructure edge is considered durable despite public awareness — the data-cost moat, latency requirement, and simulation fidelity are all structural barriers.
-- Why the Lee-Ready algorithm is the default trade-classification method and where it fails (illiquid names, fast markets where quotes lag).
-- The distinction between volume footprint (price-level bid vs ask volume) and TPO (price-level time counts) — different aggregations of the same underlying tick data, producing different interpretive frameworks.
+The reader can now reason about:
+
+- Why microstructure edge is considered durable despite public awareness: data cost, latency requirements, and simulation fidelity are all structural barriers.
+- Why the Lee-Ready algorithm is the standard trade-classification method and where it fails (illiquid names, fast markets with lagging quotes).
+- The distinction between volume footprint (price-level bid versus ask volume) and TPO (price-level time counts): different aggregations of the same underlying tick data producing different interpretive frameworks.
 
 ## Implemented at
 

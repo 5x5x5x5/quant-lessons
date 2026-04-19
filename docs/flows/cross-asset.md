@@ -7,23 +7,23 @@ code_ref: "pending — trading/packages/macro/"
 
 # Cross-asset signals
 
-Equities don't trade in isolation. Credit spreads widen before equity risk premiums reprice. The dollar moves before emerging-markets equities do. The yield curve inverts before recessions. Copper-to-gold ratio signals growth vs risk-off years in advance of the stock market picking it up.
+Equities do not trade in isolation. Credit spreads widen before equity risk premiums reprice. The dollar moves before emerging-markets equities respond. The yield curve inverts before recessions. The copper-to-gold ratio signals growth versus risk-off conditions years before equity markets reflect them.
 
-Every one of these relationships is a lead/lag that technical analysts miss because they look at a single chart. A strategy that checks cross-asset signals before placing equity trades is, on average, operating with better information than one that doesn't.
+Each of these relationships is a lead-lag that single-chart technical analysis misses. A strategy that incorporates cross-asset signals before taking equity positions operates, on average, with more information than one that does not.
 
-## The core insight
+## The core concept
 
-Asset classes are connected by economic mechanisms, not just sentiment. When these mechanisms kick in, related assets move in coordinated ways. The timing isn't simultaneous — different market participants operate on different time scales, and different market microstructures respond at different speeds. That produces lead/lag, which is the raw material of cross-asset signals.
+Asset classes are connected by economic mechanisms, not only by sentiment. When these mechanisms activate, related assets move in coordinated ways. The timing is not simultaneous: different market participants operate on different time scales, and different market microstructures respond at different speeds. The resulting lead-lag relationships form the basis of cross-asset signals.
 
-Three commonly-cited lead/lag patterns:
+Three commonly cited lead-lag patterns:
 
-1. **Credit spreads lead equity.** HYG / LQD ratios widen (high-yield debt performing worse than investment-grade) before equity risk premiums reprice. Credit traders are forward-looking about corporate default risk; equity traders often wait for earnings releases.
+1. **Credit spreads lead equity.** HYG/LQD ratios widen (high-yield debt underperforming investment-grade) before equity risk premiums reprice. Credit traders are more forward-looking about corporate default risk than equity traders, who often wait for earnings releases.
 
-2. **Yield curve leads recession.** The 2s10s spread (2-year Treasury yield minus 10-year) inverts ~12 months before recessions historically. Equity markets typically peak closer to recession onset, so the curve leads equity tops.
+2. **Yield curve leads recession.** The 2s10s spread (2-year Treasury yield minus 10-year) has historically inverted approximately 12 months before recessions. Equity markets typically peak closer to recession onset, so the curve leads equity market tops.
 
-3. **Dollar leads emerging markets.** A stronger dollar (DXY rising) compresses emerging-market equities through currency translation and dollar-denominated debt pressure. EM equity returns often mirror DXY with a short lag.
+3. **Dollar leads emerging markets.** A strengthening dollar (rising DXY) compresses emerging-markets equities through currency translation and pressure on dollar-denominated debt. EM equity returns often track DXY with a short lag.
 
-These aren't rules of physics. Each pattern has regimes where it breaks — most famously, the 2s10s was arguably "broken" in 2019-2020 by QE's effect on term premia. A cross-asset signal framework should be robust to occasional regime breaks, not lean on any single relationship.
+These patterns are not physical laws. Each has regimes in which it breaks down. For example, the 2s10s inversion signal was arguably disrupted during 2019-2020 by QE's effect on term premia. A cross-asset signal framework should be robust to regime breaks rather than dependent on any single relationship.
 
 ## The standard cross-asset universe
 
@@ -41,69 +41,69 @@ For an equity-focused macro dashboard, the following series are the standard too
 | VIX | Equity IV level (from Part 4) |
 | VIX / VIX3M | Equity IV term structure slope |
 
-Each contributes a different view. Credit spreads and curve slope are "economic" — reflecting real credit risk and growth expectations. DXY, JPY, and copper-gold are "cross-asset risk-on/off" — how is global risk tolerance moving. Vol is its own regime layer.
+Each series contributes a different view. Credit spreads and curve slope are economic indicators, reflecting credit risk and growth expectations. DXY, JPY, and copper-gold are cross-asset risk-on/off indicators, reflecting global risk tolerance. Volatility is a separate regime layer.
 
-No single feed is load-bearing. The value of a cross-asset dashboard is the **joint signal**, which is more stable than any individual axis.
+No single series is dispositive. The value of a cross-asset dashboard lies in the joint signal, which is more stable than any individual axis.
 
 ## Rolling z-scores as a standard form
 
-Raw levels of these series aren't comparable across each other or across regimes. The dollar index in the 90s means something different than the dollar index in the 2020s. The standard preprocessing is a rolling z-score:
+Raw levels of these series are not comparable across each other or across time. The dollar index in the 1990s represents different economic conditions than the dollar index in the 2020s. The standard preprocessing is a rolling z-score:
 
 $$
-z_t = \frac{x_t - \bar x_\text{lookback}}{\sigma_{x, \text{lookback}}}
+z_t = \frac{x_t - \bar x_\text{lookback}}{\sigma_{x, \text{lookback}}}.
 $$
 
-Typical lookback windows: 63 days (a quarter) for short-term regime, 252 days (a year) for longer-term regime. Both are informative; the typical dashboard reports both side by side.
+Typical lookback windows are 63 days (one quarter) for short-term regime and 252 days (one year) for longer-term regime. Both are informative, and dashboards commonly report both.
 
-Z-scores make signals comparable: "$z$ on credit spreads is +2 and $z$ on DXY is +2" are equally-informative regime statements, even though absolute levels differ. The thresholds (what $z$ counts as "unusual") transfer across series.
+Z-scores make signals comparable across series. A $z = +2$ on credit spreads and $z = +2$ on DXY convey equivalent regime information despite differing absolute levels. Thresholds for "unusual" values transfer across series.
 
 ## Divergence detectors
 
-The single most-cited cross-asset signal is **equity-credit divergence**:
+The most commonly cited cross-asset signal is equity-credit divergence:
 
-- Equity is making a new high (or near-high).
-- Credit spreads are *not* making a new low (or near-low).
+- Equity is making a new high or is near one.
+- Credit spreads are not making a new low or are not near one.
 
-The joint condition says: equity is pricing in continued risk-on while credit is starting to reprice risk. Historically, divergences of this shape often preceded equity corrections by weeks to months. 2007-08, late 2018, and early 2020 all featured clear prior credit-equity divergence.
+The joint condition indicates that equity is pricing continued risk-on while credit is beginning to reprice risk. Historically, such divergences have preceded equity corrections by weeks to months. The 2007-2008, late-2018, and early-2020 corrections all followed clear prior credit-equity divergences.
 
-Implementing this mechanically:
+A mechanical implementation:
 
-1. Compute rolling 63-day highs (rolling max) of both equity level and the negative of credit spreads.
+1. Compute rolling 63-day maxima for the equity level and for the negative of credit spreads.
 2. Flag when equity is within 5% of its rolling high and credit is more than 2 standard deviations from its rolling low.
-3. Use the flag as a filter on new equity long trades — veto or downweight entries during divergences.
+3. Use the flag as a filter on new equity long trades — vetoing or downweighting entries during divergences.
 
-Similar divergence detectors exist on other pairs (equity vs DXY, equity vs 2s10s). They are imperfect individually and useful collectively.
+Similar divergence detectors exist for other pairs (equity versus DXY, equity versus 2s10s). Individually each is imperfect; collectively they provide useful regime information.
 
-## The 4-state regime classifier
+## Four-state regime classifier
 
-One way to summarize cross-asset state: a 2×2 matrix.
+One summary of cross-asset state uses a 2×2 matrix:
 
 |                | Risk-on          | Risk-off         |
 |----------------|------------------|------------------|
 | **Inflating**  | Reflation        | Stagflation      |
 | **Disinflating** | Goldilocks     | Deflationary bust |
 
-Map the four states by combining:
+The four states are identified by combining:
 
 - **Risk-on/off**: equity direction, credit spread direction, DXY direction.
 - **Inflating/disinflating**: 5y5y breakevens direction, commodity complex direction.
 
 Each state implies different trade filters:
 
-- **Goldilocks** (risk-on, disinflating): best regime for equity momentum, long growth.
-- **Reflation** (risk-on, inflating): best regime for commodities, real assets, value over growth.
-- **Stagflation** (risk-off, inflating): tough for both stocks and bonds; gold and commodities can still work.
-- **Deflationary bust** (risk-off, disinflating): best regime for long duration (TLT, long-dated Treasuries), shorts on risk assets.
+- **Goldilocks** (risk-on, disinflating): favorable regime for equity momentum and long growth.
+- **Reflation** (risk-on, inflating): favorable regime for commodities, real assets, value over growth.
+- **Stagflation** (risk-off, inflating): unfavorable for both stocks and bonds; gold and commodities may still perform.
+- **Deflationary bust** (risk-off, disinflating): favorable regime for long duration (TLT, long-dated Treasuries) and shorts on risk assets.
 
-The classification is approximate and boundaries are fuzzy. Its value is as an organizing principle, not a precise switch. "We're in Goldilocks" is a more useful frame for position-sizing than "the market is neutral on the 12-month horizon."
+The classification is approximate, and the boundaries are fuzzy. It is valuable as an organizing principle rather than a precise switch. The statement "the regime is Goldilocks" is more useful for position sizing than "the market is neutral on the 12-month horizon."
 
-## Cross-asset as a filter, not a strategy
+## Cross-asset as filter, not primary
 
-A key design point: cross-asset signals make **poor primaries** but **excellent filters**. The lead/lags are real but noisy, with false signals and regime-dependent timing. A primary strategy built purely on "credit-equity divergence fires → short equity" would under-perform — the timing of the correction after a divergence can be anywhere from weeks to months, and other factors typically dominate over those horizons.
+A key design point: cross-asset signals serve poorly as primaries but well as filters. The lead-lags are real but noisy, with false signals and regime-dependent timing. A primary strategy based purely on "credit-equity divergence fires → short equity" would underperform; the timing of corrections following divergences ranges from weeks to months, and other factors typically dominate over those horizons.
 
-What works better: use a conviction-based primary (technicals, earnings, microstructure, whatever), then **require cross-asset confirmation** before executing. "Go long equity on my primary signal, *unless* cross-asset regime says risk-off" is a better trade than "go long only when cross-asset says risk-on" (the latter misses too many valid trades).
+The effective pattern: use a conviction-based primary (technical, fundamental, microstructure) and require cross-asset confirmation before execution. "Take the primary signal unless cross-asset regime is risk-off" is preferable to "take the primary only when cross-asset is risk-on," which would reject too many valid trades.
 
-A reasonable veto threshold: **require $\ge 2$ of 3 cross-asset confirming prints** before equity entries. Confirming = z-scores in the direction consistent with the primary's bias. This keeps the filter lenient enough to not veto too many trades, while still catching obvious regime breaks.
+A reasonable veto threshold: require at least 2 of 3 cross-asset confirming prints before equity entries, where confirming means z-scores directionally consistent with the primary's bias. This filter is lenient enough to avoid excessive rejections while still detecting material regime breaks.
 
 ## What the trading project plans
 
@@ -119,11 +119,13 @@ A reasonable veto threshold: **require $\ge 2$ of 3 cross-asset confirming print
 
 Data freshness matters less than for microstructure — cross-asset signals are measured in days to weeks, so EOD refresh is sufficient. This makes `packages/macro/` one of the easier packages to scaffold once other priorities allow.
 
-## What you can now reason about
+## Summary
 
-- Why lead/lag exists between asset classes — different participants operating on different information and time scales produce coordinated-but-not-simultaneous moves.
-- Why rolling z-scores make cross-asset signals comparable across series and across decades — absolute levels reflect regime, z-scores reflect surprise within regime.
-- Why cross-asset signals work better as filters than as primaries — the timing of their lead/lag is too variable to drive entries, but the regime information is reliable enough to veto bad setups.
+The reader can now reason about:
+
+- Why lead-lag exists between asset classes: different participants operate on different information sets and time scales, producing coordinated but not simultaneous moves.
+- Why rolling z-scores make cross-asset signals comparable across series and across decades: absolute levels reflect regime, while z-scores reflect surprise within regime.
+- Why cross-asset signals work better as filters than as primaries: the timing of lead-lag is too variable to drive entries, but regime information is reliable enough to veto poor setups.
 
 ## Implemented at
 
@@ -141,10 +143,10 @@ Of the three pending packages (microstructure, events, macro), macro is the lowe
 
 ## End of the curriculum
 
-You've walked from [returns and log-returns](../measurable/returns.md) through the Greeks, dealer positioning, backtest discipline, ML for finance, and out into the broader strategy universe. Every lesson pointed back into [the trading project](https://github.com/5x5x5x5/trading) — either at specific code that implements the concept, or at package stubs that will.
+The curriculum has progressed from [returns and log-returns](../measurable/returns.md) through the Greeks, dealer positioning, backtest discipline, ML for finance, and into the broader strategy universe. Each lesson references [the trading project](https://github.com/5x5x5x5/trading), either pointing to code that implements the concept or to package stubs that will.
 
-The implementation in the repo is a subset of the curriculum. AFML primitives, GEX pipeline, walk-forward harness, meta-labeling capstone — built. Macro, events, and microstructure — spec'd, pending. Deflated Sharpe — stubbed.
+The repository implementation is a subset of the curriculum. AFML primitives, the GEX pipeline, the walk-forward harness, and the meta-labeling capstone are built. Macro, events, and microstructure packages are specified but pending. Deflated Sharpe is stubbed.
 
-If you want to extend the repo, the lessons tell you where the code should go. If you want to understand the code, the lessons tell you why each decision was made.
+For extending the repository, the lessons indicate where new code should be placed. For understanding existing code, the lessons document the rationale for each design decision.
 
 [← Back to home](../index.md)
