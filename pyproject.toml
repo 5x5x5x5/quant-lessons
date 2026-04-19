@@ -1,0 +1,12 @@
+[project]
+name = "quant-lessons"
+version = "0.1.0"
+description = "A curriculum from first principles to the primitives behind the trading project"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "mkdocs-material>=9.5",
+    "pymdown-extensions>=10.7",
+]

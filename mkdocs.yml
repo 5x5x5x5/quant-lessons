@@ -1,0 +1,91 @@
+site_name: Quant Lessons
+site_description: A curriculum from first principles to the primitives behind the trading project
+site_url: https://5x5x5x5.github.io/quant-lessons/
+repo_url: https://github.com/5x5x5x5/quant-lessons
+repo_name: 5x5x5x5/quant-lessons
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - footnotes
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - Home: index.md
+  - "1. The measurable":
+      - "Returns, compounding, log-returns": measurable/returns.md
+      - "Volatility as a measurable thing": measurable/volatility.md
+      - "Random walks and the null model": measurable/random-walks.md
+  - "2. Options, end-to-end":
+      - "The options contract": options/contracts.md
+      - "Payoffs and put-call parity": options/payoffs-and-parity.md
+      - "Black-Scholes as a bridge": options/black-scholes.md
+  - "3. The Greeks":
+      - "Delta: sensitivity to price": greeks/delta.md
+      - "Gamma: the second derivative": greeks/gamma.md
+      - "Theta, vega, rho": greeks/theta-vega-rho.md
+  - "4. The vol surface":
+      - "Implied vol vs realized": vol-surface/implied-vol.md
+      - "Term structure of volatility": vol-surface/term-structure.md
+      - "Skew and the smile": vol-surface/skew.md
+  - "5. Dealer positioning and regime":
+      - "Market makers and delta-hedging": regime/market-makers.md
+      - "Dealer gamma: long vs short": regime/dealer-gamma.md
+      - "The gamma flip strike": regime/gamma-flip.md
+  - "6. Backtest discipline":
+      - "Sharpe, Sortino, max drawdown": backtest/metrics.md
+      - "Walk-forward vs k-fold": backtest/walk-forward.md
+      - "Purging, embargo, and label horizons": backtest/purging-embargo.md
+      - "Deflated Sharpe": backtest/deflated-sharpe.md
+  - "7. ML for finance":
+      - "The labeling problem": ml/labeling-problem.md
+      - "Triple-barrier labeling": ml/triple-barrier.md
+      - "Meta-labeling": ml/meta-labeling.md
+  - "8. Flows and frictions":
+      - "Microstructure and order flow": flows/microstructure.md
+      - "Event-driven special situations": flows/event-driven.md
+      - "Cross-asset signals": flows/cross-asset.md
