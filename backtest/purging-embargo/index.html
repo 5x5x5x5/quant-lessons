@@ -1207,10 +1207,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-combined-procedure" class="md-nav__link">
+  <a href="#combined-procedure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The combined procedure
+        Combined procedure
       
     </span>
   </a>
@@ -1218,10 +1218,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-this-doesnt-replace-walk-forward" class="md-nav__link">
+  <a href="#purged-k-fold-versus-walk-forward" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why this doesn't replace walk-forward
+        Purged k-fold versus walk-forward
       
     </span>
   </a>
@@ -1229,10 +1229,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#embargo-as-a-percentage-why-not-absolute" class="md-nav__link">
+  <a href="#embargo-as-a-percentage" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Embargo as a percentage: why not absolute?
+        Embargo as a percentage
       
     </span>
   </a>
@@ -1240,10 +1240,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-cost-of-correctness" class="md-nav__link">
+  <a href="#cost-of-correctness" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The cost of correctness
+        Cost of correctness
       
     </span>
   </a>
@@ -1251,10 +1251,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1662,10 +1662,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-combined-procedure" class="md-nav__link">
+  <a href="#combined-procedure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The combined procedure
+        Combined procedure
       
     </span>
   </a>
@@ -1673,10 +1673,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-this-doesnt-replace-walk-forward" class="md-nav__link">
+  <a href="#purged-k-fold-versus-walk-forward" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why this doesn't replace walk-forward
+        Purged k-fold versus walk-forward
       
     </span>
   </a>
@@ -1684,10 +1684,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#embargo-as-a-percentage-why-not-absolute" class="md-nav__link">
+  <a href="#embargo-as-a-percentage" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Embargo as a percentage: why not absolute?
+        Embargo as a percentage
       
     </span>
   </a>
@@ -1695,10 +1695,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-cost-of-correctness" class="md-nav__link">
+  <a href="#cost-of-correctness" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The cost of correctness
+        Cost of correctness
       
     </span>
   </a>
@@ -1706,10 +1706,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1748,65 +1748,66 @@
 
 
 <h1 id="purging-embargo-and-label-horizons">Purging, embargo, and label horizons<a class="headerlink" href="#purging-embargo-and-label-horizons" title="Permanent link">&para;</a></h1>
-<p>Walk-forward keeps the test data in the future of the training data in wall-clock time. That's necessary but not sufficient. A more subtle leak happens inside a single fold, and it's the one that makes k-fold on overlapping labels silently lie to you.</p>
-<p>This lesson is the López de Prado AFML ch. 7 fix: purging and embargo.</p>
+<p>Walk-forward ensures test data follows training data in wall-clock time. This is necessary but not sufficient. A more subtle form of leakage occurs within a single fold and silently inflates k-fold results on overlapping labels.</p>
+<p>This lesson covers the López de Prado AFML ch. 7 corrections: purging and embargo.</p>
 <h2 id="the-problem-label-horizons">The problem: label horizons<a class="headerlink" href="#the-problem-label-horizons" title="Permanent link">&para;</a></h2>
-<p>Consider a triple-barrier label. You take a signal at time <span class="arithmatex">\(t\)</span> and assign a label based on what happens between <span class="arithmatex">\(t\)</span> and <span class="arithmatex">\(t + 5\)</span> (or whenever the first barrier hits). The label at <span class="arithmatex">\(t\)</span> is a function of prices up to <span class="arithmatex">\(t + 5\)</span>.</p>
-<p>Now do k-fold CV. Suppose the test fold contains observation <span class="arithmatex">\(t_\text{test}\)</span>, and the train fold contains observation <span class="arithmatex">\(t_\text{train}\)</span> with <span class="arithmatex">\(t_\text{train} &lt; t_\text{test} &lt; t_\text{train} + 5\)</span>. The training observation's <em>label</em> — not its features, but its label — was computed using prices through <span class="arithmatex">\(t_\text{train} + 5\)</span>, which includes the entire test observation's window.</p>
-<p>The model trains on this training label. The training label encodes information from the test period. Even with walk-forward's temporal ordering, when <span class="arithmatex">\(t_\text{train}\)</span> precedes <span class="arithmatex">\(t_\text{test}\)</span> by less than the label horizon, the training label reaches forward into the test fold.</p>
-<p>Result: the model performs better on the test fold than it would in live trading. The Sharpe is inflated. The bias is systematic — every training observation near the train-test boundary leaks. Naive k-fold on triple-barrier labels over-reports Sharpe by roughly 10-30% in typical setups.</p>
+<p>Consider a triple-barrier label. A signal at time <span class="arithmatex">\(t\)</span> receives a label based on what happens between <span class="arithmatex">\(t\)</span> and <span class="arithmatex">\(t + 5\)</span> (or until the first barrier is hit). The label at <span class="arithmatex">\(t\)</span> is therefore a function of prices up to <span class="arithmatex">\(t + 5\)</span>.</p>
+<p>Now consider k-fold cross-validation. Suppose the test fold contains observation <span class="arithmatex">\(t_\text{test}\)</span> and the train fold contains observation <span class="arithmatex">\(t_\text{train}\)</span> with <span class="arithmatex">\(t_\text{train} &lt; t_\text{test} &lt; t_\text{train} + 5\)</span>. The training observation's label (not its features, but its label) was computed using prices through <span class="arithmatex">\(t_\text{train} + 5\)</span>, which includes the test observation's window.</p>
+<p>The model trains on this label. The training label encodes information from the test period. Even with walk-forward's temporal ordering, if <span class="arithmatex">\(t_\text{train}\)</span> precedes <span class="arithmatex">\(t_\text{test}\)</span> by less than the label horizon, the training label reaches forward into the test fold.</p>
+<p>The result: the model performs better on the test fold than it would in live trading. The Sharpe is inflated. The bias is systematic — every training observation near the train-test boundary leaks. Naive k-fold on triple-barrier labels typically overstates Sharpe by 10-30% in standard setups.</p>
 <h2 id="purging">Purging<a class="headerlink" href="#purging" title="Permanent link">&para;</a></h2>
-<p>The AFML fix: <strong>drop training observations whose label horizons overlap the test fold</strong>.</p>
-<p>Define for each observation <span class="arithmatex">\(i\)</span> its label horizon <span class="arithmatex">\(t_1[i]\)</span> — the time at which its label is realized (in triple-barrier, this is the <code>exit_idx</code>, which can be the upper barrier hit, the lower barrier hit, or the vertical barrier). An observation <span class="arithmatex">\(i\)</span> in the train fold is <em>purged</em> if:</p>
+<p>The AFML correction: drop training observations whose label horizons overlap the test fold.</p>
+<p>For each observation <span class="arithmatex">\(i\)</span>, define the label horizon <span class="arithmatex">\(t_1[i]\)</span> — the time at which its label is realized. In triple-barrier labeling, this corresponds to <code>exit_idx</code>, which may be the upper barrier hit, the lower barrier hit, or the vertical barrier. An observation <span class="arithmatex">\(i\)</span> in the train fold is purged if:</p>
 <div class="arithmatex">\[
 [i, t_1[i]] \cap [\text{test fold boundaries}] \neq \emptyset.
 \]</div>
-<p>In other words, if the train observation's label horizon overlaps the test fold at all, drop it. This removes the leakage channel.</p>
-<p>Purging costs training data — how much depends on the label horizon and the fold sizes. For vertical-barrier = 5 and fold sizes of 50, roughly 10% of train observations get purged. For very long label horizons, purging becomes aggressive enough to matter. Mostly, it's cheap.</p>
+<p>Any train observation whose label horizon overlaps the test fold is dropped. This removes the leakage channel.</p>
+<p>Purging reduces training data by an amount that depends on the label horizon and fold size. For a vertical barrier of 5 and fold sizes of 50, approximately 10% of train observations are purged. For very long label horizons, the purge becomes aggressive; for typical settings, the cost is modest.</p>
 <h2 id="embargo">Embargo<a class="headerlink" href="#embargo" title="Permanent link">&para;</a></h2>
-<p>Purging fixes the overlap on the "before" side of the test fold. The "after" side has a similar but subtler leak: serial correlation.</p>
-<p>Even if no label horizon crosses the test fold boundary, consecutive observations in a time series tend to be correlated — prices, volumes, implied vols, everything has some degree of autocorrelation. A training observation at <span class="arithmatex">\(t = t_\text{test,end} + 1\)</span>, immediately after the test fold, is correlated with the test observations through short-horizon serial correlation. Training on it causes the model to (weakly) learn about the test period from a neighbor.</p>
-<p>The fix: <strong>embargo a buffer of samples after the test fold, excluding them from the training set</strong>.</p>
-<p>The embargo size is typically a small percentage of total samples — 1% to 2% works for most liquid markets. On 5,000 daily observations, a 1% embargo removes 50 samples right after each test fold.</p>
-<p>The embargo exists whether or not the labels themselves overlap. It's a separate machinery from purging, handling serial-correlation leak rather than label-horizon leak.</p>
-<h2 id="the-combined-procedure">The combined procedure<a class="headerlink" href="#the-combined-procedure" title="Permanent link">&para;</a></h2>
+<p>Purging addresses overlap on the "before" side of the test fold. The "after" side involves a subtler form of leakage: serial correlation.</p>
+<p>Even when no label horizon crosses the test-fold boundary, consecutive observations in a time series tend to be correlated — prices, volumes, implied volatilities all show some degree of autocorrelation. A training observation at <span class="arithmatex">\(t = t_\text{test,end} + 1\)</span>, immediately after the test fold, correlates with test observations through short-horizon serial dependence. Training on such observations weakly exposes the model to information about the test period via neighboring data.</p>
+<p>The correction is to embargo a buffer of samples after the test fold, excluding them from training.</p>
+<p>Embargo size is typically a small percentage of total samples — 1% to 2% is standard for liquid markets. On 5,000 daily observations, a 1% embargo removes 50 samples after each test fold.</p>
+<p>The embargo applies whether or not labels themselves overlap. It addresses serial-correlation leakage rather than label-horizon leakage and operates independently of purging.</p>
+<h2 id="combined-procedure">Combined procedure<a class="headerlink" href="#combined-procedure" title="Permanent link">&para;</a></h2>
 <p>The full AFML purged-k-fold with embargo:</p>
 <ol>
-<li>Partition samples into <span class="arithmatex">\(k\)</span> equal-size contiguous folds (do <strong>not</strong> shuffle).</li>
+<li>Partition samples into <span class="arithmatex">\(k\)</span> equal-size contiguous folds (without shuffling).</li>
 <li>For each test fold:
-   a. Drop training observations whose label horizon <span class="arithmatex">\(t_1[i]\)</span> overlaps the test fold's time window. (Purging.)
-   b. Drop training observations within a small buffer after the test fold. (Embargo.)
+   a. Drop training observations whose label horizon <span class="arithmatex">\(t_1[i]\)</span> overlaps the test fold's time window (purging).
+   b. Drop training observations within a small buffer after the test fold (embargo).
    c. Train on what remains.
    d. Evaluate on the test fold.</li>
-<li>Aggregate.</li>
+<li>Aggregate results.</li>
 </ol>
-<p>Contiguous test folds (not shuffled) preserve time order within each fold, which makes purging meaningful. Shuffled folds would defeat the purpose — the purge would need to apply around every sample's neighborhood instead of just the fold boundaries.</p>
-<h2 id="why-this-doesnt-replace-walk-forward">Why this doesn't replace walk-forward<a class="headerlink" href="#why-this-doesnt-replace-walk-forward" title="Permanent link">&para;</a></h2>
-<p>Purged-k-fold is for <strong>model selection</strong>: hyperparameter tuning, feature selection, threshold calibration. It gives you an out-of-sample estimate of model performance that doesn't leak through label horizons or serial correlation.</p>
-<p>Walk-forward is for <strong>final evaluation</strong>: "how would this strategy have performed as I rolled it forward through time?" Walk-forward's folds are strictly ordered; purged k-fold's are contiguous but not necessarily ordered (fold 3 can be earlier than fold 2 if you define folds chronologically).</p>
-<p>The two solve related but distinct problems. In the AFML protocol:</p>
+<p>Contiguous, non-shuffled test folds preserve time order within each fold, which is required for purging to be meaningful. Shuffled folds would require purging around every sample's neighborhood rather than fold boundaries, defeating the construction.</p>
+<h2 id="purged-k-fold-versus-walk-forward">Purged k-fold versus walk-forward<a class="headerlink" href="#purged-k-fold-versus-walk-forward" title="Permanent link">&para;</a></h2>
+<p>Purged k-fold is a model-selection tool: hyperparameter tuning, feature selection, threshold calibration. It provides an out-of-sample estimate of model performance that does not leak through label horizons or serial correlation.</p>
+<p>Walk-forward is a final-evaluation tool: how would this strategy have performed as it rolled forward through time? Walk-forward's folds are strictly ordered; purged k-fold's folds are contiguous but not necessarily ordered (fold 3 may precede fold 2 chronologically under some definitions).</p>
+<p>The two solve related but distinct problems. The AFML protocol uses:</p>
 <ul>
-<li><strong>Inner loop (purged k-fold):</strong> select hyperparameters on held-out purged folds inside each walk-forward training window.</li>
-<li><strong>Outer loop (walk-forward):</strong> evaluate selected model on strictly-future test windows.</li>
+<li><strong>Inner loop (purged k-fold)</strong> for hyperparameter selection on held-out purged folds within each walk-forward training window.</li>
+<li><strong>Outer loop (walk-forward)</strong> for evaluating the selected model on strictly-future test windows.</li>
 </ul>
-<p>This is the pattern encoded in the trading project: <code>harness.backtest.WalkForward</code> for outer, <code>afml.cv.PurgedKFold</code> for inner.</p>
-<h2 id="embargo-as-a-percentage-why-not-absolute">Embargo as a percentage: why not absolute?<a class="headerlink" href="#embargo-as-a-percentage-why-not-absolute" title="Permanent link">&para;</a></h2>
-<p>One design choice worth naming. The embargo in <code>PurgedKFold</code> is specified as a percentage of sample size (<code>embargo_pct=0.01</code>), not as an absolute number of samples.</p>
-<p>Percentage scales cleanly across different dataset sizes. A 1% embargo on 1,000 samples drops 10 samples; on 100,000 samples, it drops 1,000. This matches intuition — the serial correlation you're buffering against is probably roughly constant in calendar time, so as your sample rate grows, so should your absolute embargo.</p>
-<p>An absolute embargo might make sense if you have strong priors about the autocorrelation length of your specific asset. The percentage default is a reasonable compromise.</p>
-<h2 id="the-cost-of-correctness">The cost of correctness<a class="headerlink" href="#the-cost-of-correctness" title="Permanent link">&para;</a></h2>
-<p>An honest accounting of what purging costs you:</p>
+<p>This is the pattern encoded in the trading project: <code>harness.backtest.WalkForward</code> for the outer loop, <code>afml.cv.PurgedKFold</code> for the inner.</p>
+<h2 id="embargo-as-a-percentage">Embargo as a percentage<a class="headerlink" href="#embargo-as-a-percentage" title="Permanent link">&para;</a></h2>
+<p>A design choice: the embargo in <code>PurgedKFold</code> is specified as a fraction of sample size (<code>embargo_pct=0.01</code>) rather than as an absolute count.</p>
+<p>A percentage scales cleanly across dataset sizes. A 1% embargo drops 10 samples on 1,000 observations and 1,000 samples on 100,000 observations. This corresponds to the intuition that the serial correlation being buffered is roughly constant in calendar time, so absolute embargo should scale with sample rate.</p>
+<p>An absolute embargo is appropriate when the autocorrelation length of a specific asset is known with high confidence. The percentage default is a reasonable general-purpose choice.</p>
+<h2 id="cost-of-correctness">Cost of correctness<a class="headerlink" href="#cost-of-correctness" title="Permanent link">&para;</a></h2>
+<p>Purging has the following costs:</p>
 <ul>
-<li><strong>Reduced training data.</strong> For barrier labels with horizon 5 and fold sizes 50, purging drops ~10% of train samples. For horizons 50 and fold sizes 100, it drops ~50%. Long horizons + small folds = punishing purge.</li>
-<li><strong>Potentially unstable early folds.</strong> Purging hits the earliest and latest train samples hardest (boundary effects). Early folds with small train sizes can have high purge rates.</li>
-<li><strong>Increased computational cost.</strong> The purge mask is computed per-fold, not once — cheap, but not free.</li>
+<li><strong>Reduced training data.</strong> For barrier labels with horizon 5 and fold sizes of 50, purging removes approximately 10% of train samples. For horizons of 50 and fold sizes of 100, the reduction approaches 50%. Long horizons combined with small folds produce aggressive purges.</li>
+<li><strong>Less stable early folds.</strong> Purging disproportionately affects observations near fold boundaries. Early folds with small training sets can experience high purge rates.</li>
+<li><strong>Increased computational cost.</strong> The purge mask is computed per fold; the cost is small but nonzero.</li>
 </ul>
-<p>These costs are worth paying. A k-fold Sharpe that's 20% too high is worse than a purged-k-fold Sharpe on less data. The question is never "can I afford the purge," it's "can I afford the bias if I skip it."</p>
-<h2 id="what-you-can-now-reason-about">What you can now reason about<a class="headerlink" href="#what-you-can-now-reason-about" title="Permanent link">&para;</a></h2>
+<p>These costs are worth paying. A k-fold Sharpe that overstates by 20% is less useful than a purged-k-fold Sharpe on smaller training data. The relevant question is not "can I afford the purge" but "can I afford the bias from skipping it."</p>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>The reader can now reason about:</p>
 <ul>
-<li>Why naive k-fold on triple-barrier labels systematically over-reports Sharpe — training labels encoded from future-prices leak through the fold boundaries.</li>
-<li>The distinction between purging (drops train samples whose label horizons overlap the test fold) and embargo (drops train samples in a buffer after the test fold to block serial-correlation leak).</li>
-<li>Why this isn't a replacement for walk-forward — they solve different leakage problems and work together in a nested CV protocol.</li>
+<li>Why naive k-fold on triple-barrier labels systematically overstates Sharpe: training labels computed from future prices leak across fold boundaries.</li>
+<li>The distinction between purging (drops train samples whose label horizons overlap the test fold) and embargo (drops train samples in a buffer after the test fold to prevent serial-correlation leakage).</li>
+<li>Why purged k-fold does not replace walk-forward: they solve different leakage problems and combine into a nested CV protocol.</li>
 </ul>
 <h2 id="implemented-at">Implemented at<a class="headerlink" href="#implemented-at" title="Permanent link">&para;</a></h2>
 <p><code>trading/packages/afml/src/afml/cv.py:18</code> — <code>PurgedKFold(n_splits, t1, embargo_pct=0.01)</code> extends <code>sklearn.model_selection.BaseCrossValidator</code>. The <code>split()</code> method, lines 39-75:</p>

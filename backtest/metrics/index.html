@@ -1130,10 +1130,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sharpes-failure-modes" class="md-nav__link">
+  <a href="#failure-modes-of-sharpe" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sharpe's failure modes
+        Failure modes of Sharpe
       
     </span>
   </a>
@@ -1201,10 +1201,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#choosing-the-right-metric" class="md-nav__link">
+  <a href="#selecting-metrics" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Choosing the right metric
+        Selecting metrics
       
     </span>
   </a>
@@ -1212,10 +1212,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#annualization-precisely" class="md-nav__link">
+  <a href="#annualization-conventions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Annualization, precisely
+        Annualization conventions
       
     </span>
   </a>
@@ -1223,10 +1223,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1669,10 +1669,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sharpes-failure-modes" class="md-nav__link">
+  <a href="#failure-modes-of-sharpe" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sharpe's failure modes
+        Failure modes of Sharpe
       
     </span>
   </a>
@@ -1740,10 +1740,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#choosing-the-right-metric" class="md-nav__link">
+  <a href="#selecting-metrics" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Choosing the right metric
+        Selecting metrics
       
     </span>
   </a>
@@ -1751,10 +1751,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#annualization-precisely" class="md-nav__link">
+  <a href="#annualization-conventions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Annualization, precisely
+        Annualization conventions
       
     </span>
   </a>
@@ -1762,10 +1762,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1804,15 +1804,15 @@
 
 
 <h1 id="sharpe-sortino-max-drawdown">Sharpe, Sortino, max drawdown<a class="headerlink" href="#sharpe-sortino-max-drawdown" title="Permanent link">&para;</a></h1>
-<p>A strategy produces a return series. You want one or two numbers that summarize "did this work." The metrics catalog below is the minimum viable set — the numbers every backtest report needs, and the ones every allocator expects. Each has a clean definition, a specific thing it measures, and a specific failure mode. The failure modes are what this lesson is really about.</p>
+<p>A strategy produces a return series. The question of whether the strategy worked requires a small number of summary statistics. The metrics catalog below is the minimum viable set — the quantities that every backtest report should include, and the ones allocators expect. Each has a clean definition, a specific measurement target, and a specific failure mode. This lesson emphasizes the failure modes.</p>
 <h2 id="sharpe-ratio">Sharpe ratio<a class="headerlink" href="#sharpe-ratio" title="Permanent link">&para;</a></h2>
 <p>The definition:</p>
 <div class="arithmatex">\[
 \text{Sharpe} = \frac{\bar r - r_f}{\sigma_r} \sqrt{A}
 \]</div>
 <p>where <span class="arithmatex">\(\bar r\)</span> is mean per-period excess return, <span class="arithmatex">\(\sigma_r\)</span> is its standard deviation, <span class="arithmatex">\(r_f\)</span> is the risk-free rate per period, and <span class="arithmatex">\(A\)</span> is the annualization factor (252 for daily U.S. equity, 52 for weekly, 12 for monthly).</p>
-<p>Interpretation: <strong>how many standard deviations away from zero (or the risk-free rate) is the strategy's mean return, annualized?</strong> A Sharpe of 1.0 means the strategy's average return is one unit of its own volatility. Sharpe of 2.0 is twice as many standard deviations of edge per unit of risk. Higher is better.</p>
-<p>Reference levels, roughly:</p>
+<p>Interpretation: how many standard deviations does the annualized mean return exceed zero (or the risk-free rate)? A Sharpe of 1.0 indicates that the strategy's average return equals one unit of its own volatility. A Sharpe of 2.0 indicates twice that edge per unit of risk. Higher values are better.</p>
+<p>Approximate reference levels:</p>
 <table>
 <thead>
 <tr>
@@ -1843,89 +1843,90 @@
 </tr>
 <tr>
 <td>&gt; 2.5</td>
-<td>Exceptional; scrutinize for look-ahead</td>
+<td>Exceptional; warrants scrutiny for look-ahead bias</td>
 </tr>
 </tbody>
 </table>
-<p>Real-world backtest Sharpes often appear larger than real-world live Sharpes. This is not mysterious — <a href="../deflated-sharpe/">deflated Sharpe</a> in a later lesson explains why.</p>
-<h3 id="sharpes-failure-modes">Sharpe's failure modes<a class="headerlink" href="#sharpes-failure-modes" title="Permanent link">&para;</a></h3>
+<p>Backtest Sharpes tend to exceed live-trading Sharpes. <a href="../deflated-sharpe/">Deflated Sharpe</a> in a later lesson quantifies the gap.</p>
+<h3 id="failure-modes-of-sharpe">Failure modes of Sharpe<a class="headerlink" href="#failure-modes-of-sharpe" title="Permanent link">&para;</a></h3>
 <ol>
 <li>
-<p><strong>Symmetric vol penalty.</strong> Sharpe punishes upside volatility exactly as much as downside. A strategy with occasional huge positive returns and steady losses has a lower Sharpe than a strategy with no volatility and tiny steady gains — even though the first strategy might have better utility for most investors.</p>
+<p><strong>Symmetric volatility penalty.</strong> Sharpe penalizes upside volatility as heavily as downside. A strategy with occasional large positive returns and steady losses produces a lower Sharpe than one with no volatility and small steady gains, even when the first strategy has better utility for most investors.</p>
 </li>
 <li>
-<p><strong>No tail sensitivity.</strong> Sharpe only uses first and second moments (mean and variance). Two strategies with the same Sharpe can have wildly different distributions. One might have thin, symmetric tails; the other might have a fat left tail that blows up once a decade. Sharpe sees them as equivalent.</p>
+<p><strong>No tail sensitivity.</strong> Sharpe uses only the first and second moments. Two strategies with identical Sharpes can have very different distributions — one with thin symmetric tails, the other with a fat left tail. Sharpe treats them as equivalent.</p>
 </li>
 <li>
-<p><strong>iid assumption.</strong> The formula assumes returns are independent across time. When they aren't — momentum strategies have positive autocorrelation; mean-reversion has negative — Sharpe under- or over-reports the risk-adjusted return.</p>
+<p><strong>iid assumption.</strong> The formula assumes returns are independent across time. When they are not (momentum strategies have positive autocorrelation; mean-reversion has negative), Sharpe misreports the risk-adjusted return.</p>
 </li>
 <li>
-<p><strong>Non-normal returns bias.</strong> For strategies with negatively skewed returns (most short-vol / tail-risk strategies), observed Sharpe <em>in quiet periods</em> overstates long-run Sharpe, because the tail event that would correct the picture hasn't arrived yet.</p>
+<p><strong>Bias under non-normality.</strong> For strategies with negatively skewed returns (many short-volatility and tail-risk strategies), the observed Sharpe in quiet periods overstates the long-run Sharpe, because the correcting tail event has not yet occurred.</p>
 </li>
 <li>
-<p><strong>Multiple testing.</strong> If you try many strategies, the best-Sharpe one is likely the <em>luckiest</em>, not the <em>best</em>. The deflated-Sharpe lesson puts a number on this.</p>
+<p><strong>Multiple testing.</strong> Given many strategies, the best-Sharpe one is likely the luckiest rather than the best. The deflated-Sharpe lesson quantifies this effect.</p>
 </li>
 </ol>
 <h2 id="sortino-ratio">Sortino ratio<a class="headerlink" href="#sortino-ratio" title="Permanent link">&para;</a></h2>
-<p>A partial fix for the symmetric-vol problem. Use only the downside deviation:</p>
+<p>A partial remedy for the symmetric-volatility issue. Only downside deviation enters the denominator:</p>
 <div class="arithmatex">\[
 \text{Sortino} = \frac{\bar r - \tau}{\sigma_\text{down}} \sqrt{A}, \qquad \sigma_\text{down} = \sqrt{\mathbb{E}\!\left[\min(r - \tau, 0)^2\right]}.
 \]</div>
-<p>Here <span class="arithmatex">\(\tau\)</span> is a target return (usually zero). <span class="arithmatex">\(\sigma_\text{down}\)</span> uses only the below-target deviations, so positive-return volatility no longer penalizes the metric. Sortino is always ≥ Sharpe when the distribution is symmetric, and strictly greater when the distribution has positive skew.</p>
-<p>Sortino is more aligned with most investors' actual utility (they like upside vol and dislike downside vol). It retains many of Sharpe's other failure modes — no tail sensitivity beyond the second downside moment, iid assumption, multiple-testing bias.</p>
+<p>Here <span class="arithmatex">\(\tau\)</span> is a target return (usually zero). <span class="arithmatex">\(\sigma_\text{down}\)</span> includes only below-target deviations, so upside volatility no longer penalizes the metric. Sortino is always at least equal to Sharpe under symmetric distributions, and strictly greater under positive skew.</p>
+<p>Sortino aligns more closely with most investors' utility (positive volatility is desirable, negative volatility is not). It retains many of Sharpe's other failure modes: no tail sensitivity beyond the second downside moment, iid assumption, and multiple-testing bias.</p>
 <h2 id="max-drawdown">Max drawdown<a class="headerlink" href="#max-drawdown" title="Permanent link">&para;</a></h2>
 <div class="arithmatex">\[
 \text{MaxDD} = \min_{t \le T}\left(\frac{V_t - \max_{s \le t} V_s}{\max_{s \le t} V_s}\right)
 \]</div>
-<p>where <span class="arithmatex">\(V_t\)</span> is the equity curve at time <span class="arithmatex">\(t\)</span>. The "peak-to-trough worst loss" expressed as a non-positive fraction (−0.15 means 15% drawdown).</p>
-<p>Max drawdown is the metric <strong>most investors actually care about</strong>. "What's the worst I could have lost holding this?" is the question that drives allocation decisions. A strategy with Sharpe 2.0 and max DD of 40% is a harder sell than Sharpe 1.2 and max DD of 15%.</p>
-<p>Pair max drawdown with recovery time — how long to regain the prior peak — for the full loss picture. A 20% DD that recovers in a month is a different experience than a 20% DD that takes three years to climb out of.</p>
+<p>where <span class="arithmatex">\(V_t\)</span> is the equity curve at time <span class="arithmatex">\(t\)</span>. Max drawdown is the peak-to-trough worst loss, expressed as a non-positive fraction. A value of −0.15 corresponds to a 15% drawdown.</p>
+<p>Max drawdown is the metric most allocators reference in practice. The question "what is the worst I could have lost holding this?" drives allocation decisions. A strategy with Sharpe 2.0 and max DD of 40% is typically harder to place than one with Sharpe 1.2 and max DD of 15%.</p>
+<p>Max drawdown should be paired with recovery time — the duration required to regain the prior peak — for a complete loss profile. A 20% drawdown that recovers in a month differs materially from one that takes three years.</p>
 <h2 id="turnover">Turnover<a class="headerlink" href="#turnover" title="Permanent link">&para;</a></h2>
 <p>Mean absolute position change per period:</p>
 <div class="arithmatex">\[
 \text{Turnover} = \mathbb{E}\!\left[|p_t - p_{t-1}|\right].
 \]</div>
-<p>A strategy that holds one position indefinitely has turnover 0. A strategy that flips fully every day has turnover 2 (|+1 - (-1)|, averaged). Turnover doesn't directly appear in Sharpe, but it controls <strong>costs</strong>: transaction costs scale with turnover, and gross-Sharpe minus costs can differ dramatically from gross Sharpe alone.</p>
-<p>Two strategies with identical gross Sharpe but different turnover will have different net-of-costs Sharpe. The lower-turnover one often wins in live trading by a wider margin than the backtest suggested. This is why the harness's <code>apply_costs</code> function explicitly applies a per-turnover-unit cost — to produce net-of-friction returns that the Sharpe is computed on.</p>
+<p>A strategy that holds a position indefinitely has turnover 0. A strategy that flips fully each day has turnover 2 (|+1 − (−1)|, averaged). Turnover does not appear directly in Sharpe, but it controls costs: transaction costs scale with turnover, and gross Sharpe minus costs can differ materially from gross Sharpe alone.</p>
+<p>Two strategies with identical gross Sharpe but different turnover will have different net-of-costs Sharpe. The lower-turnover strategy often performs better live than the backtest suggests. The harness's <code>apply_costs</code> function applies a per-turnover-unit cost so that net-of-friction returns enter the Sharpe calculation.</p>
 <h2 id="capacity">Capacity<a class="headerlink" href="#capacity" title="Permanent link">&para;</a></h2>
-<p>A strategy is <strong>capacity-limited</strong> if scaling up its notional size significantly degrades its returns via slippage. Two effects drive this:</p>
+<p>A strategy is capacity-limited when scaling its notional size materially degrades its returns through slippage. Two mechanisms contribute:</p>
 <ol>
-<li><strong>Market impact.</strong> Your own orders move prices against you. Almgren-Chriss and similar models parameterize this; <code>packages/harness/src/harness/costs.py:AlmgrenChriss</code> implements a standard version.</li>
-<li><strong>Liquidity.</strong> Some edges exist in illiquid corners of the market where only small sizes can be transacted. When you try to scale, the edge disappears.</li>
+<li><strong>Market impact.</strong> Orders move prices against themselves. Almgren-Chriss and similar models parameterize this; <code>packages/harness/src/harness/costs.py:AlmgrenChriss</code> implements a standard version.</li>
+<li><strong>Liquidity.</strong> Some edges exist only in illiquid market segments where small sizes can be transacted. Scaling up eliminates the edge.</li>
 </ol>
-<p>The capacity estimate in <code>metrics.py:capacity_estimate</code> is a stub. The intended method: compute how large a notional position you can take before slippage erodes 50% of the realized Sharpe. Above capacity, you're trading noise plus friction.</p>
+<p>The capacity estimate in <code>metrics.py:capacity_estimate</code> is a stub. The intended method: determine the notional position at which slippage erodes 50% of the realized Sharpe. Above this capacity, trading amounts to noise plus friction.</p>
 <h2 id="deflated-sharpe-preview">Deflated Sharpe (preview)<a class="headerlink" href="#deflated-sharpe-preview" title="Permanent link">&para;</a></h2>
-<p>If you try 100 strategies and pick the best-Sharpe one, you've cherry-picked. Bailey &amp; López de Prado's deflated Sharpe ratio corrects for this:</p>
+<p>Selecting the best-Sharpe strategy from 100 trials is cherry-picking. Bailey &amp; López de Prado's deflated Sharpe ratio corrects for this:</p>
 <div class="arithmatex">\[
 \text{DSR} = \mathbb{P}(\text{true SR} &gt; 0 \mid \text{observed SR}, N \text{ trials})
 \]</div>
-<p>— the probability that the true Sharpe exceeds zero, given the observed statistic and the number of trials. <a href="../deflated-sharpe/">The dedicated lesson</a> covers the derivation. For now: single-number Sharpes are optimistic; DSR is the honest discount.</p>
-<h2 id="choosing-the-right-metric">Choosing the right metric<a class="headerlink" href="#choosing-the-right-metric" title="Permanent link">&para;</a></h2>
-<p>No single metric dominates. A typical strategy report lists all of them:</p>
+<p>— the probability that the true Sharpe exceeds zero given the observed statistic and the number of trials. <a href="../deflated-sharpe/">The dedicated lesson</a> provides the derivation. At this point the summary is sufficient: raw Sharpes are optimistic, and DSR provides the honest discount.</p>
+<h2 id="selecting-metrics">Selecting metrics<a class="headerlink" href="#selecting-metrics" title="Permanent link">&para;</a></h2>
+<p>No single metric is complete. A standard strategy report includes:</p>
 <ul>
-<li><strong>Sharpe</strong> for the risk-adjusted return headline.</li>
-<li><strong>Sortino</strong> for a downside-only view.</li>
-<li><strong>Max DD + recovery time</strong> for the "what's the worst case" question.</li>
-<li><strong>Turnover + net-of-costs Sharpe</strong> for the real-world picture.</li>
-<li><strong>Higher moments</strong> (skewness, kurtosis) when return distributions deviate from Gaussian.</li>
-<li><strong>DSR</strong> when hyperparameter sweeps are involved.</li>
+<li>Sharpe for the risk-adjusted return headline.</li>
+<li>Sortino for a downside-only view.</li>
+<li>Max DD and recovery time for worst-case characterization.</li>
+<li>Turnover and net-of-costs Sharpe for the live-trading projection.</li>
+<li>Higher moments (skewness, kurtosis) when distributions deviate from Gaussian.</li>
+<li>DSR when hyperparameter sweeps are involved.</li>
 </ul>
-<p>Reporting only Sharpe is not wrong — but it hides things. The more of the above you can provide, the more faithful the picture.</p>
-<h2 id="annualization-precisely">Annualization, precisely<a class="headerlink" href="#annualization-precisely" title="Permanent link">&para;</a></h2>
-<p>The <span class="arithmatex">\(\sqrt{A}\)</span> factor comes from the iid-variance-adds argument in <a href="../../measurable/volatility/">Lesson 2</a>. Standard conventions:</p>
+<p>Reporting only Sharpe is not incorrect but omits information. More of the above produces a more faithful picture.</p>
+<h2 id="annualization-conventions">Annualization conventions<a class="headerlink" href="#annualization-conventions" title="Permanent link">&para;</a></h2>
+<p>The <span class="arithmatex">\(\sqrt{A}\)</span> factor derives from the additive-variance argument in <a href="../../measurable/volatility/">Lesson 2</a>. Standard conventions:</p>
 <ul>
-<li>Daily equity returns: <span class="arithmatex">\(A = 252\)</span> (trading days per year). Some practitioners use <span class="arithmatex">\(A = 250\)</span> or <span class="arithmatex">\(A = 260\)</span> (conservatively); the difference is immaterial.</li>
+<li>Daily equity returns: <span class="arithmatex">\(A = 252\)</span> (trading days per year). Some practitioners use <span class="arithmatex">\(A = 250\)</span> or <span class="arithmatex">\(A = 260\)</span>; the differences are immaterial.</li>
 <li>Weekly: <span class="arithmatex">\(A = 52\)</span>.</li>
 <li>Monthly: <span class="arithmatex">\(A = 12\)</span>.</li>
 <li>Already-annualized inputs: <span class="arithmatex">\(A = 1\)</span>.</li>
-<li>Crypto (24/7): <span class="arithmatex">\(A = 365\)</span>.</li>
+<li>Crypto (continuous trading): <span class="arithmatex">\(A = 365\)</span>.</li>
 </ul>
-<p>Getting <span class="arithmatex">\(A\)</span> wrong is a frequent embarrassment. The metrics functions default to <span class="arithmatex">\(A = 252\)</span> and accept overrides, so the annualization choice is explicit, not assumed.</p>
-<h2 id="what-you-can-now-reason-about">What you can now reason about<a class="headerlink" href="#what-you-can-now-reason-about" title="Permanent link">&para;</a></h2>
+<p>Incorrect annualization is a common source of error. The metrics functions default to <span class="arithmatex">\(A = 252\)</span> and accept overrides, so the annualization choice is explicit rather than assumed.</p>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>The reader can now reason about:</p>
 <ul>
-<li>Why a Sharpe of 2.0 with 40% max DD is different from Sharpe 1.5 with 15% max DD — different investors, different utility, different decisions.</li>
-<li>Why turnover matters even when it's not in the Sharpe formula — it controls net-of-costs returns, and gross Sharpe minus costs can be much lower than gross Sharpe alone.</li>
-<li>The five failure modes of Sharpe (symmetric vol penalty, no tail sensitivity, iid assumption, non-normal bias, multiple testing) and which of them the other metrics partially address.</li>
+<li>Why a Sharpe of 2.0 with 40% max DD differs materially from Sharpe 1.5 with 15% max DD for allocation purposes.</li>
+<li>Why turnover matters even when absent from the Sharpe formula: it controls net-of-costs returns, and gross Sharpe minus costs can be significantly lower than gross Sharpe alone.</li>
+<li>The five failure modes of Sharpe (symmetric vol penalty, no tail sensitivity, iid assumption, non-normal bias, multiple testing) and which are partially addressed by other metrics.</li>
 </ul>
 <h2 id="implemented-at">Implemented at<a class="headerlink" href="#implemented-at" title="Permanent link">&para;</a></h2>
 <p><code>trading/packages/harness/src/harness/metrics.py</code>:</p>

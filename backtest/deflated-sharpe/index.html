@@ -1260,7 +1260,7 @@
   <a href="#what-counts-as-a-trial" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What counts as a trial?
+        What counts as a trial
       
     </span>
   </a>
@@ -1268,10 +1268,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-harness-stub" class="md-nav__link">
+  <a href="#the-harness-implementation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The harness stub
+        The harness implementation
       
     </span>
   </a>
@@ -1279,10 +1279,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1687,7 +1687,7 @@
   <a href="#what-counts-as-a-trial" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What counts as a trial?
+        What counts as a trial
       
     </span>
   </a>
@@ -1695,10 +1695,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-harness-stub" class="md-nav__link">
+  <a href="#the-harness-implementation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The harness stub
+        The harness implementation
       
     </span>
   </a>
@@ -1706,10 +1706,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1748,13 +1748,12 @@
 
 
 <h1 id="deflated-sharpe">Deflated Sharpe<a class="headerlink" href="#deflated-sharpe" title="Permanent link">&para;</a></h1>
-<p>A Sharpe ratio of 1.5 on a single backtest is good. A Sharpe ratio of 1.5 as the best of 100 backtests is worse than noise. The difference is multiple testing — and the Deflated Sharpe Ratio (DSR) is the statistical correction that turns the first kind of number into an honest headline.</p>
-<p>This is the single most consequential check between "backtest looks great" and "live trading stands a chance."</p>
+<p>A Sharpe of 1.5 on a single backtest is a meaningful result. A Sharpe of 1.5 as the best of 100 backtests is less informative than noise. The difference is multiple testing, and the Deflated Sharpe Ratio (DSR) is the statistical correction that turns a raw Sharpe into an honest headline.</p>
+<p>DSR is one of the most consequential checks between "backtest looks promising" and "live trading stands a chance."</p>
 <h2 id="the-multiple-testing-trap">The multiple-testing trap<a class="headerlink" href="#the-multiple-testing-trap" title="Permanent link">&para;</a></h2>
-<p>You try 100 strategy variants — different parameters, different features, different signals. You compute the Sharpe on each, pick the best, and report it. If the true Sharpe of every strategy is zero (pure noise), what Sharpe do you expect to see from the best?</p>
-<p>Decidedly not zero.</p>
-<p>With 100 iid noise trials of, say, 252 daily returns each, the expected maximum sample Sharpe is roughly 0.8. With 1,000 trials, roughly 1.0. With 10,000 trials — easily reached by automated hyperparameter grids — more than 1.2.</p>
-<p><strong>These are Sharpe ratios you can produce from pure coin-flipping by trying enough coins.</strong> The best-of-N sample is not a sample from the underlying distribution; it's a sample from the <em>maximum</em> of N draws from the underlying distribution, which has a fundamentally different (much higher) mean.</p>
+<p>Trying 100 strategy variants — different parameters, features, or signals — and selecting the best-Sharpe result without adjustment produces biased estimates. If the true Sharpe of every strategy is zero (pure noise), the expected Sharpe of the best is substantially positive.</p>
+<p>With 100 iid noise trials of 252 daily returns each, the expected maximum sample Sharpe is roughly 0.8. With 1,000 trials, approximately 1.0. With 10,000 trials — easily reached by automated hyperparameter grids — more than 1.2.</p>
+<p>These Sharpe ratios can be generated from pure random data by trying enough trials. The best-of-N sample is not a sample from the underlying distribution; it is a sample from the maximum of N draws, which has a fundamentally different (and much higher) mean.</p>
 <h2 id="expected-maximum-sharpe-under-the-null">Expected maximum Sharpe under the null<a class="headerlink" href="#expected-maximum-sharpe-under-the-null" title="Permanent link">&para;</a></h2>
 <p>Bailey &amp; López de Prado derived an approximation for the expected maximum Sharpe across <span class="arithmatex">\(N\)</span> iid trials, assuming the true Sharpe of each is zero with cross-trial standard deviation <span class="arithmatex">\(\sigma_{SR}\)</span>:</p>
 <div class="arithmatex">\[
@@ -1766,8 +1765,8 @@
 <li><span class="arithmatex">\(\Phi^{-1}\)</span> is the inverse standard normal CDF (the quantile function).</li>
 <li><span class="arithmatex">\(\sigma_{SR}\)</span> is the standard deviation of <em>true</em> Sharpe ratios across the trials (often estimated from the empirical spread across trials, or assumed from theory).</li>
 </ul>
-<p>Intuitively: if you draw <span class="arithmatex">\(N\)</span> iid samples from a distribution, the maximum is roughly <span class="arithmatex">\(\sigma_{SR}\)</span> times the <span class="arithmatex">\((1 - 1/N)\)</span> quantile of the standard normal. The Euler-Mascheroni blend captures a subtlety in the precise location of the expected maximum for iid samples. Derivation in Bailey &amp; López de Prado, <em>The Deflated Sharpe Ratio</em>, 2014.</p>
-<p>Key observation: <span class="arithmatex">\(\mathbb{E}[\max \text{SR}]\)</span> <strong>grows quickly</strong> in <span class="arithmatex">\(N\)</span>. For <span class="arithmatex">\(\sigma_{SR} = 0.5\)</span> (a reasonable value for a cross-section of strategy variants):</p>
+<p>The intuition: drawing <span class="arithmatex">\(N\)</span> iid samples from a distribution yields a maximum of approximately <span class="arithmatex">\(\sigma_{SR}\)</span> times the <span class="arithmatex">\((1 - 1/N)\)</span> quantile of the standard normal. The Euler-Mascheroni blend captures a correction in the precise location of the expected maximum for iid samples. The derivation appears in Bailey &amp; López de Prado, <em>The Deflated Sharpe Ratio</em>, 2014.</p>
+<p>A key observation: <span class="arithmatex">\(\mathbb{E}[\max \text{SR}]\)</span> grows rapidly in <span class="arithmatex">\(N\)</span>. For <span class="arithmatex">\(\sigma_{SR} = 0.5\)</span> (a reasonable value for a cross-section of strategy variants):</p>
 <table>
 <thead>
 <tr>
@@ -1798,7 +1797,7 @@
 </tr>
 </tbody>
 </table>
-<p>Try a thousand strategies, and the <em>expected</em> best-case Sharpe under pure noise is 1.59. Report a Sharpe of 1.5 on your grid search without adjustment, and you're inside the null's expected range.</p>
+<p>After 1,000 strategy trials, the expected best-case Sharpe under pure noise is 1.59. Reporting an unadjusted Sharpe of 1.5 from a grid search of this size falls within the null distribution's expected range.</p>
 <h2 id="non-normality-correction">Non-normality correction<a class="headerlink" href="#non-normality-correction" title="Permanent link">&para;</a></h2>
 <p>A second correction. Sharpe's sampling distribution assumes Gaussian returns; real returns have skew and kurtosis. The denominator of the Sharpe test statistic understates variance for non-Gaussian distributions, inflating the reported statistic.</p>
 <p>The correction uses sample skewness <span class="arithmatex">\(\hat\gamma_3\)</span> and excess kurtosis <span class="arithmatex">\(\hat\gamma_4\)</span>:</p>
@@ -1819,8 +1818,8 @@
 <div class="arithmatex">\[
 \text{DSR} = \Phi\!\left( \frac{(\widehat{SR} - \mathbb{E}[\max \text{SR}]) \sqrt{T - 1}}{\sqrt{1 - \hat\gamma_3 \widehat{SR} + \frac{\hat\gamma_4}{4} \widehat{SR}^2}} \right).
 \]</div>
-<p>DSR is a <strong>probability</strong> in <span class="arithmatex">\((0, 1)\)</span>: the probability that the true Sharpe of the selected strategy exceeds zero, given (a) the observed statistic, (b) the number of trials, and (c) the non-normality of the returns. Values close to 1 mean "the observed Sharpe is meaningfully above what the null would produce." Values around 0.5 mean "coin flip." Below 0.5 means "the observed Sharpe is below what the null would produce" (which can happen for bad strategies that still had positive raw Sharpe).</p>
-<p>A common threshold: report a strategy as "statistically meaningful" when <span class="arithmatex">\(\text{DSR} &gt; 0.95\)</span>. Below that, treat the Sharpe with skepticism.</p>
+<p>DSR is a probability in <span class="arithmatex">\((0, 1)\)</span>: the probability that the true Sharpe of the selected strategy exceeds zero, conditional on (a) the observed statistic, (b) the number of trials, and (c) the non-normality of the returns. Values near 1 indicate that the observed Sharpe substantially exceeds what the null would produce. Values near 0.5 are indistinguishable from chance. Values below 0.5 indicate that the observed Sharpe is below the null's expected level (which can occur for weak strategies with positive raw Sharpe).</p>
+<p>A common threshold: a strategy is "statistically meaningful" when <span class="arithmatex">\(\text{DSR} &gt; 0.95\)</span>. Below this threshold, the Sharpe should be treated with skepticism.</p>
 <h2 id="worked-interpretation">Worked interpretation<a class="headerlink" href="#worked-interpretation" title="Permanent link">&para;</a></h2>
 <p>Suppose you ran 200 strategy variants, and the best one had:</p>
 <ul>
@@ -1837,25 +1836,26 @@
 <p>Denominator: <span class="arithmatex">\(\sqrt{1 + 0.65 + 0.85} = \sqrt{2.5} \approx 1.58\)</span>.</p>
 <p>Plug: <span class="arithmatex">\((1.3 - 1.24) \cdot 35.5 / 1.58 \approx 1.35\)</span>.</p>
 <p><span class="arithmatex">\(\Phi(1.35) \approx 0.91\)</span>. DSR = 0.91 — below the 0.95 threshold. The 1.3 Sharpe is plausibly at the edge of what the best-of-200 null would produce; it doesn't meet the statistical bar for "real edge."</p>
-<p>These numbers are tight on purpose. Raw Sharpe changes of 0.5 can swing DSR from "probably real" to "probably noise" on N = 200 trials.</p>
-<h2 id="what-counts-as-a-trial">What counts as a trial?<a class="headerlink" href="#what-counts-as-a-trial" title="Permanent link">&para;</a></h2>
-<p>This is where DSR gets operationally thorny. The <span class="arithmatex">\(N\)</span> you plug in should be the total number of <strong>distinct</strong> strategy variants considered, not just the ones you saved to disk. Things that count:</p>
+<p>These numbers are tightly spaced by design. Raw Sharpe changes of 0.5 can shift DSR from "probably real" to "probably noise" on N = 200 trials.</p>
+<h2 id="what-counts-as-a-trial">What counts as a trial<a class="headerlink" href="#what-counts-as-a-trial" title="Permanent link">&para;</a></h2>
+<p>Operationalizing DSR requires care in counting <span class="arithmatex">\(N\)</span>. The value should be the total number of distinct strategy variants considered, not only the ones retained for the final report. Trials include:</p>
 <ul>
 <li>Every hyperparameter combination in any grid search.</li>
 <li>Every signal tried and discarded.</li>
 <li>Every feature set tried and discarded.</li>
-<li>Every time you manually tweaked a parameter after looking at results ("let me try pt_mult = 1.5 instead of 2.0").</li>
+<li>Every manual parameter adjustment made after viewing intermediate results (for example, trying <code>pt_mult = 1.5</code> after observing results for <code>pt_mult = 2.0</code>).</li>
 </ul>
-<p>The last one is the hardest to account for. Any time you look at backtest output and make a change, you've consumed some trials. DSR assumes you can count them. In practice, researchers often make a deliberate effort to <strong>pre-register</strong> the parameter space before running the backtest — "I will try these 50 combinations, no more, no fewer" — so that <span class="arithmatex">\(N\)</span> is a known quantity.</p>
-<p>Failing to pre-register, a conservative lower bound on <span class="arithmatex">\(N\)</span> is the number of combinations in the final grid plus any combinations tried in prior sessions. An upper bound is (dramatically) larger. DSR with overstated <span class="arithmatex">\(N\)</span> is conservative; with understated <span class="arithmatex">\(N\)</span>, it's optimistic. Err toward conservative.</p>
-<h2 id="the-harness-stub">The harness stub<a class="headerlink" href="#the-harness-stub" title="Permanent link">&para;</a></h2>
-<p>The trading project's <code>harness.metrics.deflated_sharpe</code> is a <code>NotImplementedError</code> stub. The module has partial machinery — <code>expected_max_sharpe(num_trials, std_across_trials)</code> at line 120 — but the full DSR with the non-normality correction isn't written.</p>
-<p>This is on the curriculum's to-do list. When it's implemented, the sweep script in <code>scripts/sweep_meta_rsi2.py</code> should report DSR at the tested <span class="arithmatex">\(N\)</span>, not just the distribution of raw Sharpes. The difference between "25/25 cells beat primary" and "25/25 cells beat the multiple-testing-adjusted null" is what separates the current sweep from a deployment-grade stability check.</p>
-<h2 id="what-you-can-now-reason-about">What you can now reason about<a class="headerlink" href="#what-you-can-now-reason-about" title="Permanent link">&para;</a></h2>
+<p>The last category is the most difficult to track. Each time backtest output is examined and a change is made, a trial has been consumed. DSR assumes trials are counted. Researchers commonly address this by pre-registering the parameter space — declaring in advance which combinations will be tried — so that <span class="arithmatex">\(N\)</span> is a known quantity.</p>
+<p>Without pre-registration, a conservative lower bound on <span class="arithmatex">\(N\)</span> is the number of combinations in the final grid plus any combinations tried in prior sessions. The true upper bound is typically much larger. DSR with overstated <span class="arithmatex">\(N\)</span> is conservative; with understated <span class="arithmatex">\(N\)</span>, it is optimistic. Conservative estimates are preferred.</p>
+<h2 id="the-harness-implementation">The harness implementation<a class="headerlink" href="#the-harness-implementation" title="Permanent link">&para;</a></h2>
+<p>The trading project's <code>harness.metrics.deflated_sharpe</code> is a <code>NotImplementedError</code> stub. The module includes partial machinery — <code>expected_max_sharpe(num_trials, std_across_trials)</code> at line 120 — but the full DSR with the non-normality correction is not yet implemented.</p>
+<p>This item remains on the curriculum's to-do list. When implemented, the sweep script in <code>scripts/sweep_meta_rsi2.py</code> should report DSR at the tested <span class="arithmatex">\(N\)</span> in addition to the distribution of raw Sharpes. The distinction between "25/25 cells beat primary" and "25/25 cells beat the multiple-testing-adjusted null" separates the current sweep from a deployment-grade stability check.</p>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>The reader can now reason about:</p>
 <ul>
-<li>Why reporting a Sharpe without disclosing how many strategies were tried is misleading — multiple-testing bias is substantial for realistic grid-search sizes.</li>
-<li>The two corrections that turn a raw Sharpe into a DSR: multiple testing (compared to <span class="arithmatex">\(\mathbb{E}[\max \text{SR}]\)</span>) and non-normality (adjusted variance via skew/kurtosis).</li>
-<li>Why <span class="arithmatex">\(N\)</span> is operationally thorny: every tried-and-discarded variant counts, including manual tweaks. Pre-registration of the search space is the cleanest fix.</li>
+<li>Why reporting a Sharpe without disclosing the number of strategies tried is misleading: multiple-testing bias is substantial at realistic grid-search sizes.</li>
+<li>The two corrections that convert a raw Sharpe into a DSR: multiple testing (comparison with <span class="arithmatex">\(\mathbb{E}[\max \text{SR}]\)</span>) and non-normality (adjusted variance via skewness and kurtosis).</li>
+<li>Why trial counting is operationally difficult: every discarded variant counts, including manual adjustments. Pre-registration of the search space is the cleanest remedy.</li>
 </ul>
 <h2 id="implemented-at">Implemented at<a class="headerlink" href="#implemented-at" title="Permanent link">&para;</a></h2>
 <p><code>trading/packages/harness/src/harness/metrics.py</code>:</p>
