@@ -7,89 +7,91 @@ code_ref: "trading/packages/harness/src/harness/backtest.py"
 
 # Walk-forward vs k-fold
 
-Any backtest answers a counterfactual: "If I had deployed this strategy at time $t$, knowing only what was available then, how would it have performed?" The protocol for answering that question is cross-validation. But the standard CV machinery from machine learning — random k-fold — quietly fails on time series. Walk-forward is the fix.
+A backtest answers a counterfactual: if this strategy had been deployed at time $t$, knowing only what was available then, how would it have performed? The standard tool for answering such questions is cross-validation. The default machine-learning approach — random k-fold — silently fails on time series. Walk-forward is the correction.
 
-## Why naive k-fold is wrong
+## Why naive k-fold is inappropriate
 
-Standard k-fold cross-validation shuffles the dataset, splits into $k$ folds, trains on $k-1$ folds, tests on the held-out one. This procedure assumes the data points are **iid** — independently and identically distributed. For iid data, the fold you test on is a fair sample of the same distribution that produced the training data.
+Standard k-fold cross-validation shuffles the dataset, splits into $k$ folds, trains on $k - 1$ folds, and tests on the held-out fold. The procedure assumes independently and identically distributed (iid) data, so the held-out fold represents a fair sample from the same distribution as training.
 
-Financial time series are *not* iid, and k-fold fails in two ways:
+Financial time series are not iid, and k-fold fails in two ways:
 
-1. **Temporal leakage.** In shuffled k-fold, your training fold contains data from *after* your test fold (in wall-clock time). A model trained on that sees the future. Its realized test performance reflects knowledge that wouldn't have been available at prediction time.
+1. **Temporal leakage.** Shuffled k-fold places training data from after the test fold's wall-clock time into the training set. A model trained in this configuration has access to future information, and the realized test performance reflects knowledge unavailable at prediction time.
 
-2. **Regime mixing.** Real markets alternate regimes (low vol, high vol, trending, mean-reverting). If your test fold randomly samples from all regimes and your training fold does too, the model learns a regime-average rather than a live-trading-regime response. The test statistic overstates how robust the model will be in a specific regime you actually encounter.
+2. **Regime mixing.** Markets alternate between regimes (low volatility, high volatility, trending, mean-reverting). Randomly sampling across regimes in both training and test folds causes the model to learn a regime-average rather than a regime-specific response. The test statistic then overstates robustness in any particular regime encountered live.
 
-These aren't minor effects. A k-fold Sharpe on a trading strategy can be double the live-trading Sharpe on the same signal — entirely because of temporal leakage masquerading as out-of-sample evidence.
+These effects are not minor. A k-fold Sharpe on a trading strategy can be twice the live-trading Sharpe on the same signal, driven entirely by temporal leakage that appears as out-of-sample evidence.
 
-## Walk-forward: the right shape
+## Walk-forward procedure
 
 Walk-forward respects time order. At each step:
 
-1. Train on data from the start through time $t$ (or from $t - \text{window}$ through $t$ if using a fixed-length train window).
-2. Test on data from $t$ to $t + h$ (horizon).
+1. Train on data from the start through time $t$ (or from $t - \text{window}$ through $t$ with a fixed-length train window).
+2. Test on data from $t$ to $t + h$ (the horizon).
 3. Advance $t$ by a stride and repeat.
 
 Pictorially, with `initial_train = 10`, `test_horizon = 3`, `stride = 3`, comparing the two train-window variants:
 
 ![Walk-forward fold diagrams. Top: expanding train window (train set grows as the anchor advances). Bottom: sliding train window (train set has fixed length initial_train). In both, test (pink) is strictly after train (blue) in wall-clock time.](../assets/figures/walk_forward_folds.png){ loading=lazy }
 
-Every test fold is **strictly after** its training fold in wall-clock time. No temporal leakage. Every test observation answers "what would this model have said about this period, given only what was available before it?"
+Every test fold is strictly after its training fold in wall-clock time. No temporal leakage occurs. Each test observation answers: what would this model have said about this period given only what was available before it?
 
-## Expanding vs sliding train windows
+## Expanding versus sliding train windows
 
 Two common variations:
 
-- **Expanding**: train window grows with each step, always using everything up to $t$. More data over time (generally favors more stable estimates), but old regimes have increasing weight as a fraction of training data.
-- **Sliding** (or "rolling"): train window has fixed length $W$, so training data is always $[t - W, t]$. Adaptive to regime changes — old data ages out — but uses less data at any given time.
+- **Expanding**: the train window grows with each step, using everything up to $t$. More data over time generally produces more stable estimates, but old regimes accumulate weight in the training data.
+- **Sliding** (rolling): the train window has fixed length $W$, so training data is always $[t - W, t]$. This is adaptive to regime changes — old data ages out — but uses less data at any given step.
 
-Which is right? It depends. For a strategy whose edge is stationary across regimes, expanding wins — more data is usually better. For a strategy whose edge is regime-dependent, sliding wins — forgetting the old regime lets the model adapt. In doubt, run both and report both.
+The choice depends on the strategy. For a strategy whose edge is stationary across regimes, expanding is preferred (more data is typically better). For a strategy whose edge is regime-dependent, sliding is preferred (forgetting old regimes allows adaptation). When unclear, running both and reporting both is appropriate.
 
-The harness's `WalkForwardConfig` has a boolean `expanding` field (defaults True). Flipping to False gives the sliding variant with train length set to `initial_train`.
+The harness's `WalkForwardConfig` has an `expanding` boolean (default `True`). Setting it to `False` produces the sliding variant with train length equal to `initial_train`.
 
 ## Stride and overlap
 
-The **stride** controls how much the anchor advances between folds. Equal to test horizon ($s = h$) produces non-overlapping test folds — simplest, most defensible. Less than horizon ($s < h$) produces overlapping test folds, each making use of a new piece of data plus some already-seen data. Greater than horizon ($s > h$) leaves gaps.
+The **stride** controls how far the anchor advances between folds. Stride equal to test horizon ($s = h$) produces non-overlapping test folds — the simplest and most defensible choice. Stride less than horizon ($s < h$) produces overlapping test folds, each using new data plus previously-seen data. Stride greater than horizon ($s > h$) leaves gaps in coverage.
 
-For most backtests, use $s = h$. Overlapping test folds look like more data but don't give you independent observations — you're re-measuring the same thing with small perturbations. Non-overlapping is cleaner.
+For most backtests, $s = h$ is appropriate. Overlapping test folds appear to provide more observations but do not yield independent ones — they re-measure similar signals with small perturbations.
 
 ## Walk-forward as the outer loop
 
-Walk-forward is the **outer** evaluation loop. Inside each fold, you may still need cross-validation for model selection — which hyperparameters, which features, which thresholds. That inner CV is a separate design choice, and it has its own leakage hazards ([next lesson on purging](purging-embargo.md)).
+Walk-forward is the outer evaluation loop. Inside each fold, model selection — hyperparameter choice, feature selection, threshold calibration — may require its own cross-validation. This inner CV is a separate design choice with its own leakage considerations ([next lesson on purging](purging-embargo.md)).
 
-A clean protocol:
+A standard protocol:
 
-1. Walk-forward defines the outer train/test splits.
-2. Inside each outer train set, use purged k-fold to select hyperparameters on held-out purged-k-folds.
+1. Walk-forward defines the outer train-test splits.
+2. Within each outer train set, purged k-fold selects hyperparameters on held-out purged folds.
 3. Retrain on the full outer train set using the selected hyperparameters.
 4. Evaluate on the outer test fold.
 5. Advance the walk-forward anchor.
 
-Violating this structure — using the outer test fold to pick hyperparameters, for example — is subtle look-ahead that won't survive into live trading.
+Violating this structure — for example, using the outer test fold to select hyperparameters — introduces subtle look-ahead bias that will not survive in live trading.
 
 ## What walk-forward does not prevent
 
-A realistic view of what walk-forward still leaves on the table:
+Walk-forward catches temporal leakage but leaves other forms of bias unaddressed:
 
-- **Label-horizon leakage.** If a training label at time $t$ depends on prices through $t + 5$, that label can overlap with the test fold even when $t$ itself is in the train set. Purging ([next lesson](purging-embargo.md)) is the fix.
-- **Data-snooping bias.** Walk-forward evaluates *one* strategy. If you tried 100 strategies and picked this one, the test performance is biased upward by the selection. Walk-forward doesn't know how many strategies you tried. [Deflated Sharpe](deflated-sharpe.md) is the downstream correction.
-- **Future information baked into features.** Using a feature whose computation reaches into the future (forward-looking corporate action adjustments, some index methodology data) leaks regardless of your CV. Audit features against "what did I know at $t$?"
-- **Survivorship bias.** Running a backtest on today's index constituents (rather than the constituents at each historical date) silently excludes companies that went bust. Walk-forward on today's list looks better than it should.
+- **Label-horizon leakage.** A training label at time $t$ that depends on prices through $t + 5$ can overlap the test fold even when $t$ itself is in the train set. Purging ([next lesson](purging-embargo.md)) is the correction.
+- **Data-snooping bias.** Walk-forward evaluates a single strategy. If 100 strategies were tried and this one selected, the test performance is biased upward by selection. Walk-forward does not account for the number of trials. [Deflated Sharpe](deflated-sharpe.md) provides the downstream correction.
+- **Forward-looking features.** Features computed from future data (forward-looking corporate action adjustments, certain index methodology data) leak regardless of cross-validation scheme. Features must be audited against: what was available at $t$?
+- **Survivorship bias.** Running a backtest on today's index constituents (rather than the historical constituents at each date) silently excludes companies that went bust. Backtests on surviving names overstate performance.
 
-Walk-forward is necessary but not sufficient. It catches the easiest-to-miss leakage (temporal) but not the subtler kinds.
+Walk-forward is necessary but not sufficient. It catches the most common leakage (temporal) but not the subtler forms.
 
-## The expanding-train failure mode
+## Expanding-train estimator noise
 
-One more subtlety worth naming. Expanding-train walk-forward means early folds train on tiny datasets. Fold 1 might have 252 observations; by fold 20, there are 1,512. Early-fold model quality is genuinely worse, not because the strategy doesn't work, but because the estimator is noisy on small samples.
+Expanding-train walk-forward produces small training sets in early folds. Fold 1 may have 252 observations; fold 20 may have 1,512. Early-fold model quality is worse not because the strategy has no edge, but because the estimator is noisy on small samples.
 
-This biases the cumulative out-of-sample Sharpe downward in the early folds. The bias unwinds as the train set grows, which means realized backtest performance improves over time even if the underlying edge is stationary. Don't mistake this for "the edge is getting stronger" — it's the estimator getting less noisy.
+This biases the cumulative out-of-sample Sharpe downward in early folds. As the training set grows, the bias diminishes, so realized backtest performance improves over time even when the underlying edge is stationary. This pattern should not be interpreted as a strengthening edge — it is an artifact of decreasing estimator noise.
 
-The `initial_train` parameter sets the size of the first training window, and should be large enough that the model has reasonable out-of-sample behavior from fold 1. For daily bars, 252 (one year) is a typical minimum; 504 is more conservative.
+The `initial_train` parameter sets the first training window's size and should be large enough that fold 1's model produces reasonable out-of-sample behavior. For daily bars, 252 (one year) is a typical minimum; 504 is more conservative.
 
-## What you can now reason about
+## Summary
 
-- Why random k-fold cross-validation produces optimistic Sharpes on time series — the shuffling gives training data access to the future.
-- The distinction between expanding and sliding train windows, and when each is right (stationary edge vs regime-dependent edge).
-- Why walk-forward is necessary but not sufficient — it catches temporal leakage but not survivorship bias, data snooping, or forward-looking features.
+The reader can now reason about:
+
+- Why random k-fold cross-validation produces optimistic Sharpes on time series: shuffling grants training data access to the future.
+- The distinction between expanding and sliding train windows, and the conditions under which each is appropriate (stationary edge versus regime-dependent edge).
+- Why walk-forward is necessary but not sufficient: it catches temporal leakage but not survivorship bias, data snooping, or forward-looking features.
 
 ## Implemented at
 

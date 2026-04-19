@@ -7,19 +7,17 @@ code_ref: "trading/packages/harness/src/harness/metrics.py — deflated_sharpe (
 
 # Deflated Sharpe
 
-A Sharpe ratio of 1.5 on a single backtest is good. A Sharpe ratio of 1.5 as the best of 100 backtests is worse than noise. The difference is multiple testing — and the Deflated Sharpe Ratio (DSR) is the statistical correction that turns the first kind of number into an honest headline.
+A Sharpe of 1.5 on a single backtest is a meaningful result. A Sharpe of 1.5 as the best of 100 backtests is less informative than noise. The difference is multiple testing, and the Deflated Sharpe Ratio (DSR) is the statistical correction that turns a raw Sharpe into an honest headline.
 
-This is the single most consequential check between "backtest looks great" and "live trading stands a chance."
+DSR is one of the most consequential checks between "backtest looks promising" and "live trading stands a chance."
 
 ## The multiple-testing trap
 
-You try 100 strategy variants — different parameters, different features, different signals. You compute the Sharpe on each, pick the best, and report it. If the true Sharpe of every strategy is zero (pure noise), what Sharpe do you expect to see from the best?
+Trying 100 strategy variants — different parameters, features, or signals — and selecting the best-Sharpe result without adjustment produces biased estimates. If the true Sharpe of every strategy is zero (pure noise), the expected Sharpe of the best is substantially positive.
 
-Decidedly not zero.
+With 100 iid noise trials of 252 daily returns each, the expected maximum sample Sharpe is roughly 0.8. With 1,000 trials, approximately 1.0. With 10,000 trials — easily reached by automated hyperparameter grids — more than 1.2.
 
-With 100 iid noise trials of, say, 252 daily returns each, the expected maximum sample Sharpe is roughly 0.8. With 1,000 trials, roughly 1.0. With 10,000 trials — easily reached by automated hyperparameter grids — more than 1.2.
-
-**These are Sharpe ratios you can produce from pure coin-flipping by trying enough coins.** The best-of-N sample is not a sample from the underlying distribution; it's a sample from the *maximum* of N draws from the underlying distribution, which has a fundamentally different (much higher) mean.
+These Sharpe ratios can be generated from pure random data by trying enough trials. The best-of-N sample is not a sample from the underlying distribution; it is a sample from the maximum of N draws, which has a fundamentally different (and much higher) mean.
 
 ## Expected maximum Sharpe under the null
 
@@ -35,9 +33,9 @@ where:
 - $\Phi^{-1}$ is the inverse standard normal CDF (the quantile function).
 - $\sigma_{SR}$ is the standard deviation of *true* Sharpe ratios across the trials (often estimated from the empirical spread across trials, or assumed from theory).
 
-Intuitively: if you draw $N$ iid samples from a distribution, the maximum is roughly $\sigma_{SR}$ times the $(1 - 1/N)$ quantile of the standard normal. The Euler-Mascheroni blend captures a subtlety in the precise location of the expected maximum for iid samples. Derivation in Bailey & López de Prado, *The Deflated Sharpe Ratio*, 2014.
+The intuition: drawing $N$ iid samples from a distribution yields a maximum of approximately $\sigma_{SR}$ times the $(1 - 1/N)$ quantile of the standard normal. The Euler-Mascheroni blend captures a correction in the precise location of the expected maximum for iid samples. The derivation appears in Bailey & López de Prado, *The Deflated Sharpe Ratio*, 2014.
 
-Key observation: $\mathbb{E}[\max \text{SR}]$ **grows quickly** in $N$. For $\sigma_{SR} = 0.5$ (a reasonable value for a cross-section of strategy variants):
+A key observation: $\mathbb{E}[\max \text{SR}]$ grows rapidly in $N$. For $\sigma_{SR} = 0.5$ (a reasonable value for a cross-section of strategy variants):
 
 | $N$ | $\mathbb{E}[\max \text{SR}]$ (approximate) |
 |-----|--------------------------------------------|
@@ -47,7 +45,7 @@ Key observation: $\mathbb{E}[\max \text{SR}]$ **grows quickly** in $N$. For $\si
 | 1,000 | 1.59 |
 | 10,000 | 1.92 |
 
-Try a thousand strategies, and the *expected* best-case Sharpe under pure noise is 1.59. Report a Sharpe of 1.5 on your grid search without adjustment, and you're inside the null's expected range.
+After 1,000 strategy trials, the expected best-case Sharpe under pure noise is 1.59. Reporting an unadjusted Sharpe of 1.5 from a grid search of this size falls within the null distribution's expected range.
 
 ## Non-normality correction
 
@@ -77,9 +75,9 @@ $$
 \text{DSR} = \Phi\!\left( \frac{(\widehat{SR} - \mathbb{E}[\max \text{SR}]) \sqrt{T - 1}}{\sqrt{1 - \hat\gamma_3 \widehat{SR} + \frac{\hat\gamma_4}{4} \widehat{SR}^2}} \right).
 $$
 
-DSR is a **probability** in $(0, 1)$: the probability that the true Sharpe of the selected strategy exceeds zero, given (a) the observed statistic, (b) the number of trials, and (c) the non-normality of the returns. Values close to 1 mean "the observed Sharpe is meaningfully above what the null would produce." Values around 0.5 mean "coin flip." Below 0.5 means "the observed Sharpe is below what the null would produce" (which can happen for bad strategies that still had positive raw Sharpe).
+DSR is a probability in $(0, 1)$: the probability that the true Sharpe of the selected strategy exceeds zero, conditional on (a) the observed statistic, (b) the number of trials, and (c) the non-normality of the returns. Values near 1 indicate that the observed Sharpe substantially exceeds what the null would produce. Values near 0.5 are indistinguishable from chance. Values below 0.5 indicate that the observed Sharpe is below the null's expected level (which can occur for weak strategies with positive raw Sharpe).
 
-A common threshold: report a strategy as "statistically meaningful" when $\text{DSR} > 0.95$. Below that, treat the Sharpe with skepticism.
+A common threshold: a strategy is "statistically meaningful" when $\text{DSR} > 0.95$. Below this threshold, the Sharpe should be treated with skepticism.
 
 ## Worked interpretation
 
@@ -106,32 +104,34 @@ Plug: $(1.3 - 1.24) \cdot 35.5 / 1.58 \approx 1.35$.
 
 $\Phi(1.35) \approx 0.91$. DSR = 0.91 — below the 0.95 threshold. The 1.3 Sharpe is plausibly at the edge of what the best-of-200 null would produce; it doesn't meet the statistical bar for "real edge."
 
-These numbers are tight on purpose. Raw Sharpe changes of 0.5 can swing DSR from "probably real" to "probably noise" on N = 200 trials.
+These numbers are tightly spaced by design. Raw Sharpe changes of 0.5 can shift DSR from "probably real" to "probably noise" on N = 200 trials.
 
-## What counts as a trial?
+## What counts as a trial
 
-This is where DSR gets operationally thorny. The $N$ you plug in should be the total number of **distinct** strategy variants considered, not just the ones you saved to disk. Things that count:
+Operationalizing DSR requires care in counting $N$. The value should be the total number of distinct strategy variants considered, not only the ones retained for the final report. Trials include:
 
 - Every hyperparameter combination in any grid search.
 - Every signal tried and discarded.
 - Every feature set tried and discarded.
-- Every time you manually tweaked a parameter after looking at results ("let me try pt_mult = 1.5 instead of 2.0").
+- Every manual parameter adjustment made after viewing intermediate results (for example, trying `pt_mult = 1.5` after observing results for `pt_mult = 2.0`).
 
-The last one is the hardest to account for. Any time you look at backtest output and make a change, you've consumed some trials. DSR assumes you can count them. In practice, researchers often make a deliberate effort to **pre-register** the parameter space before running the backtest — "I will try these 50 combinations, no more, no fewer" — so that $N$ is a known quantity.
+The last category is the most difficult to track. Each time backtest output is examined and a change is made, a trial has been consumed. DSR assumes trials are counted. Researchers commonly address this by pre-registering the parameter space — declaring in advance which combinations will be tried — so that $N$ is a known quantity.
 
-Failing to pre-register, a conservative lower bound on $N$ is the number of combinations in the final grid plus any combinations tried in prior sessions. An upper bound is (dramatically) larger. DSR with overstated $N$ is conservative; with understated $N$, it's optimistic. Err toward conservative.
+Without pre-registration, a conservative lower bound on $N$ is the number of combinations in the final grid plus any combinations tried in prior sessions. The true upper bound is typically much larger. DSR with overstated $N$ is conservative; with understated $N$, it is optimistic. Conservative estimates are preferred.
 
-## The harness stub
+## The harness implementation
 
-The trading project's `harness.metrics.deflated_sharpe` is a `NotImplementedError` stub. The module has partial machinery — `expected_max_sharpe(num_trials, std_across_trials)` at line 120 — but the full DSR with the non-normality correction isn't written.
+The trading project's `harness.metrics.deflated_sharpe` is a `NotImplementedError` stub. The module includes partial machinery — `expected_max_sharpe(num_trials, std_across_trials)` at line 120 — but the full DSR with the non-normality correction is not yet implemented.
 
-This is on the curriculum's to-do list. When it's implemented, the sweep script in `scripts/sweep_meta_rsi2.py` should report DSR at the tested $N$, not just the distribution of raw Sharpes. The difference between "25/25 cells beat primary" and "25/25 cells beat the multiple-testing-adjusted null" is what separates the current sweep from a deployment-grade stability check.
+This item remains on the curriculum's to-do list. When implemented, the sweep script in `scripts/sweep_meta_rsi2.py` should report DSR at the tested $N$ in addition to the distribution of raw Sharpes. The distinction between "25/25 cells beat primary" and "25/25 cells beat the multiple-testing-adjusted null" separates the current sweep from a deployment-grade stability check.
 
-## What you can now reason about
+## Summary
 
-- Why reporting a Sharpe without disclosing how many strategies were tried is misleading — multiple-testing bias is substantial for realistic grid-search sizes.
-- The two corrections that turn a raw Sharpe into a DSR: multiple testing (compared to $\mathbb{E}[\max \text{SR}]$) and non-normality (adjusted variance via skew/kurtosis).
-- Why $N$ is operationally thorny: every tried-and-discarded variant counts, including manual tweaks. Pre-registration of the search space is the cleanest fix.
+The reader can now reason about:
+
+- Why reporting a Sharpe without disclosing the number of strategies tried is misleading: multiple-testing bias is substantial at realistic grid-search sizes.
+- The two corrections that convert a raw Sharpe into a DSR: multiple testing (comparison with $\mathbb{E}[\max \text{SR}]$) and non-normality (adjusted variance via skewness and kurtosis).
+- Why trial counting is operationally difficult: every discarded variant counts, including manual adjustments. Pre-registration of the search space is the cleanest remedy.
 
 ## Implemented at
 
