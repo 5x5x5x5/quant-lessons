@@ -1814,7 +1814,9 @@
 \text{Payoff}_\text{short put} = -\max(K - S_T, 0).
 \]</div>
 <p>Loss capped at <span class="arithmatex">\(K\)</span> (a stock can go to zero but not negative), but the loss can be large. Selling puts is equivalent to agreeing to buy the stock at <span class="arithmatex">\(K\)</span> regardless of how far it has fallen.</p>
-<p>If you draw these on paper — payoff on the y-axis, <span class="arithmatex">\(S_T\)</span> on the x-axis — the shapes are the iconic "hockey sticks" that appear in every options textbook. They are worth drawing by hand once. The geometry of more complex positions (spreads, straddles, butterflies) is sums and differences of these four shapes.</p>
+<p>If you draw these on paper — payoff on the y-axis, <span class="arithmatex">\(S_T\)</span> on the x-axis — the shapes are the iconic "hockey sticks" that appear in every options textbook:</p>
+<p><img alt="The four atomic option payoffs at expiry, with $3 premium and strike $100. Green shading is positive P&amp;L, pink is negative." loading="lazy" src="../../assets/figures/payoffs_atomic.png" /></p>
+<p>The geometry of more complex positions (spreads, straddles, butterflies) is sums and differences of these four shapes — the next lesson shows the composites.</p>
 <h2 id="intrinsic-value-and-time-value">Intrinsic value and time value<a class="headerlink" href="#intrinsic-value-and-time-value" title="Permanent link">&para;</a></h2>
 <p>At any moment <em>before</em> expiry, an option trades at some premium <span class="arithmatex">\(P\)</span>. That premium decomposes into two parts:</p>
 <div class="arithmatex">\[

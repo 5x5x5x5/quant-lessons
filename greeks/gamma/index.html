@@ -1750,6 +1750,8 @@
 <p><strong>Volatility.</strong> The <span class="arithmatex">\(\sigma\)</span> in the denominator means gamma is higher when implied vol is lower. Counterintuitive at first — but think about it this way: when <span class="arithmatex">\(\sigma\)</span> is high, <span class="arithmatex">\(d_1\)</span> is far from zero for a wider range of <span class="arithmatex">\(S\)</span>, and <span class="arithmatex">\(\phi(d_1)\)</span> is small; when <span class="arithmatex">\(\sigma\)</span> is low, small moves in <span class="arithmatex">\(S\)</span> cross <span class="arithmatex">\(d_1 = 0\)</span> sharply, and gamma concentrates there.</p>
 </li>
 </ol>
+<p><img alt="Gamma vs spot at four tenors. The 7-day peak is ~7× the 1-year peak at ATM, and both decay rapidly into ITM/OTM strikes." loading="lazy" src="../../assets/figures/gamma_curves.png" /></p>
+<p>The ~7× ratio between the 7-day and 1-year peaks at ATM is exactly the <span class="arithmatex">\(1/\sqrt{T}\)</span> scaling made visual: <span class="arithmatex">\(\sqrt{365/7} \approx 7.2\)</span>, which matches the plotted peak heights.</p>
 <h2 id="pl-of-a-delta-hedged-position">P&amp;L of a delta-hedged position<a class="headerlink" href="#pl-of-a-delta-hedged-position" title="Permanent link">&para;</a></h2>
 <p>This is the punchline of Part 3. Take a position long one call, hedged short <span class="arithmatex">\(\Delta\)</span> shares. Over a small time <span class="arithmatex">\(dt\)</span> during which the underlying moves by <span class="arithmatex">\(dS\)</span>, the portfolio P&amp;L is:</p>
 <div class="arithmatex">\[

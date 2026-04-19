@@ -1768,13 +1768,8 @@
 <li>Test on data from <span class="arithmatex">\(t\)</span> to <span class="arithmatex">\(t + h\)</span> (horizon).</li>
 <li>Advance <span class="arithmatex">\(t\)</span> by a stride and repeat.</li>
 </ol>
-<p>Pictorially, with an expanding train window and horizon <span class="arithmatex">\(h = 3\)</span>, stride <span class="arithmatex">\(s = 3\)</span>:</p>
-<div class="highlight"><pre><span></span><code>fold 1: TRAIN [ 0 ... 9 ]        TEST [ 10, 11, 12 ]
-fold 2: TRAIN [ 0 ... 12 ]       TEST [ 13, 14, 15 ]
-fold 3: TRAIN [ 0 ... 15 ]       TEST [ 16, 17, 18 ]
-fold 4: TRAIN [ 0 ... 18 ]       TEST [ 19, 20, 21 ]
-...
-</code></pre></div>
+<p>Pictorially, with <code>initial_train = 10</code>, <code>test_horizon = 3</code>, <code>stride = 3</code>, comparing the two train-window variants:</p>
+<p><img alt="Walk-forward fold diagrams. Top: expanding train window (train set grows as the anchor advances). Bottom: sliding train window (train set has fixed length initial_train). In both, test (pink) is strictly after train (blue) in wall-clock time." loading="lazy" src="../../assets/figures/walk_forward_folds.png" /></p>
 <p>Every test fold is <strong>strictly after</strong> its training fold in wall-clock time. No temporal leakage. Every test observation answers "what would this model have said about this period, given only what was available before it?"</p>
 <h2 id="expanding-vs-sliding-train-windows">Expanding vs sliding train windows<a class="headerlink" href="#expanding-vs-sliding-train-windows" title="Permanent link">&para;</a></h2>
 <p>Two common variations:</p>

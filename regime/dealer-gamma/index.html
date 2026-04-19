@@ -1775,16 +1775,7 @@ G_K = \text{sign}_K \cdot \Gamma_K \cdot \text{OI}_K \cdot \text{multiplier}
 <p>The fact that the sum is in "dollars per 1% move" is load-bearing. It tells you directly: <strong>if SPX moves 1%, aggregate dealer hedging flow is $X dollars of stock in the direction of the move (if short gamma) or against the move (if long gamma).</strong> That quantity has an intuitive dimension — it's comparable to daily trading volume and to individual market-maker capacities.</p>
 <h2 id="per-strike-structure">Per-strike structure<a class="headerlink" href="#per-strike-structure" title="Permanent link">&para;</a></h2>
 <p>Summing gives one number. Looking strike-by-strike gives you the shape. A typical SPX chain snapshot looks like this:</p>
-<div class="highlight"><pre><span></span><code>per-strike GEX
- large +ve                     large -ve
-     ┌─┐                           ┌─┐
-     │ │                           │ │
-     │ │  small +ve                │ │
-┌┐┌┐ │ │┌┐                    ┌┐  │ │┌┐┌┐
-┼┴┴┴─┴─┴┴┴──────────┼────────┴┴───┴─┴┴┴┴─→ strike
-                                  │
-                                 spot
-</code></pre></div>
+<p><img alt="Per-strike GEX profile for a typical SPX snapshot. Positive bars (blue) reflect dealer long-gamma positioning concentrated below spot; negative bars (pink) reflect dealer short-gamma positioning concentrated above spot." loading="lazy" src="../../assets/figures/gex_per_strike.png" /></p>
 <p>Dealers' long-put exposure is concentrated in OTM puts (strikes well below spot), contributing positive per-strike GEX. Their short-call exposure is concentrated in OTM calls (strikes well above spot), contributing negative per-strike GEX. Near-the-money contributions depend on OI specific to the day but are smaller than the wings.</p>
 <p>The shape has implications. Walking strikes from low to high, the running cumulative sum of GEX starts positive (from OTM puts), grows toward its peak near the money, then falls as the OTM call contributions come in negative. Where the cumulative sum crosses zero is the <a href="../gamma-flip/">gamma flip strike</a> — the subject of the next lesson.</p>
 <h2 id="what-long-gamma-regime-means-operationally">What "long gamma" regime means operationally<a class="headerlink" href="#what-long-gamma-regime-means-operationally" title="Permanent link">&para;</a></h2>

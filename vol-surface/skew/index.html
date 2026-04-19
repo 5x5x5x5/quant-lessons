@@ -1750,26 +1750,9 @@
 <h1 id="skew-and-the-smile">Skew and the smile<a class="headerlink" href="#skew-and-the-smile" title="Permanent link">&para;</a></h1>
 <p>Term structure varies IV across expiries. <strong>Skew</strong> varies IV across strikes, at a single expiry. Black-Scholes assumes a single <span class="arithmatex">\(\sigma\)</span> prices every strike. The market disagrees. The shape of that disagreement is information.</p>
 <h2 id="the-stylized-picture">The stylized picture<a class="headerlink" href="#the-stylized-picture" title="Permanent link">&para;</a></h2>
-<p>Plot ATM IV, OTM put IVs, and OTM call IVs for SPX, same expiry, 30 days out. You get this:</p>
-<div class="highlight"><pre><span></span><code>IV  ·
-     ·
-      ·
-        ·
-           · · · ·
-                     ·
-                       ·
-       ──────────────────────→ strike
-      OTM put     ATM     OTM call
-</code></pre></div>
-<p>OTM puts trade at higher IV than ATM, which trade at higher IV than OTM calls. The curve is downward-sloping in strike. This is the classic <strong>equity index skew</strong>.</p>
-<p>Single-name equities often show a different shape — IV is elevated on both wings, producing a "smile":</p>
-<div class="highlight"><pre><span></span><code>IV  ·                     ·
-     ·                   ·
-      ·                 ·
-       ·               ·
-        ·  · · · · ·  ·
-       ──────────────────────→ strike
-</code></pre></div>
+<p>Plot ATM IV, OTM put IVs, and OTM call IVs for SPX and for a single name, same expiry, 30 days out. Two characteristic shapes appear:</p>
+<p><img alt="IV across strikes for equity index (downward-sloping skew, blue) vs single name (U-shaped smile, pink). X-axis is moneyness K/S with ATM at 1.0." loading="lazy" src="../../assets/figures/skew_and_smile.png" /></p>
+<p>For the <strong>equity index</strong>, OTM puts trade at higher IV than ATM, which trade at higher IV than OTM calls. The curve is downward-sloping in strike — this is the classic <strong>equity index skew</strong>. Single-name equities often show a different shape — IV is elevated on both wings, producing a <strong>smile</strong>.</p>
 <p>The shapes have structural reasons. Index skew exists because hedgers persistently demand downside protection; smile exists for single names partly because large surprise moves can happen in either direction (earnings, M&amp;A, etc.), and the tails on both sides carry similar insurance premium.</p>
 <h2 id="why-the-skew-exists-the-historical-reason">Why the skew exists — the historical reason<a class="headerlink" href="#why-the-skew-exists-the-historical-reason" title="Permanent link">&para;</a></h2>
 <p>Before October 1987, the IV surface was roughly flat across strikes. After, it wasn't. The 1987 crash taught market participants that large downside moves occur with higher probability than Black-Scholes (log-normal tails) would predict, and the demand for OTM put protection ballooned. That demand never fully subsided. Dealers now quote OTM puts at a premium to reflect the persistent bid for protection and the perceived fat left tail. Every equity index has carried skew since.</p>

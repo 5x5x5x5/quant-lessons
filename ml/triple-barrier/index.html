@@ -1808,6 +1808,7 @@
 <li>Vertical reached first (neither barrier crossed) → label <span class="arithmatex">\(= \text{sign}(r_\text{final})\)</span>, <code>barrier_hit = "vertical"</code>.</li>
 </ul>
 <p>The label is always in <span class="arithmatex">\(\{-1, 0, +1\}\)</span>, with <span class="arithmatex">\(0\)</span> possible only at the vertical barrier with exactly zero net return (rare but permitted).</p>
+<p><img alt="Three example paths from the same entry at p₀ = 100, σ = 1.5, with pt_mult = sl_mult = 2 and vertical = 15 bars. Path A hits the profit-take barrier and is labeled +1; Path B hits the stop-loss and is labeled −1; Path C drifts modestly upward and terminates at the vertical barrier, taking the sign of its net return." loading="lazy" src="../../assets/figures/triple_barrier.png" /></p>
 <h2 id="why-vol-scaling-matters">Why vol-scaling matters<a class="headerlink" href="#why-vol-scaling-matters" title="Permanent link">&para;</a></h2>
 <p>The barriers are scaled by a rolling vol target <span class="arithmatex">\(\sigma\)</span>, not fixed dollar amounts. Concretely, the upper barrier for an event at <span class="arithmatex">\(t_0\)</span> is <span class="arithmatex">\(p_0 \cdot (1 + 2 \sigma_{t_0})\)</span> if <code>pt_mult = 2.0</code> — where <span class="arithmatex">\(\sigma_{t_0}\)</span> is the vol as of entry.</p>
 <p>The scaling does two things:</p>
