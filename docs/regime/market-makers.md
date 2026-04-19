@@ -7,83 +7,85 @@ code_ref: "—"
 
 # Market makers and delta-hedging
 
-The GEX pipeline rests on a specific model of who sells options and how they manage the resulting risk. Get that model wrong and every downstream regime call is wrong — with the same magnitude, in the opposite direction. So it's worth being explicit.
+The GEX pipeline depends on a specific model of who sells options and how they manage the resulting risk. An incorrect model produces regime calls that are wrong by the same magnitude in the opposite direction, so the assumptions deserve explicit treatment.
 
-## Who sells options?
+## Who sells options
 
-When a retail trader buys a call, someone sells it. When a pension fund buys puts for downside protection, someone sells them. The aggregate seller across the entire options market is a loose collection of institutional participants, but the single dominant category is **options market makers**. Quantitative firms — Susquehanna, Citadel Securities, Optiver, IMC, and a handful of others — run the bulk of exchange-listed options flow.
+When a retail trader buys a call, a counterparty sells it. When a pension fund buys puts for downside protection, a counterparty sells them. In aggregate, the sell side of the options market comprises a range of institutional participants; the dominant category is options market makers. Quantitative firms — Susquehanna, Citadel Securities, Optiver, IMC, and others — handle the majority of exchange-listed options flow.
 
-Market makers are liquidity providers. They quote two-sided markets (a bid and an ask) on tens of thousands of contracts simultaneously. Their business model is earning the bid-ask spread, not taking directional views. A market maker who accidentally became long SPX by a million delta-units of exposure would be doing their job wrong.
+Market makers are liquidity providers. They quote two-sided markets (a bid and an ask) across tens of thousands of contracts simultaneously. Their business model is to earn the bid-ask spread, not to take directional views. A market maker with unhedged directional exposure in a large index like SPX has deviated from the business model.
 
-This framing matters because it shapes how they hedge. A directional trader who buys a call is willing to be wrong — that's what taking a view means. A market maker who sells a call is **obligated** to neutralize the exposure they just acquired. They can't afford to be wrong; the position size across tens of thousands of contracts is too large, and their capital isn't set up for one-way risk.
+This framing shapes hedging behavior. A directional trader who buys a call accepts being wrong as part of taking a view. A market maker who sells a call is obligated to neutralize the resulting exposure. Position sizes across tens of thousands of contracts are too large, and the firm's capital base is not structured for one-way risk.
 
 ## The customer-preferred flow assumption
 
 The next assumption is less rigorous but empirically dominant:
 
-> **Customers are net buyers of options on equity indices.**
+> Customers are net buyers of options on equity indices.
 
-Two threads support this. Retail and many institutional traders buy calls for leveraged upside exposure (lottery tickets, bullish plays, overwrite-hedging of underlying equity). Hedgers — pension funds, endowments, insurance companies, wealth managers — buy puts for downside protection on large equity books.
+Two patterns support this. Retail and many institutional traders buy calls for leveraged upside exposure (speculative positions, bullish directional bets, hedged overwrites of underlying equity). Hedgers — pension funds, endowments, insurance companies, wealth managers — buy puts for downside protection on large equity portfolios.
 
-On single names, the picture is messier. Covered-call overwriters are net sellers of calls (the classic "income" strategy). Earnings straddles are two-sided. Dealer positioning on individual tickers is genuinely ambiguous and depends on who holds the name.
+In single names, the picture is less clean. Covered-call overwriters are net sellers of calls (the standard "income" strategy). Earnings straddles are two-sided. Dealer positioning in individual tickers is ambiguous and depends on who holds the name.
 
-On indices (SPX, NDX, QQQ, SPY), the customer-net-buyer assumption is robust enough to encode in code. The trading project's `gex.py` assigns dealers **short gamma on calls** (`sign = -1` for C) and **long gamma on puts** (`sign = +1` for P). This is "dealers short customer-preferred flow" in signs. Flip the signs and you invert every regime call downstream.
+In indices (SPX, NDX, QQQ, SPY), the customer-net-buyer assumption is robust enough to encode in code. The trading project's `gex.py` assigns dealers short gamma on calls (`sign = -1` for C) and long gamma on puts (`sign = +1` for P), corresponding to "dealers short customer-preferred flow." Inverting the signs would invert every regime call downstream.
 
-The package-level CLAUDE.md calls this out explicitly as the project's sign convention and flags that single-name applications should revisit it. This isn't a detail — it's a structural assumption that sits at the foundation of everything else in Part 5.
+The package-level CLAUDE.md documents this sign convention and flags that single-name applications should revisit it. The assumption is structural, not incidental — it is the foundation on which the rest of Part 5 rests.
 
 ## Delta-hedging in practice
 
-A market maker who has sold an SPY call with $\Delta = 0.40$ has gained $-0.40$ share-equivalents of exposure per share covered by the contract. For a 100-share contract, that's $-40$ shares. To neutralize, the MM buys 40 shares of SPY. Their portfolio is now:
+A market maker who has sold an SPY call with $\Delta = 0.40$ has acquired $-0.40$ share-equivalents of exposure per share covered by the contract. For a 100-share contract, this is $-40$ shares. Neutralizing the exposure requires buying 40 shares of SPY. The resulting portfolio is:
 
-- Short 1 call (premium collected).
+- Short 1 call (premium received).
 - Long 40 shares of SPY (purchased at the ask).
 - First-order directional exposure: zero.
 
-What they earn: the option's time decay (theta) plus any bid-ask spread captured in the initial trade. What they still have: gamma risk (delta will change as $S$ moves), vega risk (the IV could shift), rho (small), and all the second-order Greeks.
+The market maker earns the option's time decay (theta) plus any bid-ask spread captured in the initial trade. The remaining risks include gamma (delta changes as $S$ moves), vega (sensitivity to IV), rho (small for short-dated positions), and higher-order Greeks.
 
-**Continuous rebalancing.** As $S$ moves, the call's delta changes. Every move requires a hedge adjustment: a few more shares bought, a few sold. In practice, rebalancing happens at discrete intervals (every few minutes, or every significant move). The cumulative cost of rebalancing — bid-ask spread, slippage, opportunity cost — is real. Theoretical Black-Scholes assumes continuous rebalancing is free; real-world MMs build the cost into their quotes.
+**Continuous rebalancing.** As $S$ moves, the call's delta changes, requiring hedge adjustment. In practice, rebalancing occurs at discrete intervals — every few minutes, or upon each significant move. The cumulative cost of rebalancing (bid-ask spread, slippage, opportunity cost) is material. Theoretical Black-Scholes assumes continuous rebalancing is free; real market makers incorporate rebalancing costs into quoted prices.
 
-## What the hedging flow actually looks like
+## Hedging flow dynamics
 
-Suppose dealers are **short calls** (as assumed for indices). Call delta is positive. Dealers' hedge is to be long the underlying — they buy stock when they sell calls. As the stock rises, call delta rises (gamma), so dealers' hedge requirement grows — they must **buy more stock**. As the stock falls, call delta falls, and dealers reduce their hedge — they **sell stock**.
+Suppose dealers are short calls (the index assumption). Call delta is positive. Dealers hedge by being long the underlying — buying stock when they sell calls. As the stock rises, call delta rises (via gamma), so dealer hedge requirements grow, requiring additional stock purchases. As the stock falls, call delta falls, and dealers reduce their hedge by selling stock.
 
-Buying on the way up, selling on the way down. That's the short-gamma hedging signature: **dealers are forced to trade in the direction of the move**, amplifying it. Every upside move creates more upside pressure; every downside move creates more downside pressure. This is the mechanism behind "short gamma squeezes."
+This pattern — buying on the way up, selling on the way down — is the short-gamma hedging signature: dealer hedging flow aligns with the direction of the move, amplifying it. Every upside move creates additional upside pressure; every downside move creates additional downside pressure. This is the mechanism behind short-gamma squeezes.
 
-Now flip. Suppose dealers are **long calls** (less common for indices, but possible if customer flow shifts). Call delta hedge is short stock. As the stock rises, the dealers' long-call delta grows, so their short-stock hedge grows — they **sell stock on the way up**. As it falls, they **buy on the way down**. Selling into strength, buying into weakness — trend-dampening, mean-reverting hedging.
+The reverse case: suppose dealers are long calls (less common for indices, but possible under certain customer flow patterns). The call delta hedge is now short stock. As the stock rises, dealers' long-call delta grows, requiring larger short-stock hedges (selling on the way up). As it falls, dealers buy on the way down. This pattern — selling into strength, buying into weakness — dampens trends and promotes mean reversion.
 
-The same math produces the same two cases for puts. What matters is the sign of the aggregate dealer gamma position across all outstanding contracts, because every dealer has to hedge their total exposure, not one contract at a time.
+The same mechanics apply symmetrically to puts. The relevant quantity is the sign of aggregate dealer gamma across all outstanding contracts, since dealers hedge total exposure rather than one contract at a time.
 
-## Why index options matter differently
+## Why index options are distinctive
 
-Three reasons the index options market is where the regime story plays cleanly:
+Three factors make the index options market the cleanest setting for regime analysis:
 
-1. **Scale.** SPX and SPY options collectively carry billions of dollars in gamma. Dealer hedging flow is large enough to move the underlying index measurably.
-2. **Customer flow is directionally consistent.** Net-long-options from hedgers and speculators on indices is well-established empirically.
-3. **The single-asset simplicity.** SPX options trade against SPX futures and SPY shares — a relatively simple hedging universe. Single-name options might hedge with the ticker, the sector ETF, or a basket, and the hedging flow dilutes.
+1. **Scale.** SPX and SPY options collectively carry billions of dollars in gamma. Dealer hedging flow is large enough to measurably affect the underlying index.
+2. **Consistent directional customer flow.** Net-long-options positioning from hedgers and speculators on indices is well-established empirically.
+3. **Simple hedging universe.** SPX options trade against SPX futures and SPY shares — a relatively straightforward hedging set. Single-name options might hedge against the ticker, the sector ETF, or a basket, which dilutes the observable flow.
 
-The regime classifier applies cleanly to SPX and QQQ. The signs would need revisiting for single-name work, a point the package CLAUDE.md explicitly notes.
+The regime classifier applies cleanly to SPX and QQQ. Signs would need revisiting for single-name applications, as the package CLAUDE.md notes.
 
-## Where this goes next
+## Looking ahead
 
-The next lesson puts numbers on the dealer gamma position — quantifying how much dealers are long or short at each strike, aggregating to a total, and showing what flows that aggregate implies. The lesson after that derives the **gamma flip strike** — the specific strike where the aggregate crosses zero, separating long-gamma and short-gamma regimes.
+The next lesson quantifies the dealer gamma position — how much dealers are long or short at each strike, how those positions aggregate, and what flows the aggregate implies. The lesson after derives the gamma-flip strike, the specific strike at which the aggregate crosses zero and the regime transitions between long-gamma and short-gamma.
 
-By the end of Part 5, you'll be able to read a chain, compute total GEX, locate the flip, and name the regime — exactly what `classify_regime` in the code does from its gex/skew/term-structure inputs.
+By the end of Part 5, the reader will be able to read a chain, compute total GEX, locate the flip, and identify the regime — the procedure implemented in `classify_regime` using GEX, skew, and term-structure inputs.
 
-## What you can now reason about
+## Summary
 
-- Why market makers are structurally different from directional traders — their business model requires delta-neutrality, which forces persistent hedging flow.
-- The "dealers short customer-preferred flow" assumption and its scope: reliable on SPX/QQQ, ambiguous on single names, flip the signs for long-gamma customer regimes.
-- Why short-gamma dealer positioning amplifies moves: hedging requires buying-into-strength and selling-into-weakness, which pushes the underlying in the same direction it's already moving.
+The reader can now reason about:
+
+- Why market makers differ structurally from directional traders: their business model requires delta-neutrality, producing persistent hedging flow.
+- The "dealers short customer-preferred flow" assumption and its scope: reliable on SPX/QQQ, ambiguous on single names, with signs inverting under long-gamma customer regimes.
+- Why short-gamma dealer positioning amplifies moves: hedging requires buying strength and selling weakness, pushing the underlying in the same direction it is already moving.
 
 ## Implemented at
 
-The sign convention lives in `trading/packages/gex/src/gex/gex.py:53`:
+The sign convention is encoded in `trading/packages/gex/src/gex/gex.py:53`:
 
 ```python
 signs = np.where(opt == "C", -1.0, 1.0)
 ```
 
-— dealer short calls (`-1`), dealer long puts (`+1`). This line is the encoding of the assumption in this lesson. Every downstream regime call is downstream of this one line. The package-level `CLAUDE.md` notes it explicitly as the sign convention to revisit for single-name applications.
+— dealer short calls (`-1`), dealer long puts (`+1`). This line encodes the assumption discussed in this lesson; every downstream regime call follows from it. The package-level `CLAUDE.md` documents it as the sign convention to revisit for single-name applications.
 
 ---
 
