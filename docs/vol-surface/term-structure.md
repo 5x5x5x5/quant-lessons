@@ -11,30 +11,11 @@ A single implied-vol number is a lie. There is no single $\sigma$ that prices th
 
 ## Plotting the curve
 
-Take the S&P 500 and pull ATM IVs across expiries: 1 week, 2 weeks, 1 month, 3 months, 6 months, 1 year, 2 years. Plot them. In a quiet market, the curve is **upward-sloping**:
+Take the S&P 500 and pull ATM IVs across expiries: 1 week, 2 weeks, 1 month, 3 months, 6 months, 1 year. Plot them. In a quiet market, the curve is **upward-sloping** (contango — the blue line). In a crisis, the short end spikes above the long end (backwardation — the pink line):
 
-```
-IV  ·
-     ·
-      ·
-       ·
-        ·  ·  ·  ·
-         ─────────────→ expiry
-```
+![Term structure of IV: contango (upward-sloping, typical quiet regime) vs backwardation (inverted, crisis regime). X-axis is log-scaled days to expiry.](../assets/figures/term_structure.png){ loading=lazy }
 
-This is **contango** — longer-dated options have higher IV than shorter-dated. The standard explanation: over longer horizons, more events can happen that could meaningfully move the underlying, so the market prices higher uncertainty. There's also a technical reason — the variance risk premium is usually larger for longer expiries in absolute terms, reflecting a higher dollar cost of insurance over a longer window.
-
-Now take a crisis day. March 2020, February 2018, October 2008. Plot it again:
-
-```
-IV  ·
-    ·
-      ·
-        ·    ·    ·    ·
-         ─────────────→ expiry
-```
-
-The short end spikes above the long end. The curve is **backwardated** or **inverted**. The short-term uncertainty is so high that near-dated options trade at higher IV than far-dated. Longer horizons imply some belief in mean reversion — "this storm will eventually pass" — so far-dated IVs don't track the short-term spike.
+**Contango** is the standard state — longer horizons price higher uncertainty, and the variance risk premium is usually larger for longer expiries in absolute terms. **Backwardation** is a crisis marker: short-term uncertainty is so high that near-dated options trade at higher IV than far-dated, because longer horizons imply some belief in mean reversion ("this storm will eventually pass") so far-dated IVs don't track the short-term spike.
 
 The slope of the curve changes regime fast and mean-reverts slowly.
 

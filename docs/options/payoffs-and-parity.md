@@ -54,7 +54,11 @@ Same intuition as a straddle, but with wider strikes. Cheaper (both legs are OTM
 
 A payoff that slopes upward through the entire price range — effectively synthetic long exposure, minus the middle. Traders use risk reversals to express directional views while capturing skew: on equity indices, the call premium is usually cheaper than the put premium at equidistant deltas (because [skew](../vol-surface/skew.md) makes OTM puts expensive), so a long call / short put risk reversal is often close to zero net premium. The equivalent stock position has the same expected P&L but ties up more capital.
 
-These four are a starting set. Butterflies, iron condors, calendar spreads, diagonals — all compose from the same four atoms. If you can graph long call and short call, you can graph anything.
+All four together:
+
+![Composite payoff diagrams — bull call spread, long straddle, long strangle, risk reversal. Strikes marked with dashed gray lines.](../assets/figures/payoffs_composite.png){ loading=lazy }
+
+These are a starting set. Butterflies, iron condors, calendar spreads, diagonals — all compose from the same four atoms. If you can graph long call and short call, you can graph anything.
 
 ## Put-call parity — the model-free equation
 

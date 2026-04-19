@@ -47,6 +47,10 @@ If the call is far out of the money and close to expiry, small moves in $S$ bare
 
 When $S = K$ and there's a decent amount of time left, the call has roughly a 50% chance of finishing ITM (in risk-neutral terms, via $N(d_2)$), and delta is roughly 0.5 — but not exactly. For a call with positive time to expiry and non-zero vol, $d_1 > d_2$, so $N(d_1) > N(d_2)$. An ATM call usually has $\Delta$ in the neighborhood of 0.52–0.55. The extra fraction comes from the asymmetry of upside vs downside payoffs (your call benefits from upside unboundedly but loses at most its premium on downside).
 
+Plotted across a range of spot for several tenors, the three regimes are a single smooth curve — an S-shape that flattens as expiry shortens (7-day has the sharpest transition through the strike; 1-year is diffuse):
+
+![Call delta vs spot at four tenors (7d, 30d, 90d, 1y), with σ=20% and r=4%.](../assets/figures/delta_curves.png){ loading=lazy }
+
 ## Delta as hedge ratio
 
 The Black-Scholes derivation already built this in: the portfolio $\Pi = C - \Delta S$ is locally riskless. Interpretation: if you own one call, its exposure to the underlying is equivalent to owning $\Delta$ shares of the underlying. To neutralize that exposure, **short $\Delta$ shares**.

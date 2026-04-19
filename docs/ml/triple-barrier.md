@@ -27,6 +27,8 @@ Walk forward from $t_0$ bar by bar. The first barrier the price touches determin
 
 The label is always in $\{-1, 0, +1\}$, with $0$ possible only at the vertical barrier with exactly zero net return (rare but permitted).
 
+![Three example paths from the same entry at p₀ = 100, σ = 1.5, with pt_mult = sl_mult = 2 and vertical = 15 bars. Path A hits the profit-take barrier and is labeled +1; Path B hits the stop-loss and is labeled −1; Path C drifts modestly upward and terminates at the vertical barrier, taking the sign of its net return.](../assets/figures/triple_barrier.png){ loading=lazy }
+
 ## Why vol-scaling matters
 
 The barriers are scaled by a rolling vol target $\sigma$, not fixed dollar amounts. Concretely, the upper barrier for an event at $t_0$ is $p_0 \cdot (1 + 2 \sigma_{t_0})$ if `pt_mult = 2.0` — where $\sigma_{t_0}$ is the vol as of entry.

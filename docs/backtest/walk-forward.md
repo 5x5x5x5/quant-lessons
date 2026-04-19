@@ -29,15 +29,9 @@ Walk-forward respects time order. At each step:
 2. Test on data from $t$ to $t + h$ (horizon).
 3. Advance $t$ by a stride and repeat.
 
-Pictorially, with an expanding train window and horizon $h = 3$, stride $s = 3$:
+Pictorially, with `initial_train = 10`, `test_horizon = 3`, `stride = 3`, comparing the two train-window variants:
 
-```
-fold 1: TRAIN [ 0 ... 9 ]        TEST [ 10, 11, 12 ]
-fold 2: TRAIN [ 0 ... 12 ]       TEST [ 13, 14, 15 ]
-fold 3: TRAIN [ 0 ... 15 ]       TEST [ 16, 17, 18 ]
-fold 4: TRAIN [ 0 ... 18 ]       TEST [ 19, 20, 21 ]
-...
-```
+![Walk-forward fold diagrams. Top: expanding train window (train set grows as the anchor advances). Bottom: sliding train window (train set has fixed length initial_train). In both, test (pink) is strictly after train (blue) in wall-clock time.](../assets/figures/walk_forward_folds.png){ loading=lazy }
 
 Every test fold is **strictly after** its training fold in wall-clock time. No temporal leakage. Every test observation answers "what would this model have said about this period, given only what was available before it?"
 

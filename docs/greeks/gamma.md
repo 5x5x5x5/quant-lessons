@@ -35,6 +35,10 @@ Three drivers:
 
 3. **Volatility.** The $\sigma$ in the denominator means gamma is higher when implied vol is lower. Counterintuitive at first — but think about it this way: when $\sigma$ is high, $d_1$ is far from zero for a wider range of $S$, and $\phi(d_1)$ is small; when $\sigma$ is low, small moves in $S$ cross $d_1 = 0$ sharply, and gamma concentrates there.
 
+![Gamma vs spot at four tenors. The 7-day peak is ~7× the 1-year peak at ATM, and both decay rapidly into ITM/OTM strikes.](../assets/figures/gamma_curves.png){ loading=lazy }
+
+The ~7× ratio between the 7-day and 1-year peaks at ATM is exactly the $1/\sqrt{T}$ scaling made visual: $\sqrt{365/7} \approx 7.2$, which matches the plotted peak heights.
+
 ## P&L of a delta-hedged position
 
 This is the punchline of Part 3. Take a position long one call, hedged short $\Delta$ shares. Over a small time $dt$ during which the underlying moves by $dS$, the portfolio P&L is:

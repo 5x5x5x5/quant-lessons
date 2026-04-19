@@ -11,32 +11,11 @@ Term structure varies IV across expiries. **Skew** varies IV across strikes, at 
 
 ## The stylized picture
 
-Plot ATM IV, OTM put IVs, and OTM call IVs for SPX, same expiry, 30 days out. You get this:
+Plot ATM IV, OTM put IVs, and OTM call IVs for SPX and for a single name, same expiry, 30 days out. Two characteristic shapes appear:
 
-```
-IV  ·
-     ·
-      ·
-        ·
-           · · · ·
-                     ·
-                       ·
-       ──────────────────────→ strike
-      OTM put     ATM     OTM call
-```
+![IV across strikes for equity index (downward-sloping skew, blue) vs single name (U-shaped smile, pink). X-axis is moneyness K/S with ATM at 1.0.](../assets/figures/skew_and_smile.png){ loading=lazy }
 
-OTM puts trade at higher IV than ATM, which trade at higher IV than OTM calls. The curve is downward-sloping in strike. This is the classic **equity index skew**.
-
-Single-name equities often show a different shape — IV is elevated on both wings, producing a "smile":
-
-```
-IV  ·                     ·
-     ·                   ·
-      ·                 ·
-       ·               ·
-        ·  · · · · ·  ·
-       ──────────────────────→ strike
-```
+For the **equity index**, OTM puts trade at higher IV than ATM, which trade at higher IV than OTM calls. The curve is downward-sloping in strike — this is the classic **equity index skew**. Single-name equities often show a different shape — IV is elevated on both wings, producing a **smile**.
 
 The shapes have structural reasons. Index skew exists because hedgers persistently demand downside protection; smile exists for single names partly because large surprise moves can happen in either direction (earnings, M&A, etc.), and the tails on both sides carry similar insurance premium.
 

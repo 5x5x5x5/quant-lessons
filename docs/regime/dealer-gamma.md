@@ -48,17 +48,7 @@ The fact that the sum is in "dollars per 1% move" is load-bearing. It tells you 
 
 Summing gives one number. Looking strike-by-strike gives you the shape. A typical SPX chain snapshot looks like this:
 
-```
-per-strike GEX
- large +ve                     large -ve
-     ┌─┐                           ┌─┐
-     │ │                           │ │
-     │ │  small +ve                │ │
-┌┐┌┐ │ │┌┐                    ┌┐  │ │┌┐┌┐
-┼┴┴┴─┴─┴┴┴──────────┼────────┴┴───┴─┴┴┴┴─→ strike
-                                  │
-                                 spot
-```
+![Per-strike GEX profile for a typical SPX snapshot. Positive bars (blue) reflect dealer long-gamma positioning concentrated below spot; negative bars (pink) reflect dealer short-gamma positioning concentrated above spot.](../assets/figures/gex_per_strike.png){ loading=lazy }
 
 Dealers' long-put exposure is concentrated in OTM puts (strikes well below spot), contributing positive per-strike GEX. Their short-call exposure is concentrated in OTM calls (strikes well above spot), contributing negative per-strike GEX. Near-the-money contributions depend on OI specific to the day but are smaller than the wings.
 

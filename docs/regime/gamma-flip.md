@@ -33,6 +33,8 @@ The gamma flip strike $K^*$ is the value of $K$ at which $C_K$ crosses zero (cha
 
 This is more stable by construction. Per-strike oscillations average out in the running sum. The running sum has a single smooth trajectory — starts at zero (trivially, before any strikes), grows to a peak (accumulating put contributions and early call contributions), then decays and typically goes negative as the larger OTM call contributions dominate the tail. The zero-crossing is where the net hedging flow flips from "long gamma above this strike" to "short gamma above this strike," aggregated across all strikes at or below.
 
+![Cumulative GEX versus strike for the same SPX snapshot from the previous lesson. Green shading marks the long-gamma region; pink marks short-gamma. The gamma-flip strike (orange) is where cumulative GEX crosses zero — here, above spot, as is typical in calm regimes.](../assets/figures/gex_cumulative_flip.png){ loading=lazy }
+
 **Interpretation of the crossing.** At $K^*$, the contribution of all strikes up to $K^*$ exactly cancels. Moving spot through $K^*$ tilts the net dealer gamma aggregate toward the opposite side — this is why crossing the flip is regime-changing. For a typical SPX profile (put-heavy below spot, call-heavy above spot), the cumulative starts positive and ends negative, so $K^*$ lies on the descending leg. That leg usually sits *just above* spot in calm regimes; it moves closer to or below spot as dealer short-call positioning grows relative to long-put positioning.
 
 ## Linear interpolation between strikes

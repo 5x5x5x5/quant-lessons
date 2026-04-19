@@ -76,7 +76,11 @@ $$
 
 Loss capped at $K$ (a stock can go to zero but not negative), but the loss can be large. Selling puts is equivalent to agreeing to buy the stock at $K$ regardless of how far it has fallen.
 
-If you draw these on paper — payoff on the y-axis, $S_T$ on the x-axis — the shapes are the iconic "hockey sticks" that appear in every options textbook. They are worth drawing by hand once. The geometry of more complex positions (spreads, straddles, butterflies) is sums and differences of these four shapes.
+If you draw these on paper — payoff on the y-axis, $S_T$ on the x-axis — the shapes are the iconic "hockey sticks" that appear in every options textbook:
+
+![The four atomic option payoffs at expiry, with $3 premium and strike $100. Green shading is positive P&L, pink is negative.](../assets/figures/payoffs_atomic.png){ loading=lazy }
+
+The geometry of more complex positions (spreads, straddles, butterflies) is sums and differences of these four shapes — the next lesson shows the composites.
 
 ## Intrinsic value and time value
 
