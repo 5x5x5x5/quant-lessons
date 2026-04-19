@@ -481,10 +481,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-this-model-assumes-and-where-it-fails" class="md-nav__link">
+  <a href="#model-assumptions-and-empirical-violations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What this model assumes, and where it fails
+        Model assumptions and empirical violations
       
     </span>
   </a>
@@ -492,10 +492,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-the-null-matters-for-backtesting" class="md-nav__link">
+  <a href="#the-null-hypothesis-and-backtesting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why the null matters for backtesting
+        The null hypothesis and backtesting
       
     </span>
   </a>
@@ -514,10 +514,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-alpha-means-under-the-null" class="md-nav__link">
+  <a href="#alpha-under-the-null" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What "alpha" means under the null
+        Alpha under the null
       
     </span>
   </a>
@@ -525,10 +525,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1640,10 +1640,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-this-model-assumes-and-where-it-fails" class="md-nav__link">
+  <a href="#model-assumptions-and-empirical-violations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What this model assumes, and where it fails
+        Model assumptions and empirical violations
       
     </span>
   </a>
@@ -1651,10 +1651,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-the-null-matters-for-backtesting" class="md-nav__link">
+  <a href="#the-null-hypothesis-and-backtesting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why the null matters for backtesting
+        The null hypothesis and backtesting
       
     </span>
   </a>
@@ -1673,10 +1673,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-alpha-means-under-the-null" class="md-nav__link">
+  <a href="#alpha-under-the-null" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What "alpha" means under the null
+        Alpha under the null
       
     </span>
   </a>
@@ -1684,10 +1684,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1726,76 +1726,77 @@
 
 
 <h1 id="random-walks-and-the-null-model">Random walks and the null model<a class="headerlink" href="#random-walks-and-the-null-model" title="Permanent link">&para;</a></h1>
-<p>Every strategy you build competes against a specific claim: <strong>tomorrow's price is today's price plus noise</strong>. That claim has a name — the random walk — and it shapes the math of almost every model downstream.</p>
-<p>The random walk is not a prediction. It's a <em>baseline</em>. If your strategy produces returns indistinguishable from noise on top of a walk, you have no edge. If it reliably deviates, you might.</p>
+<p>Every strategy competes against a specific null hypothesis: <strong>tomorrow's price equals today's price plus noise</strong>. This is the random walk, and it underlies the mathematics of most downstream models.</p>
+<p>The random walk is a baseline, not a forecast. A strategy whose returns are indistinguishable from noise on top of a random walk has no identifiable edge. Reliable deviations from the walk indicate the presence of a signal.</p>
 <h2 id="from-coin-flips-to-continuous-paths">From coin flips to continuous paths<a class="headerlink" href="#from-coin-flips-to-continuous-paths" title="Permanent link">&para;</a></h2>
 <p>Imagine a coin-flip game on log-prices. At each step <span class="arithmatex">\(t\)</span>, the log-price changes by <span class="arithmatex">\(+\sigma\)</span> with probability <span class="arithmatex">\(1/2\)</span> or <span class="arithmatex">\(-\sigma\)</span> with probability <span class="arithmatex">\(1/2\)</span>. After <span class="arithmatex">\(n\)</span> steps:</p>
 <div class="arithmatex">\[
 \log S_n - \log S_0 = \sum_{t=1}^{n} \epsilon_t, \qquad \epsilon_t \in \{+\sigma, -\sigma\}.
 \]</div>
-<p>Two things happen as <span class="arithmatex">\(n\)</span> grows:</p>
+<p>Two properties hold as <span class="arithmatex">\(n\)</span> grows:</p>
 <ol>
-<li>The <em>mean</em> of the sum stays at zero (fair coin).</li>
-<li>The <em>standard deviation</em> of the sum grows as <span class="arithmatex">\(\sigma \sqrt{n}\)</span> — the same <span class="arithmatex">\(\sqrt{T}\)</span> law from <a href="../volatility/">the previous lesson</a>.</li>
+<li>The mean of the sum remains zero (fair coin).</li>
+<li>The standard deviation of the sum grows as <span class="arithmatex">\(\sigma \sqrt{n}\)</span> — the same <span class="arithmatex">\(\sqrt{T}\)</span> law from <a href="../volatility/">the previous lesson</a>.</li>
 </ol>
-<p>Shrink the step size and shrink the time between steps, keeping the total variance per unit time fixed. The Central Limit Theorem gives you a limit distribution that is Gaussian, with variance growing linearly in time. That limit is <strong>Brownian motion</strong>:</p>
+<p>Taking the limit as the step size and inter-step time approach zero (holding total variance per unit time fixed), the Central Limit Theorem gives a Gaussian limit distribution with variance growing linearly in time. This limit is <strong>Brownian motion</strong>:</p>
 <div class="arithmatex">\[
 W_t \sim \mathcal{N}(0, t), \qquad W_{t+s} - W_t \sim \mathcal{N}(0, s), \text{ independent of } \mathcal{F}_t.
 \]</div>
-<p>Two properties to internalize: Brownian increments are independent (memoryless), and their variance is proportional to the time elapsed (the <span class="arithmatex">\(\sqrt{T}\)</span> law in continuous form).</p>
+<p>Two properties follow: Brownian increments are independent (memoryless), and their variance is proportional to elapsed time (the continuous-form analogue of the <span class="arithmatex">\(\sqrt{T}\)</span> law).</p>
 <h2 id="drift-and-the-log-price-walk">Drift and the log-price walk<a class="headerlink" href="#drift-and-the-log-price-walk" title="Permanent link">&para;</a></h2>
-<p>Actual markets drift upward over long horizons (the equity risk premium). The cleanest model that combines drift + Gaussian noise + the fact that prices can't go negative is <strong>geometric Brownian motion</strong> (GBM). In terms of price:</p>
+<p>Real markets drift upward over long horizons (the equity risk premium). A standard model combining drift, Gaussian noise, and the constraint that prices remain non-negative is <strong>geometric Brownian motion</strong> (GBM). In price space:</p>
 <div class="arithmatex">\[
 dS_t = \mu S_t\, dt + \sigma S_t\, dW_t.
 \]</div>
-<p>Equivalently, on log-price (this is what the arithmetic of log-returns gives you):</p>
+<p>The equivalent form on log-price is:</p>
 <div class="arithmatex">\[
 d(\log S_t) = \left(\mu - \tfrac{1}{2}\sigma^2\right) dt + \sigma\, dW_t.
 \]</div>
-<p>The <span class="arithmatex">\(-\frac{1}{2}\sigma^2\)</span> correction is the one piece of GBM that surprises people. The reason it appears: <span class="arithmatex">\(\log S_t\)</span> is a concave function of <span class="arithmatex">\(S_t\)</span>, so applying Itô's lemma (or equivalently, a second-order Taylor expansion) to compute the drift on log-prices from the drift on prices picks up a variance term. Consequence: the <strong>geometric mean</strong> of returns (which is what you actually compound) is less than the arithmetic mean by approximately <span class="arithmatex">\(\sigma^2/2\)</span>. Ignore this and your long-horizon forecasts from a daily-return estimate will be systematically too high.</p>
-<h2 id="what-this-model-assumes-and-where-it-fails">What this model assumes, and where it fails<a class="headerlink" href="#what-this-model-assumes-and-where-it-fails" title="Permanent link">&para;</a></h2>
-<p>GBM is clean. Markets are not. The places the model breaks matter because they're where strategies live:</p>
+<p>The <span class="arithmatex">\(-\tfrac{1}{2}\sigma^2\)</span> correction on the drift deserves attention. It arises because <span class="arithmatex">\(\log S_t\)</span> is a concave function of <span class="arithmatex">\(S_t\)</span>; applying Itô's lemma (equivalently, a second-order Taylor expansion) to compute the drift on log-prices from the drift on prices introduces a variance term. A consequence is that the <strong>geometric mean</strong> of returns (the compounded average) is less than the arithmetic mean by approximately <span class="arithmatex">\(\sigma^2/2\)</span>. Long-horizon projections that use a daily-return estimate without this correction overstate expected compounded returns.</p>
+<h2 id="model-assumptions-and-empirical-violations">Model assumptions and empirical violations<a class="headerlink" href="#model-assumptions-and-empirical-violations" title="Permanent link">&para;</a></h2>
+<p>GBM is mathematically tractable. Markets are not fully consistent with its assumptions, and the deviations are where most quant strategies operate:</p>
 <ul>
-<li><strong>Fat tails.</strong> GBM predicts that 4-sigma daily moves happen roughly once every 15,000 trading days. In reality, SPY sees several per decade. Equity returns have higher kurtosis than a Gaussian — the tails are fatter and the peak is taller.</li>
-<li><strong>Volatility clustering.</strong> GBM assumes constant <span class="arithmatex">\(\sigma\)</span>. As the previous lesson noted, <span class="arithmatex">\(\sigma\)</span> itself is serially correlated in real data. Models that capture this (GARCH, stochastic vol) are GBM's empirical children.</li>
-<li><strong>Leverage effect.</strong> Negative returns increase future vol more than positive returns of the same magnitude. GBM is symmetric; markets aren't.</li>
-<li><strong>Jumps.</strong> GBM paths are continuous — no gaps. Real prices gap overnight, around earnings, at the open after news. Jump-diffusion and Lévy processes are the statistical patches.</li>
-<li><strong>Short-horizon autocorrelation.</strong> GBM increments are independent. Intraday returns exhibit weak negative autocorrelation (mean reversion on 1-5 minute bars); some regimes show positive autocorrelation at longer horizons. Small in magnitude, but non-zero.</li>
+<li><strong>Fat tails.</strong> GBM predicts that 4-sigma daily moves occur approximately once every 15,000 trading days. In practice, SPY has seen several per decade. Equity returns exhibit higher kurtosis than a Gaussian — fatter tails and a taller central peak.</li>
+<li><strong>Volatility clustering.</strong> GBM assumes constant <span class="arithmatex">\(\sigma\)</span>. As noted in the previous lesson, <span class="arithmatex">\(\sigma\)</span> is itself serially correlated in real data. GARCH and stochastic-volatility models extend GBM to capture this.</li>
+<li><strong>Leverage effect.</strong> Negative returns increase future volatility more than positive returns of equal magnitude. GBM is symmetric in <span class="arithmatex">\(\pm dW\)</span>; real markets are not.</li>
+<li><strong>Jumps.</strong> GBM paths are continuous. Real prices gap overnight, around earnings, and at the open after news releases. Jump-diffusion and Lévy-process models address this gap.</li>
+<li><strong>Short-horizon autocorrelation.</strong> GBM increments are independent. Intraday returns show weak negative autocorrelation (short-horizon mean reversion); some regimes exhibit positive autocorrelation at longer horizons. The magnitudes are small but non-zero.</li>
 </ul>
-<p>These are not footnotes — they are the subject matter of most serious quant research. Recognize them as <strong>places GBM is wrong</strong>, not as reasons to distrust the model entirely. The model is still the right baseline; the strategies are the deviations from it.</p>
-<h2 id="why-the-null-matters-for-backtesting">Why the null matters for backtesting<a class="headerlink" href="#why-the-null-matters-for-backtesting" title="Permanent link">&para;</a></h2>
-<p>Here is the operational point. When you compute the Sharpe ratio of a strategy, you are asking: <strong>how many standard deviations away from zero is the mean return?</strong> The "standard deviation" in the denominator implicitly assumes something like iid Gaussian noise around a constant mean — the random-walk null. The more your strategy's returns deviate from iid (autocorrelated, non-Gaussian, heteroskedastic), the less a Sharpe of 1.0 means what you think it means.</p>
-<p>This is not academic. Strategies that concentrate their edge into rare large wins (event-driven, short-vol) produce non-Gaussian return distributions that a Sharpe ratio systematically under- or over-rewards. <a href="../../backtest/deflated-sharpe/">Deflated Sharpe</a> in Part 6 partially corrects for this with skewness and kurtosis terms. Not fully — no single number captures a non-iid return series — but enough to be honest about.</p>
+<p>These deviations form the subject matter of much quantitative research. They are specific failure modes of GBM rather than reasons to reject the model entirely. GBM remains a useful baseline; strategies exist as deviations from it.</p>
+<h2 id="the-null-hypothesis-and-backtesting">The null hypothesis and backtesting<a class="headerlink" href="#the-null-hypothesis-and-backtesting" title="Permanent link">&para;</a></h2>
+<p>When a Sharpe ratio is computed, the implicit question is: how many standard deviations is the mean return from zero? The denominator assumes iid Gaussian noise around a constant mean — the random-walk null. The further a strategy's returns deviate from iid (through autocorrelation, non-Gaussian distributions, or heteroskedasticity), the less reliable the standard Sharpe interpretation becomes.</p>
+<p>This has practical consequences. Strategies that concentrate edge in rare large wins (event-driven, short-volatility) produce non-Gaussian return distributions that the Sharpe ratio systematically misweights. <a href="../../backtest/deflated-sharpe/">Deflated Sharpe</a> in Part 6 partially corrects for this using skewness and kurtosis terms. No single statistic fully captures a non-iid return series, but the correction is material.</p>
 <h2 id="options-pricing-and-the-log-normal-assumption">Options pricing and the log-normal assumption<a class="headerlink" href="#options-pricing-and-the-log-normal-assumption" title="Permanent link">&para;</a></h2>
-<p>Black-Scholes, covered in <a href="../../options/black-scholes/">Part 2</a>, starts from GBM. The option price at expiry depends on the terminal distribution of <span class="arithmatex">\(S_T\)</span>, which under GBM is <strong>log-normal</strong> (not normal):</p>
+<p>Black-Scholes, covered in <a href="../../options/black-scholes/">Part 2</a>, is built on GBM. The option price at expiry depends on the terminal distribution of <span class="arithmatex">\(S_T\)</span>, which under GBM is log-normal:</p>
 <div class="arithmatex">\[
 \log S_T \sim \mathcal{N}\!\left(\log S_0 + (\mu - \tfrac{1}{2}\sigma^2) T, \; \sigma^2 T\right).
 \]</div>
-<p>Two consequences worth sitting with:</p>
+<p>Two consequences follow:</p>
 <ol>
-<li>Terminal price is always non-negative (log-normal has support on <span class="arithmatex">\((0, \infty)\)</span>). Prices can't go below zero under GBM, which matches the real world for cash equities.</li>
-<li>Options pricing models that assume a single constant <span class="arithmatex">\(\sigma\)</span> for all strikes produce a flat implied vol surface. The observed surface is not flat (Part 4: skew, smile, term structure). The deviations from GBM show up as a shape on the vol surface — that shape is itself tradable information.</li>
+<li>Terminal price is always non-negative (log-normal has support on <span class="arithmatex">\((0, \infty)\)</span>). Under GBM, prices cannot go below zero, which is consistent with cash equities.</li>
+<li>Pricing models that assume a single constant <span class="arithmatex">\(\sigma\)</span> across all strikes produce a flat implied-volatility surface. The observed surface is not flat (Part 4 covers skew, smile, and term structure). Deviations from GBM manifest as shape on the vol surface, and that shape carries tradable information.</li>
 </ol>
-<h2 id="what-alpha-means-under-the-null">What "alpha" means under the null<a class="headerlink" href="#what-alpha-means-under-the-null" title="Permanent link">&para;</a></h2>
-<p>You'll read "alpha" in papers, in strategy writeups, in performance attribution. Mathematically, alpha is the systematic return you earn <em>above</em> what the null would predict. If you regress your returns on market returns:</p>
+<h2 id="alpha-under-the-null">Alpha under the null<a class="headerlink" href="#alpha-under-the-null" title="Permanent link">&para;</a></h2>
+<p>The term "alpha" appears in academic papers, strategy writeups, and performance attribution. Mathematically, alpha is the systematic return earned above what the null predicts. Regressing strategy returns on market returns:</p>
 <div class="arithmatex">\[
 r_\text{strat} = \alpha + \beta\, r_\text{market} + \epsilon,
 \]</div>
-<p>then <span class="arithmatex">\(\alpha\)</span> is the intercept — the expected return when market returns are zero. A strategy with a statistically significant non-zero <span class="arithmatex">\(\alpha\)</span> is earning something the market exposure alone doesn't explain. <strong>That's the thing a random walk cannot produce.</strong> Finding real <span class="arithmatex">\(\alpha\)</span> is hard, which is why everything in Part 6 (Sharpe, walk-forward, deflated Sharpe) exists: to avoid being fooled by noise into thinking you found it.</p>
-<h2 id="what-you-can-now-reason-about">What you can now reason about<a class="headerlink" href="#what-you-can-now-reason-about" title="Permanent link">&para;</a></h2>
+<p>gives <span class="arithmatex">\(\alpha\)</span> as the intercept: expected return when market returns are zero. A strategy with a statistically significant non-zero <span class="arithmatex">\(\alpha\)</span> earns returns not explained by market exposure alone. This is precisely the quantity a pure random walk cannot produce. Identifying real <span class="arithmatex">\(\alpha\)</span> is difficult, which motivates the rigor in Part 6 (Sharpe, walk-forward, deflated Sharpe).</p>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>The reader can now reason about:</p>
 <ul>
-<li>Why options pricing models assume log-normal terminal prices, not normal ones — and why the <span class="arithmatex">\(-\sigma^2/2\)</span> correction appears on the drift of log-price.</li>
-<li>Why forecasting next-day return is structurally hard: you're predicting deviations from a walk whose expectation over a single day is tiny relative to its noise.</li>
-<li>Why "my strategy has Sharpe &gt; 2" is less impressive than it sounds if the returns are highly non-Gaussian or serially correlated — the null has assumed them away, so the statistic is measuring something that isn't quite what you want.</li>
+<li>Why options pricing models assume log-normal terminal prices rather than normal, and why the <span class="arithmatex">\(-\sigma^2/2\)</span> correction appears in the drift of log-price.</li>
+<li>Why next-day return forecasting is structurally difficult: the target is deviation from a walk whose single-period expectation is small relative to its noise.</li>
+<li>Why a Sharpe above 2 is less informative than it appears when returns are highly non-Gaussian or serially correlated — the standard statistic implicitly assumes these conditions away.</li>
 </ul>
 <h2 id="implemented-at">Implemented at<a class="headerlink" href="#implemented-at" title="Permanent link">&para;</a></h2>
-<p>The null is assumed, not computed. You'll find it everywhere:</p>
+<p>The null is assumed throughout the trading repository rather than computed explicitly:</p>
 <ul>
-<li><code>trading/packages/harness/src/harness/metrics.py:19</code> — <code>sharpe(returns)</code> compares mean to std, implicitly against a zero-mean iid null.</li>
-<li><code>trading/packages/gex/src/gex/greeks.py</code> — uses Black-Scholes, which lives inside GBM.</li>
-<li><code>trading/packages/afml/src/afml/structural.py</code> — <code>cusum_events</code>, <code>chow_dfc_stat</code> are <strong>tests</strong> for deviation from the random-walk null. Their job is to flag when the null breaks.</li>
+<li><code>trading/packages/harness/src/harness/metrics.py:19</code> — <code>sharpe(returns)</code> compares mean to standard deviation, implicitly against a zero-mean iid null.</li>
+<li><code>trading/packages/gex/src/gex/greeks.py</code> — uses Black-Scholes, which operates within GBM.</li>
+<li><code>trading/packages/afml/src/afml/structural.py</code> — <code>cusum_events</code> and <code>chow_dfc_stat</code> test for deviations from the random-walk null, flagging structural breaks.</li>
 </ul>
-<p>The random walk is the baseline every piece of code above is either leaning on or testing.</p>
+<p>The random walk is the baseline that each of these files either assumes or tests against.</p>
 <hr />
 <p><strong>Next:</strong> <a href="../../options/contracts/">The options contract →</a></p>
 

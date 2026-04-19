@@ -431,10 +431,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#realized-vs-implied" class="md-nav__link">
+  <a href="#realized-versus-implied-volatility" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Realized vs implied
+        Realized versus implied volatility
       
     </span>
   </a>
@@ -442,10 +442,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sample-std-vs-exponentially-weighted-std" class="md-nav__link">
+  <a href="#sample-standard-deviation-versus-exponentially-weighted" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sample std vs exponentially weighted std
+        Sample standard deviation versus exponentially weighted
       
     </span>
   </a>
@@ -453,10 +453,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#annualization-why-sqrtt" class="md-nav__link">
+  <a href="#annualization-and-the-sqrtt-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Annualization: why \(\sqrt{T}\)?
+        Annualization and the \(\sqrt{T}\) rule
       
     </span>
   </a>
@@ -464,10 +464,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#volatility-clustering-the-stylized-fact" class="md-nav__link">
+  <a href="#volatility-clustering" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Volatility clustering — the stylized fact
+        Volatility clustering
       
     </span>
   </a>
@@ -486,10 +486,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-the-trading-project-actually-uses" class="md-nav__link">
+  <a href="#convention-used-in-the-trading-project" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What the trading project actually uses
+        Convention used in the trading project
       
     </span>
   </a>
@@ -497,10 +497,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1618,10 +1618,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#realized-vs-implied" class="md-nav__link">
+  <a href="#realized-versus-implied-volatility" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Realized vs implied
+        Realized versus implied volatility
       
     </span>
   </a>
@@ -1629,10 +1629,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sample-std-vs-exponentially-weighted-std" class="md-nav__link">
+  <a href="#sample-standard-deviation-versus-exponentially-weighted" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sample std vs exponentially weighted std
+        Sample standard deviation versus exponentially weighted
       
     </span>
   </a>
@@ -1640,10 +1640,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#annualization-why-sqrtt" class="md-nav__link">
+  <a href="#annualization-and-the-sqrtt-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Annualization: why \(\sqrt{T}\)?
+        Annualization and the \(\sqrt{T}\) rule
       
     </span>
   </a>
@@ -1651,10 +1651,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#volatility-clustering-the-stylized-fact" class="md-nav__link">
+  <a href="#volatility-clustering" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Volatility clustering — the stylized fact
+        Volatility clustering
       
     </span>
   </a>
@@ -1673,10 +1673,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-the-trading-project-actually-uses" class="md-nav__link">
+  <a href="#convention-used-in-the-trading-project" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What the trading project actually uses
+        Convention used in the trading project
       
     </span>
   </a>
@@ -1684,10 +1684,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1726,73 +1726,74 @@
 
 
 <h1 id="volatility-as-a-measurable-thing">Volatility as a measurable thing<a class="headerlink" href="#volatility-as-a-measurable-thing" title="Permanent link">&para;</a></h1>
-<p>Ask a trader what the market did today and you'll often hear two numbers: how much it moved, and how <em>wiggly</em> the path was. The first is return. The second is volatility. Volatility is not "how much the price changed" — it's "how spread out the changes were."</p>
+<p>A market's daily activity can be described by two numbers: the total move and the dispersion of that move across the session. The first is return; the second is volatility. Volatility measures the variability of returns, not the magnitude of the final price change.</p>
 <p>Formally, <strong>volatility is the standard deviation of returns</strong>:</p>
 <div class="arithmatex">\[
 \sigma = \sqrt{\mathbb{E}\!\left[(r_t - \bar r)^2\right]}.
 \]</div>
-<p>This is the one number that appears in every risk metric you will compute, every option you will price, and every vol-scaled label you will generate. Getting it right matters.</p>
-<h2 id="realized-vs-implied">Realized vs implied<a class="headerlink" href="#realized-vs-implied" title="Permanent link">&para;</a></h2>
-<p>Two entirely different things share the word "volatility":</p>
+<p>This quantity appears in every risk metric, every option pricing formula, and every volatility-scaled label in the remainder of the curriculum.</p>
+<h2 id="realized-versus-implied-volatility">Realized versus implied volatility<a class="headerlink" href="#realized-versus-implied-volatility" title="Permanent link">&para;</a></h2>
+<p>Two distinct quantities share the name "volatility":</p>
 <ul>
-<li><strong>Realized volatility</strong> is what we just defined — the std of observed returns. Computable from price history alone.</li>
-<li><strong>Implied volatility</strong> is the <span class="arithmatex">\(\sigma\)</span> you back out of an option's market price by inverting Black-Scholes. It's a forecast — the market's guess about <em>future</em> realized vol — not a measurement.</li>
+<li><strong>Realized volatility</strong> — the standard deviation of observed returns, computable from price history alone.</li>
+<li><strong>Implied volatility</strong> — the <span class="arithmatex">\(\sigma\)</span> extracted from an option's market price by inverting Black-Scholes. This is a forecast of future realized volatility, not a measurement of past prices.</li>
 </ul>
-<p>This lesson is about realized vol. Implied vol gets its own part of the curriculum (<a href="../../vol-surface/implied-vol/">Part 4</a>); the two diverge in important ways and conflating them will make most of what you read about options confusing.</p>
-<h2 id="sample-std-vs-exponentially-weighted-std">Sample std vs exponentially weighted std<a class="headerlink" href="#sample-std-vs-exponentially-weighted-std" title="Permanent link">&para;</a></h2>
-<p>Given <span class="arithmatex">\(n\)</span> recent returns, the textbook <strong>sample standard deviation</strong> weights every observation equally:</p>
+<p>This lesson addresses realized volatility. Implied volatility is covered in <a href="../../vol-surface/implied-vol/">Part 4</a>. The two differ in important ways, and conflating them leads to confusion when reading options-market commentary.</p>
+<h2 id="sample-standard-deviation-versus-exponentially-weighted">Sample standard deviation versus exponentially weighted<a class="headerlink" href="#sample-standard-deviation-versus-exponentially-weighted" title="Permanent link">&para;</a></h2>
+<p>Given <span class="arithmatex">\(n\)</span> recent returns, the sample standard deviation weights every observation equally:</p>
 <div class="arithmatex">\[
 \hat\sigma^2 = \frac{1}{n - 1} \sum_{t=1}^{n} (r_t - \bar r)^2.
 \]</div>
-<p>Equal weighting is wrong for markets. A return from yesterday is much more relevant to today's risk than a return from 100 days ago, but a sample std window of 100 days treats them as identical. When the regime shifts — February 2020, March 2023, any Fed day — a flat-weighted vol estimator takes its full window to "see" the change. By the time the estimate has moved, the information is stale.</p>
-<p>The <strong>exponentially-weighted moving (EWM) std</strong> fixes this by giving recent observations more weight:</p>
+<p>Equal weighting is suboptimal for financial time series. A return from yesterday is typically more relevant to today's risk than a return from 100 days ago, but a sample std over a 100-day window treats them as identical. When a regime shift occurs, a flat-weighted estimator requires its full window to incorporate the change, and by then the estimate is stale relative to current conditions.</p>
+<p>The <strong>exponentially-weighted moving (EWM) standard deviation</strong> addresses this by weighting recent observations more heavily:</p>
 <div class="arithmatex">\[
 \hat\sigma^2_t = (1 - \alpha)\, \hat\sigma^2_{t-1} + \alpha\, (r_t - \mu_t)^2,
 \quad \alpha = \frac{2}{\text{span} + 1}.
 \]</div>
-<p>At <code>span=100</code>, today's squared deviation contributes about 2% and the weight decays geometrically backward. A regime shift propagates into the estimate almost immediately instead of being averaged out over a full window. The <code>span</code> parameter is the EWM equivalent of a rolling-window length; the conversion to <span class="arithmatex">\(\alpha\)</span> above is a pandas/polars convention.</p>
-<h2 id="annualization-why-sqrtt">Annualization: why <span class="arithmatex">\(\sqrt{T}\)</span>?<a class="headerlink" href="#annualization-why-sqrtt" title="Permanent link">&para;</a></h2>
-<p>You usually care about annual vol (20% is "SPY in a normal year") but compute daily vol directly. The rule you hear quoted is:</p>
+<p>With <code>span=100</code>, the current squared deviation contributes approximately 2% of the estimate, and weights decay geometrically backward. Regime shifts propagate into the estimate rapidly rather than being averaged across a long window. The <code>span</code> parameter is the EWM analogue of a rolling-window length; the conversion to <span class="arithmatex">\(\alpha\)</span> follows pandas and polars conventions.</p>
+<h2 id="annualization-and-the-sqrtt-rule">Annualization and the <span class="arithmatex">\(\sqrt{T}\)</span> rule<a class="headerlink" href="#annualization-and-the-sqrtt-rule" title="Permanent link">&para;</a></h2>
+<p>Annual volatility is typically the reporting convention (20% is representative for SPY in a normal year), even though daily data is the computed input. The standard conversion is:</p>
 <div class="arithmatex">\[
 \sigma_\text{annual} = \sigma_\text{daily} \cdot \sqrt{252}.
 \]</div>
-<p>Where does the square root come from? If daily returns are iid, the variance of the <span class="arithmatex">\(T\)</span>-day cumulative return is <span class="arithmatex">\(T\)</span> times the daily variance (variance adds under independence). Volatility, being the square root of variance, scales as <span class="arithmatex">\(\sqrt{T}\)</span>. That gives the <code>252</code> for U.S. equities (trading days per year).</p>
-<p><strong>The assumption is wrong in two ways</strong>, and you should know where:</p>
+<p>The derivation follows from two assumptions: if daily returns are iid, the variance of the <span class="arithmatex">\(T\)</span>-day cumulative return equals <span class="arithmatex">\(T\)</span> times the daily variance (variance is additive under independence). Volatility, being the square root of variance, scales as <span class="arithmatex">\(\sqrt{T}\)</span>. The factor 252 reflects U.S. equity trading days per year.</p>
+<p>This derivation relies on two assumptions that are empirically violated:</p>
 <ol>
-<li><strong>Returns are not iid.</strong> Markets exhibit volatility clustering: quiet periods and stressed periods group together (ARCH, GARCH effects). The daily variance is time-varying, which breaks the "variance adds" argument.</li>
-<li><strong>Returns are not independent across time.</strong> Intraday, they are weakly negatively autocorrelated (mean reversion on short horizons); over multi-month horizons, a small positive autocorrelation shows up in some regimes. Real variance of <span class="arithmatex">\(T\)</span>-day cumulative return is <em>not</em> exactly <span class="arithmatex">\(T \cdot \sigma^2_\text{daily}\)</span>.</li>
+<li><strong>Returns are not iid.</strong> Markets exhibit volatility clustering: quiet periods and stressed periods group together (ARCH and GARCH effects). Daily variance is time-varying, which breaks the additivity argument.</li>
+<li><strong>Returns are not serially independent.</strong> Intraday returns show weak negative autocorrelation (short-horizon mean reversion); at longer horizons, small positive autocorrelation appears in some regimes. The true variance of a <span class="arithmatex">\(T\)</span>-day cumulative return is therefore not exactly <span class="arithmatex">\(T \cdot \sigma^2_\text{daily}\)</span>.</li>
 </ol>
-<p>For daily frequencies and modestly long horizons, <span class="arithmatex">\(\sqrt{T}\)</span> is close enough that nobody bothers correcting. For monthly-to-annual, or for regime-switching strategies, the error matters.</p>
-<h2 id="volatility-clustering-the-stylized-fact">Volatility clustering — the stylized fact<a class="headerlink" href="#volatility-clustering-the-stylized-fact" title="Permanent link">&para;</a></h2>
-<p>One empirical observation shapes almost every model you'll meet downstream: <strong>big moves follow big moves, and calm follows calm</strong>. Volatility is itself serially correlated even when returns aren't. A random-walk null can't produce this pattern; GARCH-family models exist specifically to capture it.</p>
-<p>Practical consequence: when realized vol spikes, your probability of another big move tomorrow is elevated. Strategies that ignore this produce backtests that look smoother than live trading, because stress episodes get averaged into calm ones during training.</p>
+<p>For daily frequencies and moderate horizons, the <span class="arithmatex">\(\sqrt{T}\)</span> approximation is accurate enough that corrections are rarely applied in practice. For monthly-to-annual horizons and for regime-switching strategies, the approximation error becomes material.</p>
+<h2 id="volatility-clustering">Volatility clustering<a class="headerlink" href="#volatility-clustering" title="Permanent link">&para;</a></h2>
+<p>An empirical regularity that shapes most downstream models: large moves are followed by large moves, and calm periods are followed by calm periods. Volatility is serially correlated even when returns are not. A random-walk null model cannot reproduce this pattern, which motivated the GARCH family of models.</p>
+<p>A practical consequence: when realized volatility spikes, the probability of another large move on the following day is elevated. Strategies that ignore clustering produce backtests that appear smoother than live trading, because stress episodes are averaged into calm ones during training.</p>
 <h2 id="a-concrete-example">A concrete example<a class="headerlink" href="#a-concrete-example" title="Permanent link">&para;</a></h2>
-<p>SPY daily returns, 2020 calendar year:</p>
+<p>SPY daily returns during the 2020 calendar year:</p>
 <ul>
-<li>Full-year sample std of arithmetic returns: ~2.1% per day → annualized ~33%.</li>
-<li>EWM (<code>span=100</code>) std through March 2020: peaks near ~5% per day → annualized ~80%.</li>
-<li>EWM through December 2020: ~0.8% per day → annualized ~13%.</li>
+<li>Full-year sample std of arithmetic returns: approximately 2.1% per day (annualized approximately 33%).</li>
+<li>EWM (<code>span=100</code>) std through March 2020: peaked near 5% per day (annualized approximately 80%).</li>
+<li>EWM through December 2020: approximately 0.8% per day (annualized approximately 13%).</li>
 </ul>
-<p>The full-year sample std is the average of those regimes. If you're sizing a position based on "current" risk, the average is the wrong number — you want the EWM.</p>
-<h2 id="what-the-trading-project-actually-uses">What the trading project actually uses<a class="headerlink" href="#what-the-trading-project-actually-uses" title="Permanent link">&para;</a></h2>
-<p>The triple-barrier labeling pipeline computes a per-event vol target that the barriers are calibrated against. It does so with an EWM std of <strong>arithmetic</strong> returns:</p>
+<p>The full-year sample std is an average across these regimes. For position sizing based on current risk conditions, the EWM is the appropriate estimator.</p>
+<h2 id="convention-used-in-the-trading-project">Convention used in the trading project<a class="headerlink" href="#convention-used-in-the-trading-project" title="Permanent link">&para;</a></h2>
+<p>The triple-barrier labeling pipeline computes a per-event vol target that the barriers are calibrated against. It uses an EWM standard deviation of arithmetic returns:</p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">rolling_vol</span><span class="p">(</span><span class="n">prices</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">span</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
     <span class="n">returns</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">returns</span><span class="o">.</span><span class="n">ewm_std</span><span class="p">(</span><span class="n">span</span><span class="o">=</span><span class="n">span</span><span class="p">)</span>
 </code></pre></div>
-<p>Two choices encoded here:</p>
+<p>Two design choices are encoded:</p>
 <ul>
-<li><strong>EWM, not sample.</strong> The project is explicitly willing to let recent data dominate. This keeps barrier thresholds adaptive: a 2σ barrier in 2017 is a smaller dollar amount than a 2σ barrier in March 2020, by design.</li>
-<li><strong>Arithmetic, not log.</strong> As covered in <a href="../returns/">the previous lesson</a>, barriers compare <code>p_t / p_0 - 1</code> against <code>mult * sigma</code>; both must be in arithmetic-return units or the thresholds don't mean what they claim.</li>
+<li><strong>EWM rather than sample.</strong> Recent data is intentionally given more weight. This keeps barrier thresholds adaptive: a 2σ barrier in 2017 represents a smaller dollar move than a 2σ barrier in March 2020.</li>
+<li><strong>Arithmetic rather than log.</strong> As covered in <a href="../returns/">the previous lesson</a>, barriers compare <code>p_t / p_0 - 1</code> against <code>mult * sigma</code>, requiring both quantities to be expressed in arithmetic-return units.</li>
 </ul>
-<h2 id="what-you-can-now-reason-about">What you can now reason about<a class="headerlink" href="#what-you-can-now-reason-about" title="Permanent link">&para;</a></h2>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>The reader can now reason about:</p>
 <ul>
-<li>Why a strategy's live Sharpe often looks different from its backtest Sharpe even when nothing changed — vol regime shifted and sample std took weeks to catch up.</li>
-<li>Why options traders care more about realized-vs-implied spreads than the level of either — vol is a <em>forecast</em> when implied, a <em>measurement</em> when realized, and they tell different stories.</li>
-<li>Why the <span class="arithmatex">\(\sqrt{T}\)</span> rule works well enough day-to-day but breaks in regimes you especially care about (post-spike backward projection, multi-month holding).</li>
+<li>Why a strategy's live Sharpe can differ from its backtest Sharpe when the volatility regime has shifted and a sample std estimator has not yet caught up.</li>
+<li>Why options traders focus on realized-versus-implied spreads rather than absolute volatility levels: the two quantities carry different information (forecast versus measurement).</li>
+<li>Why the <span class="arithmatex">\(\sqrt{T}\)</span> rule is accurate at daily horizons but breaks down for multi-month projections and post-spike regimes.</li>
 </ul>
 <h2 id="implemented-at">Implemented at<a class="headerlink" href="#implemented-at" title="Permanent link">&para;</a></h2>
-<p><code>trading/packages/afml/src/afml/labeling.py:41</code> — <code>rolling_vol(prices, span=100)</code>. EWM std of arithmetic returns; used by <code>apply_triple_barrier</code> on the same line 52 file to scale barrier thresholds per event. The docstring cites AFML ch. 3.1 to make the arithmetic-return choice explicit.</p>
+<p><code>trading/packages/afml/src/afml/labeling.py:41</code> — <code>rolling_vol(prices, span=100)</code>. Computes the EWM standard deviation of arithmetic returns and is used by <code>apply_triple_barrier</code> (line 52 of the same file) to scale barrier thresholds per event. The docstring cites AFML ch. 3.1 to document the arithmetic-return convention.</p>
 <hr />
 <p><strong>Next:</strong> <a href="../random-walks/">Random walks and the null model →</a></p>
 

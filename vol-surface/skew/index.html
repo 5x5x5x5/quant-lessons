@@ -888,10 +888,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-stylized-picture" class="md-nav__link">
+  <a href="#characteristic-shapes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The stylized picture
+        Characteristic shapes
       
     </span>
   </a>
@@ -899,10 +899,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-the-skew-exists-the-historical-reason" class="md-nav__link">
+  <a href="#historical-origin" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why the skew exists — the historical reason
+        Historical origin
       
     </span>
   </a>
@@ -954,10 +954,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#smile-vs-skew-parameterizing-the-surface" class="md-nav__link">
+  <a href="#smile-versus-skew-parameterizing-the-surface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Smile vs skew — parameterizing the surface
+        Smile versus skew — parameterizing the surface
       
     </span>
   </a>
@@ -965,10 +965,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1629,10 +1629,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-stylized-picture" class="md-nav__link">
+  <a href="#characteristic-shapes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The stylized picture
+        Characteristic shapes
       
     </span>
   </a>
@@ -1640,10 +1640,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-the-skew-exists-the-historical-reason" class="md-nav__link">
+  <a href="#historical-origin" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why the skew exists — the historical reason
+        Historical origin
       
     </span>
   </a>
@@ -1695,10 +1695,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#smile-vs-skew-parameterizing-the-surface" class="md-nav__link">
+  <a href="#smile-versus-skew-parameterizing-the-surface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Smile vs skew — parameterizing the surface
+        Smile versus skew — parameterizing the surface
       
     </span>
   </a>
@@ -1706,10 +1706,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1748,66 +1748,67 @@
 
 
 <h1 id="skew-and-the-smile">Skew and the smile<a class="headerlink" href="#skew-and-the-smile" title="Permanent link">&para;</a></h1>
-<p>Term structure varies IV across expiries. <strong>Skew</strong> varies IV across strikes, at a single expiry. Black-Scholes assumes a single <span class="arithmatex">\(\sigma\)</span> prices every strike. The market disagrees. The shape of that disagreement is information.</p>
-<h2 id="the-stylized-picture">The stylized picture<a class="headerlink" href="#the-stylized-picture" title="Permanent link">&para;</a></h2>
-<p>Plot ATM IV, OTM put IVs, and OTM call IVs for SPX and for a single name, same expiry, 30 days out. Two characteristic shapes appear:</p>
+<p>Term structure describes how IV varies across expiries. Skew describes how IV varies across strikes at a single expiry. Black-Scholes assumes a single <span class="arithmatex">\(\sigma\)</span> prices every strike; observed market prices depart from that assumption, and the shape of the departure carries information.</p>
+<h2 id="characteristic-shapes">Characteristic shapes<a class="headerlink" href="#characteristic-shapes" title="Permanent link">&para;</a></h2>
+<p>Plot ATM IV, OTM put IVs, and OTM call IVs for SPX and for a single name at a matched 30-day expiry. Two characteristic shapes appear:</p>
 <p><img alt="IV across strikes for equity index (downward-sloping skew, blue) vs single name (U-shaped smile, pink). X-axis is moneyness K/S with ATM at 1.0." loading="lazy" src="../../assets/figures/skew_and_smile.png" /></p>
-<p>For the <strong>equity index</strong>, OTM puts trade at higher IV than ATM, which trade at higher IV than OTM calls. The curve is downward-sloping in strike — this is the classic <strong>equity index skew</strong>. Single-name equities often show a different shape — IV is elevated on both wings, producing a <strong>smile</strong>.</p>
-<p>The shapes have structural reasons. Index skew exists because hedgers persistently demand downside protection; smile exists for single names partly because large surprise moves can happen in either direction (earnings, M&amp;A, etc.), and the tails on both sides carry similar insurance premium.</p>
-<h2 id="why-the-skew-exists-the-historical-reason">Why the skew exists — the historical reason<a class="headerlink" href="#why-the-skew-exists-the-historical-reason" title="Permanent link">&para;</a></h2>
-<p>Before October 1987, the IV surface was roughly flat across strikes. After, it wasn't. The 1987 crash taught market participants that large downside moves occur with higher probability than Black-Scholes (log-normal tails) would predict, and the demand for OTM put protection ballooned. That demand never fully subsided. Dealers now quote OTM puts at a premium to reflect the persistent bid for protection and the perceived fat left tail. Every equity index has carried skew since.</p>
-<p>The asymmetry has a second cause: <strong>leverage effect</strong>. When stocks fall, their implied leverage rises (same debt, smaller equity), making the equity riskier. Realized volatility tends to rise on large down moves and fall on large up moves. A model that captures this — stochastic volatility with a negative correlation between returns and vol — naturally produces a skewed implied-vol surface.</p>
+<p>For the equity index, OTM puts trade at higher IV than ATM, and ATM trades at higher IV than OTM calls. The curve slopes downward in strike — the classic equity-index skew. Single-name equities often show a different shape, with IV elevated on both wings, producing a smile.</p>
+<p>Both shapes have structural origins. Index skew reflects persistent demand for downside protection from hedgers. Smile arises in single names because large surprise moves can occur in either direction (earnings releases, M&amp;A activity), and the tails on both sides carry similar insurance premiums.</p>
+<h2 id="historical-origin">Historical origin<a class="headerlink" href="#historical-origin" title="Permanent link">&para;</a></h2>
+<p>Before October 1987, the IV surface was approximately flat across strikes. After the crash, this changed. Participants concluded that large downside moves occurred more frequently than Black-Scholes (log-normal tails) predicted, and demand for OTM put protection rose. That demand has not fully subsided. Dealers now quote OTM puts at a premium that reflects the persistent hedging bid and the perceived fat left tail. Every equity index has carried skew since.</p>
+<p>The asymmetry has a second cause: the <strong>leverage effect</strong>. When stocks fall, implied leverage rises (same debt over smaller equity), increasing equity risk. Realized volatility tends to rise on large down moves and fall on large up moves. Models that capture this — stochastic volatility with negative return-volatility correlation — naturally produce a skewed implied-volatility surface.</p>
 <h2 id="the-25-delta-skew-measure">The 25-delta skew measure<a class="headerlink" href="#the-25-delta-skew-measure" title="Permanent link">&para;</a></h2>
-<p>There are many ways to quantify skew. The most common in practice, and the one this project uses:</p>
+<p>Many measures quantify skew. The most common in practice, and the one this project uses:</p>
 <div class="arithmatex">\[
 \text{skew}_{25\Delta} = \text{IV}(25\Delta \text{ put}) - \text{IV}(25\Delta \text{ call}).
 \]</div>
-<p>A 25-delta put is an OTM put with delta <span class="arithmatex">\(-0.25\)</span> (roughly a 75%-OTM put, interpretation-of-delta from <a href="../../greeks/delta/">Lesson 7</a>). A 25-delta call is the corresponding OTM call with delta <span class="arithmatex">\(+0.25\)</span>. The skew is the spread between their IVs.</p>
-<p>For a typical equity index in calm markets, this spread is in the 2–4 vol-point range. In stressed conditions, it can widen to 6–10 points. In euphoric / short-vol-complacent markets, it can compress toward zero — a flat skew often precedes volatility events, because flat skew means the market has stopped paying for downside protection.</p>
-<p>Why 25-delta specifically? It's a compromise: far enough OTM to be in the "insurance" region of the distribution, but close enough in that enough liquidity exists for reliable IV quotes. 10-delta and 50-delta alternatives exist; 25-delta is the most common convention.</p>
+<p>A 25-delta put is an OTM put with delta <span class="arithmatex">\(-0.25\)</span> (approximately 75% likely to finish OTM, per the delta-as-probability interpretation from <a href="../../greeks/delta/">Lesson 7</a>). A 25-delta call is the corresponding OTM call with delta <span class="arithmatex">\(+0.25\)</span>. The skew is the spread between their IVs.</p>
+<p>For a typical equity index in calm markets, this spread is in the 2–4 vol-point range. In stressed conditions, it can widen to 6–10 points. In euphoric regimes where short-volatility strategies are complacent, it can compress toward zero. A flat skew often precedes volatility events, because compression indicates the market has stopped paying for downside protection.</p>
+<p>The 25-delta convention is a compromise: far enough OTM to lie in the insurance region of the distribution, but close enough that liquidity supports reliable IV quotes. 10-delta and 50-delta alternatives exist; 25-delta is the most common convention.</p>
 <h2 id="delta-space-interpolation">Delta-space interpolation<a class="headerlink" href="#delta-space-interpolation" title="Permanent link">&para;</a></h2>
-<p>Option chains don't quote a "25-delta strike" directly — they quote strikes at fixed prices (e.g., 400, 405, 410). To get the IV at exactly 25-delta, you need to interpolate. The standard technique: map each quoted strike to its delta (using BS with the strike's own IV), then interpolate IV across the delta axis.</p>
-<p>Working in delta-space rather than strike-space is not incidental. Delta is a natural reparameterization of the surface: the "25-delta point" on SPX moves with <span class="arithmatex">\(S\)</span>, so the skew stays in the same part of the risk distribution regardless of where spot is today. Strike-based measures (e.g., "IV at <span class="arithmatex">\(S \times 0.9\)</span>") conflate spot moves with skew moves, which is usually not what you want.</p>
-<p>The implementation in <code>skew.py</code> walks the chain, computes each contract's delta from its strike and IV (via <code>bs_d1</code> + cumulative normal), then linearly interpolates IV at the target delta. Linear interpolation is adequate for normal-shaped surfaces; for fitting tail shapes more carefully, practitioners swap in SABR or SVI parameterizations. The repo notes this as a future upgrade.</p>
+<p>Option chains do not quote strikes at fixed delta values — they quote at fixed prices (for example, 400, 405, 410). Computing IV at exactly 25-delta requires interpolation. The standard method: map each quoted strike to its delta (using Black-Scholes with the strike's own IV), then interpolate IV across the delta axis.</p>
+<p>Working in delta-space rather than strike-space is intentional. Delta is a natural reparameterization of the surface: the 25-delta point on SPX moves with <span class="arithmatex">\(S\)</span>, so the skew measure remains in the same part of the risk distribution regardless of where spot sits today. Strike-based measures (for example, "IV at <span class="arithmatex">\(S \times 0.9\)</span>") conflate spot moves with skew moves.</p>
+<p>The implementation in <code>skew.py</code> walks the chain, computes each contract's delta from its strike and IV (via <code>bs_d1</code> and the cumulative normal), and linearly interpolates IV at the target delta. Linear interpolation is adequate for normally-shaped surfaces; for more accurate tail-shape fits, SABR or SVI parameterizations are standard alternatives. The repo notes this as a future upgrade.</p>
 <h2 id="skew-z-score-as-a-regime-input">Skew z-score as a regime input<a class="headerlink" href="#skew-z-score-as-a-regime-input" title="Permanent link">&para;</a></h2>
-<p>Like term structure, raw skew levels matter less than where they sit relative to their own history. A rolling z-score:</p>
+<p>Like term structure, raw skew levels matter less than their position relative to their own history. A rolling z-score captures this:</p>
 <div class="arithmatex">\[
 z_\text{skew}(t) = \frac{\text{skew}_{25\Delta}(t) - \overline{\text{skew}}_\text{252d}}{\sigma_\text{skew, 252d}}.
 \]</div>
-<p>Three interesting values of <span class="arithmatex">\(z_\text{skew}\)</span>:</p>
+<p>Three regions of <span class="arithmatex">\(z_\text{skew}\)</span> are informative:</p>
 <ul>
-<li><strong>Highly positive <span class="arithmatex">\(z\)</span></strong>: skew is historically steep. Puts are expensive relative to their own history. Either a stress scenario is priced in, or hedgers have been buying aggressively without a vol event yet materializing.</li>
-<li><strong>Near zero <span class="arithmatex">\(z\)</span></strong>: skew is at its historical norm. No signal from this axis.</li>
-<li><strong>Highly negative <span class="arithmatex">\(z\)</span></strong>: skew is flattening or inverting. Put protection is unusually cheap relative to history. This is the interesting case — it often precedes volatility events, because it means hedgers have stopped paying for protection (complacency) or active selling of skew is compressing the spread.</li>
+<li><strong>Highly positive <span class="arithmatex">\(z\)</span></strong>: skew is historically steep. Puts are expensive relative to history. This indicates either priced-in stress or aggressive hedging ahead of an anticipated event.</li>
+<li><strong>Near-zero <span class="arithmatex">\(z\)</span></strong>: skew is at its historical norm. No signal on this axis.</li>
+<li><strong>Highly negative <span class="arithmatex">\(z\)</span></strong>: skew is flattening or inverting. Put protection is unusually cheap relative to history. This condition often precedes volatility events, either because hedgers have stopped paying for protection (complacency) or because active selling of skew is compressing the spread.</li>
 </ul>
-<p>The regime classifier uses a negative threshold on <span class="arithmatex">\(z_\text{skew}\)</span>: when skew z-score is deeply negative (default threshold <span class="arithmatex">\(-2.0\)</span>), it is treated as a short-gamma trigger. The logic is that flat/inverting skew is historically associated with vol events that follow shortly after, so the regime flips to "prepare for movement."</p>
+<p>The regime classifier uses a negative threshold on <span class="arithmatex">\(z_\text{skew}\)</span>: when the z-score is deeply negative (default threshold <span class="arithmatex">\(-2.0\)</span>), the condition triggers a short-gamma regime tag. This reflects the empirical association between flat or inverting skew and subsequent volatility events.</p>
 <h2 id="when-skew-fails-as-a-signal">When skew fails as a signal<a class="headerlink" href="#when-skew-fails-as-a-signal" title="Permanent link">&para;</a></h2>
-<p>Not every move in skew is informative. Two regular cases to be aware of:</p>
+<p>Not every skew movement is informative. Two recurring cases:</p>
 <ul>
-<li><strong>Earnings season for single names</strong>: pre-earnings skew shifts reflect the upcoming event, not a structural regime change. Index skew is less affected because index ATM IV absorbs earnings effects diffusely.</li>
-<li><strong>Dealer inventory rebalancing</strong>: large-ticket customer orders can push individual strikes' IVs without signaling anything about market risk tolerance. Dealers' positions and hedging needs drive quoted prices; not everything is a macro signal.</li>
+<li><strong>Earnings season for single names</strong>: pre-earnings skew shifts reflect the upcoming event rather than a structural regime change. Index skew is less affected because index ATM IV absorbs earnings effects diffusely across constituents.</li>
+<li><strong>Dealer inventory rebalancing</strong>: large customer orders can move individual strike IVs without signaling anything about market risk tolerance. Dealer positions and hedging needs drive quoted prices; not every movement is a macro signal.</li>
 </ul>
-<p>The regime classifier partially mitigates by using index-level skew (SPX), where idiosyncratic effects are diluted. At the single-name level, skew as a standalone signal is noisier.</p>
-<h2 id="smile-vs-skew-parameterizing-the-surface">Smile vs skew — parameterizing the surface<a class="headerlink" href="#smile-vs-skew-parameterizing-the-surface" title="Permanent link">&para;</a></h2>
-<p>For a complete treatment, practitioners fit a parametric shape to the IV surface across strikes and expiries. Two standard families:</p>
+<p>The regime classifier mitigates the first case by using index-level (SPX) skew, where idiosyncratic effects are diluted. At the single-name level, skew is a noisier standalone signal.</p>
+<h2 id="smile-versus-skew-parameterizing-the-surface">Smile versus skew — parameterizing the surface<a class="headerlink" href="#smile-versus-skew-parameterizing-the-surface" title="Permanent link">&para;</a></h2>
+<p>For a complete treatment, practitioners fit parametric models to the IV surface across strikes and expiries. Two standard families:</p>
 <ul>
-<li><strong>SVI</strong> (Stochastic Volatility Inspired): five parameters per expiry, fit to strike-IV pairs. Fast, popular in risk systems.</li>
-<li><strong>SABR</strong>: four parameters including a <span class="arithmatex">\(\beta\)</span> that controls whether the surface is skew-like or smile-like. Common in FX and interest-rate vols.</li>
+<li><strong>SVI</strong> (Stochastic Volatility Inspired): five parameters per expiry, fit to strike-IV pairs. Fast and common in risk systems.</li>
+<li><strong>SABR</strong>: four parameters including a <span class="arithmatex">\(\beta\)</span> that controls whether the surface is skew-like or smile-like. Common in FX and interest-rate volatility surfaces.</li>
 </ul>
-<p>For the trading project's regime classification, a parametric fit isn't needed — the 25-delta skew is a scalar summary that captures enough of the surface's asymmetry. If a future strategy requires finer-grained surface information (e.g., trading the butterfly, or hedging across specific strike buckets), swapping in SVI or SABR is the natural upgrade path.</p>
-<h2 id="what-you-can-now-reason-about">What you can now reason about<a class="headerlink" href="#what-you-can-now-reason-about" title="Permanent link">&para;</a></h2>
+<p>The regime classifier in this project does not require a parametric fit: the 25-delta skew is a scalar summary that captures sufficient surface asymmetry. Future strategies requiring finer-grained surface information (trading the butterfly, hedging across specific strike buckets) could extend to SVI or SABR.</p>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>The reader can now reason about:</p>
 <ul>
-<li>Why the equity index IV surface is downward-sloping in strike (skew) while single-name surfaces often form a smile — they reflect different customer flow and different structural risk profiles.</li>
-<li>Why skew is typically measured in delta-space, not strike-space — delta moves with spot, so the measurement is invariant to where the market sits today.</li>
-<li>Why <em>flattening</em> of skew, not steepening, often precedes volatility events — it's the market becoming complacent about downside risk.</li>
+<li>Why the equity-index IV surface slopes downward in strike (skew) while single-name surfaces often form a smile — the two reflect different customer flow patterns and different structural risk profiles.</li>
+<li>Why skew is typically measured in delta-space rather than strike-space — delta moves with spot, producing a measure invariant to the current market level.</li>
+<li>Why flattening of skew, rather than steepening, often precedes volatility events: flattening reflects complacency about downside risk.</li>
 </ul>
 <h2 id="implemented-at">Implemented at<a class="headerlink" href="#implemented-at" title="Permanent link">&para;</a></h2>
 <p><code>trading/packages/gex/src/gex/skew.py</code>:</p>
 <ul>
-<li>Line 26: <code>interpolate_iv_at_delta(chain, target_delta, option_type, spot, rate)</code>. Filters to the shortest expiry with ≥21 DTE (weekly-options noise exclusion), maps each contract to its delta, linearly interpolates IV at the target delta.</li>
-<li>Line 64: <code>skew_25d(chain, spot, rate)</code> — the headline scalar, <code>IV(25d put) - IV(25d call)</code>.</li>
+<li>Line 26: <code>interpolate_iv_at_delta(chain, target_delta, option_type, spot, rate)</code> filters to the shortest expiry with ≥21 DTE (excluding weekly noise), maps each contract to its delta, and linearly interpolates IV at the target delta.</li>
+<li>Line 64: <code>skew_25d(chain, spot, rate)</code> computes the scalar <code>IV(25d put) - IV(25d call)</code>.</li>
 </ul>
-<p>The regime classifier in <code>regime.py:classify_regime</code> consumes <code>skew_25d_z</code> (rolling z-score of the daily skew) and triggers the short-gamma regime when z ≤ -2.0.</p>
+<p>The regime classifier in <code>regime.py:classify_regime</code> consumes <code>skew_25d_z</code> (the rolling z-score of daily skew) and triggers the short-gamma regime when z ≤ -2.0.</p>
 <hr />
 <p><strong>Next:</strong> <a href="../../regime/market-makers/">Market makers and delta-hedging →</a></p>
 

@@ -882,10 +882,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-inversion-is-a-regime-signal" class="md-nav__link">
+  <a href="#inversion-as-a-regime-signal" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why inversion is a regime signal
+        Inversion as a regime signal
       
     </span>
   </a>
@@ -915,10 +915,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#term-structure-versus-the-vix-level" class="md-nav__link">
+  <a href="#term-structure-versus-vix-level" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Term structure versus the VIX level
+        Term structure versus VIX level
       
     </span>
   </a>
@@ -926,10 +926,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-shape-of-the-full-surface" class="md-nav__link">
+  <a href="#the-full-surface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The shape of the full surface
+        The full surface
       
     </span>
   </a>
@@ -937,10 +937,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1651,10 +1651,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-inversion-is-a-regime-signal" class="md-nav__link">
+  <a href="#inversion-as-a-regime-signal" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why inversion is a regime signal
+        Inversion as a regime signal
       
     </span>
   </a>
@@ -1684,10 +1684,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#term-structure-versus-the-vix-level" class="md-nav__link">
+  <a href="#term-structure-versus-vix-level" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Term structure versus the VIX level
+        Term structure versus VIX level
       
     </span>
   </a>
@@ -1695,10 +1695,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-shape-of-the-full-surface" class="md-nav__link">
+  <a href="#the-full-surface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The shape of the full surface
+        The full surface
       
     </span>
   </a>
@@ -1706,10 +1706,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1748,12 +1748,12 @@
 
 
 <h1 id="term-structure-of-volatility">Term structure of volatility<a class="headerlink" href="#term-structure-of-volatility" title="Permanent link">&para;</a></h1>
-<p>A single implied-vol number is a lie. There is no single <span class="arithmatex">\(\sigma\)</span> that prices the whole options chain — options at different expiries trade at different IVs. The pattern of IV across expiries is the <strong>term structure</strong>, and its slope is one of the most reliable regime signals in the market.</p>
+<p>A single implied-volatility number is insufficient: no single <span class="arithmatex">\(\sigma\)</span> prices the entire options chain, because options at different expiries trade at different IVs. The pattern of IV across expiries is the <strong>term structure</strong>, and its slope is one of the most reliable regime signals available in options markets.</p>
 <h2 id="plotting-the-curve">Plotting the curve<a class="headerlink" href="#plotting-the-curve" title="Permanent link">&para;</a></h2>
-<p>Take the S&amp;P 500 and pull ATM IVs across expiries: 1 week, 2 weeks, 1 month, 3 months, 6 months, 1 year. Plot them. In a quiet market, the curve is <strong>upward-sloping</strong> (contango — the blue line). In a crisis, the short end spikes above the long end (backwardation — the pink line):</p>
+<p>Pull ATM IVs across expiries (1 week, 2 weeks, 1 month, 3 months, 6 months, 1 year) on the S&amp;P 500. In quiet markets, the curve is upward-sloping (contango, shown in blue). In crises, the short end spikes above the long end (backwardation, shown in pink):</p>
 <p><img alt="Term structure of IV: contango (upward-sloping, typical quiet regime) vs backwardation (inverted, crisis regime). X-axis is log-scaled days to expiry." loading="lazy" src="../../assets/figures/term_structure.png" /></p>
-<p><strong>Contango</strong> is the standard state — longer horizons price higher uncertainty, and the variance risk premium is usually larger for longer expiries in absolute terms. <strong>Backwardation</strong> is a crisis marker: short-term uncertainty is so high that near-dated options trade at higher IV than far-dated, because longer horizons imply some belief in mean reversion ("this storm will eventually pass") so far-dated IVs don't track the short-term spike.</p>
-<p>The slope of the curve changes regime fast and mean-reverts slowly.</p>
+<p><strong>Contango</strong> is the normal state: longer horizons price higher uncertainty, and the variance risk premium is typically larger in absolute terms over longer expiries. <strong>Backwardation</strong> is a crisis marker: short-term uncertainty becomes high enough that near-dated options trade at higher IV than far-dated ones, because longer horizons carry an implicit belief in mean reversion and thus do not track the short-term spike.</p>
+<p>Slope transitions are rapid; mean reversion of the slope is slow.</p>
 <h2 id="the-vix-family">The VIX family<a class="headerlink" href="#the-vix-family" title="Permanent link">&para;</a></h2>
 <p>CBOE publishes IV indices at specific maturities on the S&amp;P 500:</p>
 <table>
@@ -1782,48 +1782,49 @@
 </tr>
 </tbody>
 </table>
-<p>Each uses the same model-free variance-swap formula from <a href="../implied-vol/">the previous lesson</a>, scaled to its own target horizon. The two ratios that get watched most are:</p>
+<p>Each uses the model-free variance-swap formula from <a href="../implied-vol/">the previous lesson</a>, scaled to its target horizon. The two most-watched ratios are:</p>
 <ul>
-<li><span class="arithmatex">\(\text{VIX9D} / \text{VIX}\)</span> — short-end slope. When greater than 1, intraday panic is pricing above 30-day IV. A sharp, fast signal of short-horizon stress.</li>
-<li><span class="arithmatex">\(\text{VIX} / \text{VIX3M}\)</span> — classic medium slope. When greater than 1, 30-day IV is above 3-month IV. The most-watched backwardation indicator.</li>
+<li><span class="arithmatex">\(\text{VIX9D} / \text{VIX}\)</span> — short-end slope. A ratio above 1 indicates intraday panic pricing above 30-day IV, producing a fast signal of short-horizon stress.</li>
+<li><span class="arithmatex">\(\text{VIX} / \text{VIX3M}\)</span> — medium slope. A ratio above 1 means 30-day IV exceeds 3-month IV; this is the most commonly referenced backwardation indicator.</li>
 </ul>
-<p>In contango, both ratios are less than 1. Inversion flips either or both above 1.</p>
-<h2 id="why-inversion-is-a-regime-signal">Why inversion is a regime signal<a class="headerlink" href="#why-inversion-is-a-regime-signal" title="Permanent link">&para;</a></h2>
-<p>Empirically, an inverted term structure correlates with:</p>
+<p>In contango, both ratios are below 1. Inversion pushes one or both above 1.</p>
+<h2 id="inversion-as-a-regime-signal">Inversion as a regime signal<a class="headerlink" href="#inversion-as-a-regime-signal" title="Permanent link">&para;</a></h2>
+<p>Empirically, inverted term structure correlates with:</p>
 <ul>
-<li><strong>Short-gamma dealer positioning</strong> (Part 5) — the hedging feedback loop that amplifies moves.</li>
-<li><strong>Higher realized volatility</strong> in the days that follow.</li>
-<li><strong>Lower mean-reversion</strong> — trends that might normally reverse have more follow-through.</li>
+<li>Short-gamma dealer positioning (Part 5) — the hedging feedback loop that amplifies moves.</li>
+<li>Higher realized volatility in the following days.</li>
+<li>Lower mean-reversion — trends that would normally reverse show more follow-through.</li>
 </ul>
-<p>Mechanism: demand for short-dated protection (puts expiring this week) is most elastic during acute stress. Customers buy puts; dealers sell them; the implied vol of those puts bids up sharply, inverting the short end. Because the long end doesn't move as much (buyers don't panic-hedge year-out exposure), the slope flips. The inversion <em>is</em> the footprint of panic hedging flow.</p>
-<p>The signal is noisy. Sometimes VIX/VIX3M crosses 1.0 on a sleepy day because of a minor market blip and reverts within hours. Sometimes it crosses 1.0 and stays there for weeks. The <strong>persistence</strong> of the inversion matters as much as its presence.</p>
+<p>The underlying mechanism: demand for short-dated protection (puts expiring this week) is most elastic during acute stress. Customers buy puts; dealers sell them; the implied vol on those puts rises sharply, inverting the short end. The long end moves less (buyers do not panic-hedge year-out exposure), and the slope flips. Inversion is the observable footprint of panic hedging flow.</p>
+<p>The signal is noisy. VIX/VIX3M occasionally crosses 1.0 on minor market blips and reverts within hours; in other periods, it crosses and stays above 1.0 for weeks. The persistence of the inversion matters as much as its presence.</p>
 <h2 id="thresholds-and-noise-tolerance">Thresholds and noise tolerance<a class="headerlink" href="#thresholds-and-noise-tolerance" title="Permanent link">&para;</a></h2>
 <p>Raw threshold at exactly 1.0 is noisy — small rounding errors, stale data, intraday feeds that don't sync perfectly can push a ratio fractionally above 1.0 without meaningful regime change. A small buffer helps:</p>
 <div class="arithmatex">\[
 \text{is\_inverted} \;=\; \text{short\_slope} &gt; 1.02 \;\; \text{or} \;\; \text{med\_slope} &gt; 1.02.
 \]</div>
-<p>The <code>1.02</code> threshold is a noise tolerance: a 2% cushion avoids constant flip-flopping around the 1.0 boundary. There's nothing sacred about 2% — it's a calibration choice. On a smoother data source you might drop to 1.01; on a noisier one you might go to 1.03. What matters is that the threshold is <em>above</em> unity by enough to ignore plausible measurement error, and <em>below</em> the values that actually signal stress (empirically &gt;1.05 for serious events).</p>
+<p>The 1.02 threshold provides a 2% cushion to avoid flip-flopping around the 1.0 boundary. This value is a calibration choice, not a theoretical constant. A cleaner data source might permit 1.01; a noisier one might require 1.03. The threshold must be above unity by enough to ignore measurement error and below the levels that characterize real stress (empirically above 1.05 during material events).</p>
 <h2 id="rolling-z-scores">Rolling z-scores<a class="headerlink" href="#rolling-z-scores" title="Permanent link">&para;</a></h2>
-<p>Absolute levels aren't the only useful read. "The short end is inverted" is one kind of signal; "the short end just inverted for the first time in six months" is a different, often sharper, signal. A rolling z-score captures the latter:</p>
+<p>Absolute slope levels are not the only useful signal. "The short end is inverted" is one observation; "the short end inverted for the first time in six months" is a different, often sharper, signal. A rolling z-score captures the second form:</p>
 <div class="arithmatex">\[
 z_t = \frac{\text{slope}_t - \bar{\text{slope}}_\text{252d}}{\sigma_\text{slope, 252d}}.
 \]</div>
-<p>Large positive <span class="arithmatex">\(z\)</span> means the slope is unusually high relative to its own trailing year. Useful for detecting regime shifts that haven't crossed a raw threshold yet. The trading project computes these alongside the raw ratios.</p>
-<h2 id="term-structure-versus-the-vix-level">Term structure versus the VIX level<a class="headerlink" href="#term-structure-versus-the-vix-level" title="Permanent link">&para;</a></h2>
-<p>A common mistake: treating "VIX is high" and "VIX term structure is inverted" as the same signal. They're not.</p>
+<p>A large positive <span class="arithmatex">\(z\)</span> indicates the slope is unusually high relative to its trailing year, which can flag regime shifts before the raw threshold is crossed. The trading project computes these alongside the raw ratios.</p>
+<h2 id="term-structure-versus-vix-level">Term structure versus VIX level<a class="headerlink" href="#term-structure-versus-vix-level" title="Permanent link">&para;</a></h2>
+<p>A common conflation treats "VIX is high" and "VIX term structure is inverted" as equivalent signals. They are not:</p>
 <ul>
-<li>VIX high, contango: elevated vol that the market expects to persist (or even grow). Still "ordered."</li>
-<li>VIX high, inverted: acute short-term stress that the market expects to mean-revert. The <strong>shape</strong> says something the level doesn't.</li>
+<li>VIX high, contango: elevated volatility the market expects to persist or grow. Still ordered.</li>
+<li>VIX high, inverted: acute short-term stress the market expects to mean-revert. The shape carries information distinct from the level.</li>
 </ul>
-<p>In practice, both pieces of information matter. The regime classifier in this project uses the shape (inversion) as one trigger for <code>vol_inverted</code> regime; the level is not explicitly a trigger, though it indirectly affects sizing in any strategy that scales positions by vol.</p>
-<h2 id="the-shape-of-the-full-surface">The shape of the full surface<a class="headerlink" href="#the-shape-of-the-full-surface" title="Permanent link">&para;</a></h2>
-<p>Term structure is one axis of the implied-vol surface. The other is strike — IV varies across strikes at a single expiry, too. That's <a href="../skew/">skew</a>, covered in the next lesson. Both axes are "deviations from Black-Scholes's constant-σ assumption," and both are tradable. Dispersion trading, calendar spreads, skew trades, volatility carry strategies — all are expressions of one of these two shapes.</p>
-<p>For this project's purposes, the single signal being consumed from term structure is <strong>the two slopes and their inversion flag</strong>. That's it. The richness of the full surface is real, but the regime classifier is intentionally simple — one number from term structure, one from skew, one from dealer gamma.</p>
-<h2 id="what-you-can-now-reason-about">What you can now reason about<a class="headerlink" href="#what-you-can-now-reason-about" title="Permanent link">&para;</a></h2>
+<p>Both observations matter in practice. The regime classifier uses shape (inversion) as a trigger for the <code>vol_inverted</code> regime; level is not an explicit trigger but indirectly affects position sizing in any strategy that scales by vol.</p>
+<h2 id="the-full-surface">The full surface<a class="headerlink" href="#the-full-surface" title="Permanent link">&para;</a></h2>
+<p>Term structure is one axis of the implied-volatility surface. The other is strike — IV also varies across strikes at a single expiry. That axis is <a href="../skew/">skew</a>, covered in the next lesson. Both are departures from the Black-Scholes constant-<span class="arithmatex">\(\sigma\)</span> assumption, and both are tradable. Dispersion trading, calendar spreads, skew trades, and volatility-carry strategies are expressions of one of these two shapes.</p>
+<p>The trading project consumes two summary statistics from term structure: the two slopes and their inversion flag. The full surface contains additional information, but the regime classifier is intentionally simple, using one scalar from term structure, one from skew, and one from dealer gamma.</p>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>The reader can now reason about:</p>
 <ul>
-<li>Why a single "IV" number hides a full surface's worth of structure, and why the slope of that surface across expiries can be the signal even when the level isn't.</li>
-<li>What "contango" and "backwardation" mean in vol terms, and why backwardation is a short-gamma / high-realized-vol regime marker.</li>
-<li>Why thresholds like 1.02 appear instead of 1.0 in regime rules — noise tolerance is a calibration decision, not a theoretical one.</li>
+<li>Why a single "IV" number conceals surface structure, and why slope across expiries can carry the signal when the level does not.</li>
+<li>What contango and backwardation mean in volatility terms, and why backwardation correlates with short-gamma and high-realized-volatility regimes.</li>
+<li>Why thresholds such as 1.02 appear in regime rules instead of 1.0: noise tolerance is a calibration decision, not a theoretical boundary.</li>
 </ul>
 <h2 id="implemented-at">Implemented at<a class="headerlink" href="#implemented-at" title="Permanent link">&para;</a></h2>
 <p><code>trading/packages/gex/src/gex/termstructure.py</code>:</p>

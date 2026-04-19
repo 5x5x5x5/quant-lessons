@@ -574,15 +574,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#reading-the-hockey-sticks" class="md-nav__link">
+  <a href="#composing-payoff-diagrams" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reading the hockey sticks
+        Composing payoff diagrams
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Reading the hockey sticks">
+    <nav class="md-nav" aria-label="Composing payoff diagrams">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -686,10 +686,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#a-model-free-sanity-check" class="md-nav__link">
+  <a href="#parity-as-a-data-integrity-check" class="md-nav__link">
     <span class="md-ellipsis">
       
-        A model-free sanity check
+        Parity as a data-integrity check
       
     </span>
   </a>
@@ -713,10 +713,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1691,15 +1691,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#reading-the-hockey-sticks" class="md-nav__link">
+  <a href="#composing-payoff-diagrams" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reading the hockey sticks
+        Composing payoff diagrams
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Reading the hockey sticks">
+    <nav class="md-nav" aria-label="Composing payoff diagrams">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1803,10 +1803,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#a-model-free-sanity-check" class="md-nav__link">
+  <a href="#parity-as-a-data-integrity-check" class="md-nav__link">
     <span class="md-ellipsis">
       
-        A model-free sanity check
+        Parity as a data-integrity check
       
     </span>
   </a>
@@ -1830,10 +1830,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1872,22 +1872,22 @@
 
 
 <h1 id="payoffs-and-put-call-parity">Payoffs and put-call parity<a class="headerlink" href="#payoffs-and-put-call-parity" title="Permanent link">&para;</a></h1>
-<p>Four atomic payoffs (long call, long put, short call, short put) compose into every structure on the options chain. Most of what looks complicated in an options trader's positions is a sum and difference of hockey sticks. Once you can read the diagram, you can read the trade.</p>
-<p>And one equation — put-call parity — glues all of it together. It relates the prices of calls, puts, the underlying, and cash in a way that must hold, <strong>regardless of any pricing model</strong>, or arbitrage exists.</p>
-<h2 id="reading-the-hockey-sticks">Reading the hockey sticks<a class="headerlink" href="#reading-the-hockey-sticks" title="Permanent link">&para;</a></h2>
-<p>Start with the four single-leg payoffs from <a href="../contracts/">the previous lesson</a>. At expiry, as a function of terminal price <span class="arithmatex">\(S_T\)</span>:</p>
+<p>Four atomic payoffs (long call, long put, short call, short put) compose into every structure on the options chain. Most complex-looking options positions are sums and differences of these four hockey-stick shapes.</p>
+<p>One equation — put-call parity — relates the prices of calls, puts, the underlying, and cash. It holds regardless of the pricing model; any violation implies an arbitrage opportunity.</p>
+<h2 id="composing-payoff-diagrams">Composing payoff diagrams<a class="headerlink" href="#composing-payoff-diagrams" title="Permanent link">&para;</a></h2>
+<p>The four single-leg payoffs from <a href="../contracts/">the previous lesson</a>, at expiry as a function of terminal price <span class="arithmatex">\(S_T\)</span>:</p>
 <ul>
 <li>Long call: <span class="arithmatex">\(\max(S_T - K, 0) - c\)</span> (subtract premium paid)</li>
 <li>Long put: <span class="arithmatex">\(\max(K - S_T, 0) - p\)</span></li>
-<li>Short call: <span class="arithmatex">\(c - \max(S_T - K, 0)\)</span> (collect premium, owe payoff)</li>
+<li>Short call: <span class="arithmatex">\(c - \max(S_T - K, 0)\)</span></li>
 <li>Short put: <span class="arithmatex">\(p - \max(K - S_T, 0)\)</span></li>
 </ul>
-<p>Now <strong>combine</strong>. Every combination payoff is a linear sum of these four shapes. Adding payoff diagrams graphically is the fastest way to see what a position does.</p>
+<p>Every combination payoff is a linear sum of these four shapes. Graphical addition of payoff diagrams is typically the fastest way to characterize a position.</p>
 <h3 id="bull-call-spread-long-k_1-call-short-k_2-call-k_1-k_2">Bull call spread (long <span class="arithmatex">\(K_1\)</span> call + short <span class="arithmatex">\(K_2\)</span> call, <span class="arithmatex">\(K_1 &lt; K_2\)</span>)<a class="headerlink" href="#bull-call-spread-long-k_1-call-short-k_2-call-k_1-k_2" title="Permanent link">&para;</a></h3>
 <div class="arithmatex">\[
 \text{Payoff} = \max(S_T - K_1, 0) - \max(S_T - K_2, 0).
 \]</div>
-<p>Evaluate piecewise:</p>
+<p>Evaluating piecewise:</p>
 <table>
 <thead>
 <tr>
@@ -1910,37 +1910,37 @@
 </tr>
 </tbody>
 </table>
-<p>A capped bullish position. Maximum profit is <span class="arithmatex">\(K_2 - K_1\)</span> minus net premium paid, reached if <span class="arithmatex">\(S_T \ge K_2\)</span>. Maximum loss is the net premium. The trade: you give up the unlimited upside of a naked long call in exchange for cheaper entry.</p>
+<p>The bull call spread is a bullish position with capped upside. Maximum profit is <span class="arithmatex">\(K_2 - K_1\)</span> minus net premium paid, reached when <span class="arithmatex">\(S_T \ge K_2\)</span>. Maximum loss is the net premium. The structure exchanges unlimited upside for a lower entry cost than a naked long call.</p>
 <h3 id="long-straddle-long-k-call-long-k-put">Long straddle (long <span class="arithmatex">\(K\)</span> call + long <span class="arithmatex">\(K\)</span> put)<a class="headerlink" href="#long-straddle-long-k-call-long-k-put" title="Permanent link">&para;</a></h3>
 <div class="arithmatex">\[
 \text{Payoff} = \max(S_T - K, 0) + \max(K - S_T, 0) = |S_T - K|.
 \]</div>
-<p>A V-shape centered at <span class="arithmatex">\(K\)</span>. The position is profitable when <span class="arithmatex">\(|S_T - K|\)</span> exceeds the combined premium paid. Long straddles are <strong>long volatility</strong> bets — you don't care which direction, only that the move is big enough. You are buying convexity.</p>
+<p>A V-shape centered at <span class="arithmatex">\(K\)</span>. The position is profitable when <span class="arithmatex">\(|S_T - K|\)</span> exceeds the combined premium paid. Long straddles are long-volatility positions: direction is irrelevant, provided the move is large enough. The position expresses a bet on convexity.</p>
 <h3 id="long-strangle-long-k_1-put-long-k_2-call-k_1-k_2">Long strangle (long <span class="arithmatex">\(K_1\)</span> put + long <span class="arithmatex">\(K_2\)</span> call, <span class="arithmatex">\(K_1 &lt; K_2\)</span>)<a class="headerlink" href="#long-strangle-long-k_1-put-long-k_2-call-k_1-k_2" title="Permanent link">&para;</a></h3>
-<p>Same intuition as a straddle, but with wider strikes. Cheaper (both legs are OTM when <span class="arithmatex">\(S_0 \in (K_1, K_2)\)</span>) but requires a bigger move. You pay less for less sensitivity to small moves, in exchange for a wider "dead zone" around the current price.</p>
+<p>Similar to a straddle but with wider strikes. Lower premium (both legs are OTM when <span class="arithmatex">\(S_0 \in (K_1, K_2)\)</span>), at the cost of requiring a larger move to become profitable. The structure trades reduced sensitivity to small moves for a wider region of zero payoff around the current price.</p>
 <h3 id="risk-reversal-long-k_texthigh-call-short-k_textlow-put">Risk reversal (long <span class="arithmatex">\(K_\text{high}\)</span> call + short <span class="arithmatex">\(K_\text{low}\)</span> put)<a class="headerlink" href="#risk-reversal-long-k_texthigh-call-short-k_textlow-put" title="Permanent link">&para;</a></h3>
-<p>A payoff that slopes upward through the entire price range — effectively synthetic long exposure, minus the middle. Traders use risk reversals to express directional views while capturing skew: on equity indices, the call premium is usually cheaper than the put premium at equidistant deltas (because <a href="../../vol-surface/skew/">skew</a> makes OTM puts expensive), so a long call / short put risk reversal is often close to zero net premium. The equivalent stock position has the same expected P&amp;L but ties up more capital.</p>
+<p>A payoff sloping upward across the entire price range — effectively synthetic long exposure with a flat region in the middle. Risk reversals express directional views while monetizing skew: on equity indices, call premium at a given delta is typically lower than put premium at the equidistant delta (because <a href="../../vol-surface/skew/">skew</a> makes OTM puts expensive), so a long call / short put risk reversal often has near-zero net premium. The equivalent stock position has similar expected P&amp;L but requires more capital.</p>
 <p>All four together:</p>
 <p><img alt="Composite payoff diagrams — bull call spread, long straddle, long strangle, risk reversal. Strikes marked with dashed gray lines." loading="lazy" src="../../assets/figures/payoffs_composite.png" /></p>
 <p>These are a starting set. Butterflies, iron condors, calendar spreads, diagonals — all compose from the same four atoms. If you can graph long call and short call, you can graph anything.</p>
 <h2 id="put-call-parity-the-model-free-equation">Put-call parity — the model-free equation<a class="headerlink" href="#put-call-parity-the-model-free-equation" title="Permanent link">&para;</a></h2>
-<p>Now the equation. It says: the prices of a call and a put struck at the same <span class="arithmatex">\(K\)</span> and expiring at the same <span class="arithmatex">\(T\)</span> are not free parameters. They are linked to the underlying's price and to the cost of cash.</p>
+<p>The prices of a call and a put struck at the same <span class="arithmatex">\(K\)</span> and expiring at the same <span class="arithmatex">\(T\)</span> are not free parameters. They are linked to the underlying's price and to the cost of cash:</p>
 <div class="arithmatex">\[
 C - P = S - K e^{-rT}.
 \]</div>
-<p>Here <span class="arithmatex">\(C\)</span> is the call price, <span class="arithmatex">\(P\)</span> the put price, <span class="arithmatex">\(S\)</span> the current underlying price, <span class="arithmatex">\(r\)</span> the risk-free rate, and <span class="arithmatex">\(T\)</span> the time to expiry. <span class="arithmatex">\(K e^{-rT}\)</span> is the present value of the strike (cash discounted at the risk-free rate).</p>
-<p>Two things to note before the derivation:</p>
+<p>Here <span class="arithmatex">\(C\)</span> is the call price, <span class="arithmatex">\(P\)</span> the put price, <span class="arithmatex">\(S\)</span> the current underlying price, <span class="arithmatex">\(r\)</span> the risk-free rate, and <span class="arithmatex">\(T\)</span> the time to expiry. <span class="arithmatex">\(K e^{-rT}\)</span> is the present value of the strike — cash discounted at the risk-free rate.</p>
+<p>Two points before the derivation:</p>
 <ol>
-<li><strong>This is not Black-Scholes.</strong> It does not assume GBM, log-normality, constant volatility, or any particular model of how <span class="arithmatex">\(S\)</span> evolves. It assumes only that arbitrage opportunities are eliminated by traders.</li>
-<li><strong>It holds for European options.</strong> American options can deviate slightly because of early exercise, but the deviation is usually tiny for non-dividend-paying stocks.</li>
+<li>This identity is not Black-Scholes. It does not assume GBM, log-normality, constant volatility, or any particular process for <span class="arithmatex">\(S\)</span>. It assumes only that arbitrage opportunities are eliminated by market participants.</li>
+<li>It holds for European options. American options can deviate slightly due to early exercise, but the deviation is typically small for non-dividend-paying stocks.</li>
 </ol>
 <h3 id="derivation-by-no-arbitrage">Derivation by no-arbitrage<a class="headerlink" href="#derivation-by-no-arbitrage" title="Permanent link">&para;</a></h3>
 <p>Consider two portfolios at time <span class="arithmatex">\(t = 0\)</span>:</p>
 <ul>
-<li><strong>Portfolio A:</strong> long one call + short one put, both at strike <span class="arithmatex">\(K\)</span> and expiry <span class="arithmatex">\(T\)</span>. Net price today: <span class="arithmatex">\(C - P\)</span>.</li>
-<li><strong>Portfolio B:</strong> long one unit of the underlying + short <span class="arithmatex">\(K e^{-rT}\)</span> dollars of cash (i.e., borrow <span class="arithmatex">\(K e^{-rT}\)</span> at rate <span class="arithmatex">\(r\)</span>, repay <span class="arithmatex">\(K\)</span> at <span class="arithmatex">\(T\)</span>). Net price today: <span class="arithmatex">\(S - K e^{-rT}\)</span>.</li>
+<li><strong>Portfolio A:</strong> long one call plus short one put, both at strike <span class="arithmatex">\(K\)</span> and expiry <span class="arithmatex">\(T\)</span>. Net price today: <span class="arithmatex">\(C - P\)</span>.</li>
+<li><strong>Portfolio B:</strong> long one unit of the underlying plus short <span class="arithmatex">\(K e^{-rT}\)</span> dollars of cash (borrow <span class="arithmatex">\(K e^{-rT}\)</span> at rate <span class="arithmatex">\(r\)</span>, repay <span class="arithmatex">\(K\)</span> at <span class="arithmatex">\(T\)</span>). Net price today: <span class="arithmatex">\(S - K e^{-rT}\)</span>.</li>
 </ul>
-<p>At expiry, evaluate each portfolio:</p>
+<p>At expiry:</p>
 <p><strong>Portfolio A at <span class="arithmatex">\(T\)</span>:</strong> The call pays <span class="arithmatex">\(\max(S_T - K, 0)\)</span>; the short put pays <span class="arithmatex">\(-\max(K - S_T, 0)\)</span>. Their sum is:</p>
 <table>
 <thead>
@@ -1972,47 +1972,48 @@ C - P = S - K e^{-rT}.
 </tr>
 </tbody>
 </table>
-<p>Portfolio A pays exactly <span class="arithmatex">\(S_T - K\)</span> at expiry, <strong>for every <span class="arithmatex">\(S_T\)</span></strong>.</p>
-<p><strong>Portfolio B at <span class="arithmatex">\(T\)</span>:</strong> The underlying is worth <span class="arithmatex">\(S_T\)</span>; the borrowed cash is repaid at <span class="arithmatex">\(K\)</span>. Net: <span class="arithmatex">\(S_T - K\)</span>.</p>
-<p>Both portfolios pay the same amount at every terminal state. If they paid the same at every state and had different prices today, you could short the expensive one, buy the cheap one, and lock in a riskless profit. No-arbitrage demands equal prices today:</p>
+<p>Portfolio A pays exactly <span class="arithmatex">\(S_T - K\)</span> at expiry for every value of <span class="arithmatex">\(S_T\)</span>.</p>
+<p><strong>Portfolio B at <span class="arithmatex">\(T\)</span>:</strong> The underlying is worth <span class="arithmatex">\(S_T\)</span>; the borrowed cash is repaid at <span class="arithmatex">\(K\)</span>. The net is <span class="arithmatex">\(S_T - K\)</span>.</p>
+<p>Both portfolios pay the same amount in every terminal state. If they paid the same in every state and had different prices today, shorting the more expensive and buying the cheaper would lock in a riskless profit. No-arbitrage therefore requires:</p>
 <div class="arithmatex">\[
 C - P = S - K e^{-rT}.
 \]</div>
-<p>That's the entire derivation. No distributional assumption, no hedging argument, no stochastic calculus. Two portfolios with identical payoffs must have identical prices.</p>
+<p>The derivation uses no distributional assumption, no hedging argument, and no stochastic calculus. Two portfolios with identical payoffs must have identical prices.</p>
 <h2 id="what-parity-gives-you">What parity gives you<a class="headerlink" href="#what-parity-gives-you" title="Permanent link">&para;</a></h2>
 <h3 id="synthetic-positions">Synthetic positions<a class="headerlink" href="#synthetic-positions" title="Permanent link">&para;</a></h3>
-<p>Rearranging parity, you can synthesize any one of the four instruments from the other three:</p>
+<p>Rearranging parity allows synthesizing any one of the four instruments from the other three:</p>
 <div class="arithmatex">\[
 \text{Long stock} = C - P + K e^{-rT}.
 \]</div>
-<p>A long call + short put + cash of <span class="arithmatex">\(K e^{-rT}\)</span> is the same economic exposure as a long stock position — same P&amp;L in every state. This is how prop desks replicate stock exposure with options when capital efficiency or margin rules favor it.</p>
+<p>A long call plus short put plus <span class="arithmatex">\(K e^{-rT}\)</span> in cash provides the same economic exposure as a long stock position, with matching P&amp;L in every state. Institutional desks use this construction to replicate stock exposure through options when capital efficiency or margin rules favor it.</p>
 <p>Similarly:</p>
 <div class="arithmatex">\[
 C = P + S - K e^{-rT}, \qquad P = C - S + K e^{-rT}.
 \]</div>
-<p>A call is synthetically replicated by a put plus stock minus cash; a put by a call minus stock plus cash. If you only quote calls, you still know what puts must cost.</p>
-<h3 id="a-model-free-sanity-check">A model-free sanity check<a class="headerlink" href="#a-model-free-sanity-check" title="Permanent link">&para;</a></h3>
-<p>When a put-call-parity violation shows up in real data, one of three things is happening:</p>
+<p>A call is synthetically replicated by a put plus stock minus cash; a put is replicated analogously. Given only call quotes, the put prices are determined.</p>
+<h3 id="parity-as-a-data-integrity-check">Parity as a data-integrity check<a class="headerlink" href="#parity-as-a-data-integrity-check" title="Permanent link">&para;</a></h3>
+<p>Parity violations in real data typically indicate one of three conditions:</p>
 <ol>
-<li>Your data is wrong (stale prices, one side from close, the other from last trade).</li>
-<li>There are frictions not in the equation (hard-to-borrow fees for shorting the stock, early-exercise premium on American options, dividends not accounted for).</li>
-<li>It's a genuine arbitrage — rare, fleeting, and immediately arbed out by market makers.</li>
+<li>Data errors (stale prices, one side from market close, the other from last trade).</li>
+<li>Frictions not represented in the equation (hard-to-borrow fees on short stock, early-exercise premium on American options, unaccounted dividends).</li>
+<li>Genuine arbitrage — rare, short-lived, and typically eliminated quickly by market makers.</li>
 </ol>
-<p>In practice, running the parity equation across your data catches more data bugs than arbitrage opportunities. Use it as a debugging tool as much as a trading one.</p>
+<p>In practice, the parity equation catches more data errors than arbitrage opportunities. It serves as both a sanity check and a debugging tool.</p>
 <h3 id="dividends">Dividends<a class="headerlink" href="#dividends" title="Permanent link">&para;</a></h3>
-<p>If the underlying pays a dividend <span class="arithmatex">\(D\)</span> with present value <span class="arithmatex">\(D_0 = \sum_i d_i e^{-r t_i}\)</span> before expiry, parity shifts to:</p>
+<p>If the underlying pays dividends with total present value <span class="arithmatex">\(D_0 = \sum_i d_i e^{-r t_i}\)</span> before expiry, parity becomes:</p>
 <div class="arithmatex">\[
 C - P = S - D_0 - K e^{-rT}.
 \]</div>
-<p>The long-stock portfolio collects dividends over the contract's life; the call-plus-put synthetic does not. Subtracting the present value of dividends corrects for that flow.</p>
-<h2 id="what-you-can-now-reason-about">What you can now reason about<a class="headerlink" href="#what-you-can-now-reason-about" title="Permanent link">&para;</a></h2>
+<p>The long-stock portfolio collects dividends over the contract's life; the synthetic long (calls minus puts) does not. Subtracting the present value of dividends corrects for this flow.</p>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>The reader can now reason about:</p>
 <ul>
-<li>Why options positions decompose into sums of hockey sticks — and how to read any strategy diagram by inspection.</li>
-<li>How to synthesize a long stock position from a call, a put, and cash — and why a prop desk might prefer the synthetic.</li>
-<li>The model-free status of put-call parity, and why you should run it as a sanity check on any options dataset you touch.</li>
+<li>How options positions decompose into sums of single-leg payoffs and how to characterize any strategy diagram by inspection.</li>
+<li>How to synthesize a long stock position from a call, a put, and cash, and why institutional desks sometimes prefer the synthetic.</li>
+<li>The model-free status of put-call parity and its role as a sanity check on options datasets.</li>
 </ul>
 <h2 id="implemented-at">Implemented at<a class="headerlink" href="#implemented-at" title="Permanent link">&para;</a></h2>
-<p>Put-call parity is not an algorithm in the trading project — it's an invariant. If you read a chain from <code>trading/packages/gex/src/gex/data/options.py</code> (the <code>YFinanceChainSource</code> or <code>PolygonChainSource</code>), you can compute <span class="arithmatex">\(C - P - S + K e^{-rT}\)</span> for each strike and confirm it's approximately zero. When it isn't, you have a data issue, not a signal. Sensible first-check in any gex-pipeline debugging session.</p>
+<p>Put-call parity is not an algorithm in the trading project; it is an invariant. Given a chain from <code>trading/packages/gex/src/gex/data/options.py</code> (the <code>YFinanceChainSource</code> or <code>PolygonChainSource</code>), computing <span class="arithmatex">\(C - P - S + K e^{-rT}\)</span> for each strike should yield values near zero. Deviations indicate data issues rather than signals. This check is a reasonable first step in debugging the GEX pipeline.</p>
 <hr />
 <p><strong>Next:</strong> <a href="../black-scholes/">Black-Scholes as a bridge →</a></p>
 
