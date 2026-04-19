@@ -4,7 +4,7 @@ title: Quant Lessons
 
 # Quant Lessons
 
-A curriculum that builds from first principles to the primitives that power the [trading project](https://github.com/5x5x5x5/trading). Each lesson arrives at something concrete — a metric, an instrument, or a specific piece of code you can open and run.
+A curriculum that builds from first principles to the primitives used in the [trading project](https://github.com/5x5x5x5/trading). Each lesson concludes with a concrete artifact: a metric, an instrument, or a specific piece of code in the repository.
 
 ## The arc
 
@@ -21,6 +21,6 @@ A curriculum that builds from first principles to the primitives that power the 
 
 Calculus and basic probability. No options background assumed. No measure theory needed.
 
-## How each lesson is shaped
+## Lesson structure
 
-Every lesson closes with a pointer into the [trading](https://github.com/5x5x5x5/trading) repo — *"implemented at `packages/...`"* — so the concept has somewhere concrete to land. Start with [Lesson 1 →](measurable/returns.md).
+Every lesson closes with a reference into the [trading](https://github.com/5x5x5x5/trading) repository — *"implemented at `packages/...`"* — linking the concept to a concrete implementation. Begin with [Lesson 1 →](measurable/returns.md).

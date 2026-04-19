@@ -7,7 +7,7 @@ code_ref: "trading/packages/afml/src/afml/labeling.py:41 — rolling_vol"
 
 # Volatility as a measurable thing
 
-Ask a trader what the market did today and you'll often hear two numbers: how much it moved, and how *wiggly* the path was. The first is return. The second is volatility. Volatility is not "how much the price changed" — it's "how spread out the changes were."
+A market's daily activity can be described by two numbers: the total move and the dispersion of that move across the session. The first is return; the second is volatility. Volatility measures the variability of returns, not the magnitude of the final price change.
 
 Formally, **volatility is the standard deviation of returns**:
 
@@ -15,72 +15,72 @@ $$
 \sigma = \sqrt{\mathbb{E}\!\left[(r_t - \bar r)^2\right]}.
 $$
 
-This is the one number that appears in every risk metric you will compute, every option you will price, and every vol-scaled label you will generate. Getting it right matters.
+This quantity appears in every risk metric, every option pricing formula, and every volatility-scaled label in the remainder of the curriculum.
 
-## Realized vs implied
+## Realized versus implied volatility
 
-Two entirely different things share the word "volatility":
+Two distinct quantities share the name "volatility":
 
-- **Realized volatility** is what we just defined — the std of observed returns. Computable from price history alone.
-- **Implied volatility** is the $\sigma$ you back out of an option's market price by inverting Black-Scholes. It's a forecast — the market's guess about *future* realized vol — not a measurement.
+- **Realized volatility** — the standard deviation of observed returns, computable from price history alone.
+- **Implied volatility** — the $\sigma$ extracted from an option's market price by inverting Black-Scholes. This is a forecast of future realized volatility, not a measurement of past prices.
 
-This lesson is about realized vol. Implied vol gets its own part of the curriculum ([Part 4](../vol-surface/implied-vol.md)); the two diverge in important ways and conflating them will make most of what you read about options confusing.
+This lesson addresses realized volatility. Implied volatility is covered in [Part 4](../vol-surface/implied-vol.md). The two differ in important ways, and conflating them leads to confusion when reading options-market commentary.
 
-## Sample std vs exponentially weighted std
+## Sample standard deviation versus exponentially weighted
 
-Given $n$ recent returns, the textbook **sample standard deviation** weights every observation equally:
+Given $n$ recent returns, the sample standard deviation weights every observation equally:
 
 $$
 \hat\sigma^2 = \frac{1}{n - 1} \sum_{t=1}^{n} (r_t - \bar r)^2.
 $$
 
-Equal weighting is wrong for markets. A return from yesterday is much more relevant to today's risk than a return from 100 days ago, but a sample std window of 100 days treats them as identical. When the regime shifts — February 2020, March 2023, any Fed day — a flat-weighted vol estimator takes its full window to "see" the change. By the time the estimate has moved, the information is stale.
+Equal weighting is suboptimal for financial time series. A return from yesterday is typically more relevant to today's risk than a return from 100 days ago, but a sample std over a 100-day window treats them as identical. When a regime shift occurs, a flat-weighted estimator requires its full window to incorporate the change, and by then the estimate is stale relative to current conditions.
 
-The **exponentially-weighted moving (EWM) std** fixes this by giving recent observations more weight:
+The **exponentially-weighted moving (EWM) standard deviation** addresses this by weighting recent observations more heavily:
 
 $$
 \hat\sigma^2_t = (1 - \alpha)\, \hat\sigma^2_{t-1} + \alpha\, (r_t - \mu_t)^2,
 \quad \alpha = \frac{2}{\text{span} + 1}.
 $$
 
-At `span=100`, today's squared deviation contributes about 2% and the weight decays geometrically backward. A regime shift propagates into the estimate almost immediately instead of being averaged out over a full window. The `span` parameter is the EWM equivalent of a rolling-window length; the conversion to $\alpha$ above is a pandas/polars convention.
+With `span=100`, the current squared deviation contributes approximately 2% of the estimate, and weights decay geometrically backward. Regime shifts propagate into the estimate rapidly rather than being averaged across a long window. The `span` parameter is the EWM analogue of a rolling-window length; the conversion to $\alpha$ follows pandas and polars conventions.
 
-## Annualization: why $\sqrt{T}$?
+## Annualization and the $\sqrt{T}$ rule
 
-You usually care about annual vol (20% is "SPY in a normal year") but compute daily vol directly. The rule you hear quoted is:
+Annual volatility is typically the reporting convention (20% is representative for SPY in a normal year), even though daily data is the computed input. The standard conversion is:
 
 $$
 \sigma_\text{annual} = \sigma_\text{daily} \cdot \sqrt{252}.
 $$
 
-Where does the square root come from? If daily returns are iid, the variance of the $T$-day cumulative return is $T$ times the daily variance (variance adds under independence). Volatility, being the square root of variance, scales as $\sqrt{T}$. That gives the `252` for U.S. equities (trading days per year).
+The derivation follows from two assumptions: if daily returns are iid, the variance of the $T$-day cumulative return equals $T$ times the daily variance (variance is additive under independence). Volatility, being the square root of variance, scales as $\sqrt{T}$. The factor 252 reflects U.S. equity trading days per year.
 
-**The assumption is wrong in two ways**, and you should know where:
+This derivation relies on two assumptions that are empirically violated:
 
-1. **Returns are not iid.** Markets exhibit volatility clustering: quiet periods and stressed periods group together (ARCH, GARCH effects). The daily variance is time-varying, which breaks the "variance adds" argument.
-2. **Returns are not independent across time.** Intraday, they are weakly negatively autocorrelated (mean reversion on short horizons); over multi-month horizons, a small positive autocorrelation shows up in some regimes. Real variance of $T$-day cumulative return is *not* exactly $T \cdot \sigma^2_\text{daily}$.
+1. **Returns are not iid.** Markets exhibit volatility clustering: quiet periods and stressed periods group together (ARCH and GARCH effects). Daily variance is time-varying, which breaks the additivity argument.
+2. **Returns are not serially independent.** Intraday returns show weak negative autocorrelation (short-horizon mean reversion); at longer horizons, small positive autocorrelation appears in some regimes. The true variance of a $T$-day cumulative return is therefore not exactly $T \cdot \sigma^2_\text{daily}$.
 
-For daily frequencies and modestly long horizons, $\sqrt{T}$ is close enough that nobody bothers correcting. For monthly-to-annual, or for regime-switching strategies, the error matters.
+For daily frequencies and moderate horizons, the $\sqrt{T}$ approximation is accurate enough that corrections are rarely applied in practice. For monthly-to-annual horizons and for regime-switching strategies, the approximation error becomes material.
 
-## Volatility clustering — the stylized fact
+## Volatility clustering
 
-One empirical observation shapes almost every model you'll meet downstream: **big moves follow big moves, and calm follows calm**. Volatility is itself serially correlated even when returns aren't. A random-walk null can't produce this pattern; GARCH-family models exist specifically to capture it.
+An empirical regularity that shapes most downstream models: large moves are followed by large moves, and calm periods are followed by calm periods. Volatility is serially correlated even when returns are not. A random-walk null model cannot reproduce this pattern, which motivated the GARCH family of models.
 
-Practical consequence: when realized vol spikes, your probability of another big move tomorrow is elevated. Strategies that ignore this produce backtests that look smoother than live trading, because stress episodes get averaged into calm ones during training.
+A practical consequence: when realized volatility spikes, the probability of another large move on the following day is elevated. Strategies that ignore clustering produce backtests that appear smoother than live trading, because stress episodes are averaged into calm ones during training.
 
 ## A concrete example
 
-SPY daily returns, 2020 calendar year:
+SPY daily returns during the 2020 calendar year:
 
-- Full-year sample std of arithmetic returns: ~2.1% per day → annualized ~33%.
-- EWM (`span=100`) std through March 2020: peaks near ~5% per day → annualized ~80%.
-- EWM through December 2020: ~0.8% per day → annualized ~13%.
+- Full-year sample std of arithmetic returns: approximately 2.1% per day (annualized approximately 33%).
+- EWM (`span=100`) std through March 2020: peaked near 5% per day (annualized approximately 80%).
+- EWM through December 2020: approximately 0.8% per day (annualized approximately 13%).
 
-The full-year sample std is the average of those regimes. If you're sizing a position based on "current" risk, the average is the wrong number — you want the EWM.
+The full-year sample std is an average across these regimes. For position sizing based on current risk conditions, the EWM is the appropriate estimator.
 
-## What the trading project actually uses
+## Convention used in the trading project
 
-The triple-barrier labeling pipeline computes a per-event vol target that the barriers are calibrated against. It does so with an EWM std of **arithmetic** returns:
+The triple-barrier labeling pipeline computes a per-event vol target that the barriers are calibrated against. It uses an EWM standard deviation of arithmetic returns:
 
 ```python
 def rolling_vol(prices: pl.Series, span: int = 100) -> pl.Series:
@@ -88,20 +88,22 @@ def rolling_vol(prices: pl.Series, span: int = 100) -> pl.Series:
     return returns.ewm_std(span=span)
 ```
 
-Two choices encoded here:
+Two design choices are encoded:
 
-- **EWM, not sample.** The project is explicitly willing to let recent data dominate. This keeps barrier thresholds adaptive: a 2σ barrier in 2017 is a smaller dollar amount than a 2σ barrier in March 2020, by design.
-- **Arithmetic, not log.** As covered in [the previous lesson](returns.md), barriers compare `p_t / p_0 - 1` against `mult * sigma`; both must be in arithmetic-return units or the thresholds don't mean what they claim.
+- **EWM rather than sample.** Recent data is intentionally given more weight. This keeps barrier thresholds adaptive: a 2σ barrier in 2017 represents a smaller dollar move than a 2σ barrier in March 2020.
+- **Arithmetic rather than log.** As covered in [the previous lesson](returns.md), barriers compare `p_t / p_0 - 1` against `mult * sigma`, requiring both quantities to be expressed in arithmetic-return units.
 
-## What you can now reason about
+## Summary
 
-- Why a strategy's live Sharpe often looks different from its backtest Sharpe even when nothing changed — vol regime shifted and sample std took weeks to catch up.
-- Why options traders care more about realized-vs-implied spreads than the level of either — vol is a *forecast* when implied, a *measurement* when realized, and they tell different stories.
-- Why the $\sqrt{T}$ rule works well enough day-to-day but breaks in regimes you especially care about (post-spike backward projection, multi-month holding).
+The reader can now reason about:
+
+- Why a strategy's live Sharpe can differ from its backtest Sharpe when the volatility regime has shifted and a sample std estimator has not yet caught up.
+- Why options traders focus on realized-versus-implied spreads rather than absolute volatility levels: the two quantities carry different information (forecast versus measurement).
+- Why the $\sqrt{T}$ rule is accurate at daily horizons but breaks down for multi-month projections and post-spike regimes.
 
 ## Implemented at
 
-`trading/packages/afml/src/afml/labeling.py:41` — `rolling_vol(prices, span=100)`. EWM std of arithmetic returns; used by `apply_triple_barrier` on the same line 52 file to scale barrier thresholds per event. The docstring cites AFML ch. 3.1 to make the arithmetic-return choice explicit.
+`trading/packages/afml/src/afml/labeling.py:41` — `rolling_vol(prices, span=100)`. Computes the EWM standard deviation of arithmetic returns and is used by `apply_triple_barrier` (line 52 of the same file) to scale barrier thresholds per event. The docstring cites AFML ch. 3.1 to document the arithmetic-return convention.
 
 ---
 

@@ -7,47 +7,47 @@ code_ref: "trading/packages/afml/src/afml/labeling.py:41 — rolling_vol"
 
 # Returns, compounding, log-returns
 
-A stock goes from $100 to $102. You made two percent. That feeling is the **arithmetic return**:
+A stock that moves from $100 to $102 has produced a 2% gain. This is the **arithmetic return**:
 
 $$
 r_t = \frac{p_t - p_{t-1}}{p_{t-1}} = \frac{p_t}{p_{t-1}} - 1.
 $$
 
-It is honest for a single period. It breaks the instant you want to combine periods.
+Arithmetic returns work well for a single period. They fail as soon as periods must be combined.
 
-## The problem with arithmetic returns
+## Limitations of arithmetic returns
 
-Suppose your stock gains 10% on Monday and loses 10% on Tuesday. Flat? No — you are at $100 \times 1.10 \times 0.90 = 99$. Arithmetic returns do not add; they **compound**. Over $n$ periods:
+A stock that gains 10% on Monday and loses 10% on Tuesday ends at $100 \times 1.10 \times 0.90 = 99$, not at the starting price. Arithmetic returns do not add; they **compound**. Over $n$ periods:
 
 $$
 p_n = p_0 \prod_{t=1}^{n} (1 + r_t).
 $$
 
-Products are clumsy. Worse, the *average* of arithmetic returns systematically overstates the long-run compounded return: the arithmetic mean is always at least the geometric mean, with equality only when every return is identical. (Jensen's inequality applied to $\log(1+r)$, if you want a name.) Report a strategy's mean daily return and you are already lying about its annualized performance.
+Multiplicative compounding is cumbersome. More importantly, the *average* of arithmetic returns systematically overstates the long-run compounded return: the arithmetic mean is always at least the geometric mean, with equality only when every return is identical (this is Jensen's inequality applied to $\log(1+r)$). Reporting a strategy's mean daily return without correction overstates annualized performance.
 
-## Log returns make the math clean
+## Log returns simplify the algebra
 
-Define the **log return** over one period:
+The **log return** over one period is defined as:
 
 $$
 \ell_t = \log\!\left(\frac{p_t}{p_{t-1}}\right) = \log p_t - \log p_{t-1}.
 $$
 
-Now multi-period compounding telescopes into **addition**:
+Under this definition, multi-period compounding reduces to addition:
 
 $$
 \log\frac{p_n}{p_0} = \sum_{t=1}^{n} \ell_t.
 $$
 
-Three wins:
+Three properties follow:
 
-1. **Additive across time.** The sum of daily log returns equals the total log return. Averages behave: the mean daily log return times $n$ is exactly the $n$-day log return (in expectation under iid, exactly in realization).
-2. **Symmetric.** A $+10\%$ log move is exactly reversed by a $-10\%$ log move. Arithmetic returns are not symmetric — a 10% gain followed by a 10% loss is a 1% net loss.
-3. **Closer to Gaussian.** Log prices under a geometric Brownian motion *are* Gaussian by construction. Real markets are not GBM, but log returns are closer to normal than arithmetic returns are, with thinner tails on the upside and fatter tails on the downside. Models that assume normality work less badly on logs.
+1. **Additive across time.** The sum of daily log returns equals the total log return. Averages are well-behaved: the mean daily log return times $n$ is the $n$-day log return (in expectation under iid assumptions, and exactly in realization).
+2. **Symmetric.** A $+10\%$ log move is exactly reversed by a $-10\%$ log move. Arithmetic returns are not symmetric — a 10% gain followed by a 10% loss yields a 1% net loss.
+3. **Closer to Gaussian.** Log prices under geometric Brownian motion are Gaussian by construction. Real markets deviate from GBM, but log returns are closer to normal than arithmetic returns are. Models that assume normality have smaller specification errors on log returns.
 
-## When the difference actually matters
+## Where the difference matters
 
-For small moves, $\log(1 + r) \approx r - r^2/2$, so log and arithmetic returns agree to first order. A 1% daily return gives $r = 0.01$ and $\ell \approx 0.00995$ — differing by 5 basis points out of 100.
+For small moves, $\log(1 + r) \approx r - r^2/2$, so log and arithmetic returns agree to first order. A 1% daily return gives $r = 0.01$ and $\ell \approx 0.00995$ — a difference of 5 basis points out of 100.
 
 The gap grows with move size:
 
@@ -58,23 +58,25 @@ The gap grows with move size:
 | $-10\%$       | $-10.54\%$ | 54 bp      |
 | $-30\%$       | $-35.67\%$ | 567 bp     |
 
-For daily bars in liquid markets, either convention gets you roughly the same intuition. For weekly or longer bars, for drawdown accounting, or for any nonlinear statistic (**volatility especially**, see the next lesson), use logs.
+For daily bars in liquid markets, the two conventions produce similar results. For weekly or longer bars, for drawdown accounting, and for nonlinear statistics (particularly volatility, covered in the next lesson), log returns are preferred.
 
-## What the trading project actually uses
+## Convention used in the trading project
 
-The [triple-barrier method](../ml/triple-barrier.md) in this project computes labels using arithmetic returns: `(p_t / p_0 - 1) * side`. That is the convention in AFML ch. 3.1, and it matches the way the barriers themselves are stated — as multiples of a rolling-vol target also computed from arithmetic returns. Keeping both in the same units is the point; mixing would quietly miscalibrate every label.
+The [triple-barrier method](../ml/triple-barrier.md) in this project computes labels using arithmetic returns: `(p_t / p_0 - 1) * side`. This follows AFML ch. 3.1 and matches how the barriers are stated — as multiples of a rolling-vol target also computed from arithmetic returns. Both quantities must be expressed in the same units to avoid miscalibration.
 
-This is a deliberate choice, not a bug. When you read the code, remember: **arithmetic returns everywhere inside the labeling pipeline, so barriers and vol compare in the same units**. Annualized performance metrics (Sharpe, Sortino) over a *series* of such returns are still close enough to the log-based versions to not distort, at daily horizon.
+When reading the code, note that arithmetic returns are used throughout the labeling pipeline so that barriers and vol share units. Annualized performance metrics (Sharpe, Sortino) computed over a series of such returns remain close to log-based versions at daily horizons.
 
-## What you can now reason about
+## Summary
 
-- Why a strategy's cumulative return is not the mean daily return times the number of days.
-- Why a paper reports Sharpe of 1.2 on log returns and you get 1.19 on arithmetic — same strategy, different unit convention.
-- Why options pricing (next part of this curriculum) assumes log-normal terminal prices, not normal.
+The reader can now reason about:
+
+- Why a strategy's cumulative return differs from the mean daily return times the number of days.
+- Why a Sharpe computed on log returns can differ from one computed on arithmetic returns, even for identical data.
+- Why options pricing models (covered in the next part) assume log-normal terminal prices rather than normal ones.
 
 ## Implemented at
 
-`trading/packages/afml/src/afml/labeling.py:41` — `rolling_vol(prices, span=100)` computes EWM std of arithmetic `pct_change` returns. The docstring cites AFML ch. 3.1 explicitly. The choice is load-bearing: downstream, `apply_triple_barrier` at line 52 compares `(p/p0 - 1)` against `mult * sigma`, so vol **must** be in arithmetic-return units or the thresholds will not mean what they claim.
+`trading/packages/afml/src/afml/labeling.py:41` — `rolling_vol(prices, span=100)` computes the EWM standard deviation of arithmetic `pct_change` returns. The docstring cites AFML ch. 3.1 explicitly. This choice is important: downstream, `apply_triple_barrier` at line 52 compares `(p/p0 - 1)` against `mult * sigma`, so vol must be expressed in arithmetic-return units for the thresholds to be consistent.
 
 ---
 
