@@ -924,6 +924,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market makers and delta-hedging
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -940,6 +958,113 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#who-sells-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who sells options?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-customer-preferred-flow-assumption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The customer-preferred flow assumption
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delta-hedging-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Delta-hedging in practice
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-hedging-flow-actually-looks-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the hedging flow actually looks like
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-index-options-matter-differently" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why index options matter differently
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-this-goes-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where this goes next
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you can now reason about
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implemented-at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implemented at
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1486,6 +1611,102 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#who-sells-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who sells options?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-customer-preferred-flow-assumption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The customer-preferred flow assumption
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delta-hedging-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Delta-hedging in practice
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-hedging-flow-actually-looks-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the hedging flow actually looks like
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-index-options-matter-differently" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why index options matter differently
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-this-goes-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where this goes next
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you can now reason about
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implemented-at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implemented at
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1505,17 +1726,56 @@
 
 
 <h1 id="market-makers-and-delta-hedging">Market makers and delta-hedging<a class="headerlink" href="#market-makers-and-delta-hedging" title="Permanent link">&para;</a></h1>
+<p>The GEX pipeline rests on a specific model of who sells options and how they manage the resulting risk. Get that model wrong and every downstream regime call is wrong — with the same magnitude, in the opposite direction. So it's worth being explicit.</p>
+<h2 id="who-sells-options">Who sells options?<a class="headerlink" href="#who-sells-options" title="Permanent link">&para;</a></h2>
+<p>When a retail trader buys a call, someone sells it. When a pension fund buys puts for downside protection, someone sells them. The aggregate seller across the entire options market is a loose collection of institutional participants, but the single dominant category is <strong>options market makers</strong>. Quantitative firms — Susquehanna, Citadel Securities, Optiver, IMC, and a handful of others — run the bulk of exchange-listed options flow.</p>
+<p>Market makers are liquidity providers. They quote two-sided markets (a bid and an ask) on tens of thousands of contracts simultaneously. Their business model is earning the bid-ask spread, not taking directional views. A market maker who accidentally became long SPX by a million delta-units of exposure would be doing their job wrong.</p>
+<p>This framing matters because it shapes how they hedge. A directional trader who buys a call is willing to be wrong — that's what taking a view means. A market maker who sells a call is <strong>obligated</strong> to neutralize the exposure they just acquired. They can't afford to be wrong; the position size across tens of thousands of contracts is too large, and their capital isn't set up for one-way risk.</p>
+<h2 id="the-customer-preferred-flow-assumption">The customer-preferred flow assumption<a class="headerlink" href="#the-customer-preferred-flow-assumption" title="Permanent link">&para;</a></h2>
+<p>The next assumption is less rigorous but empirically dominant:</p>
 <blockquote>
-<p><strong>Status:</strong> Draft pending.</p>
+<p><strong>Customers are net buyers of options on equity indices.</strong></p>
 </blockquote>
-<p><strong>Scope:</strong> Options market makers provide two-sided liquidity and take the other side of customer flow. They are not directional — they hedge. The dealer delta-hedging loop: sell a call → collect premium → short Δ shares → as <span class="arithmatex">\(S\)</span> moves, adjust delta → capture bid-ask spread, pay slippage. Introduce the sign convention used in this repo: <strong>dealers are short customer-preferred flow</strong> — short calls (customers net-long calls on indices), long puts (customers buy puts for hedging).</p>
-<p><strong>You'll be able to reason about:</strong></p>
+<p>Two threads support this. Retail and many institutional traders buy calls for leveraged upside exposure (lottery tickets, bullish plays, overwrite-hedging of underlying equity). Hedgers — pension funds, endowments, insurance companies, wealth managers — buy puts for downside protection on large equity books.</p>
+<p>On single names, the picture is messier. Covered-call overwriters are net sellers of calls (the classic "income" strategy). Earnings straddles are two-sided. Dealer positioning on individual tickers is genuinely ambiguous and depends on who holds the name.</p>
+<p>On indices (SPX, NDX, QQQ, SPY), the customer-net-buyer assumption is robust enough to encode in code. The trading project's <code>gex.py</code> assigns dealers <strong>short gamma on calls</strong> (<code>sign = -1</code> for C) and <strong>long gamma on puts</strong> (<code>sign = +1</code> for P). This is "dealers short customer-preferred flow" in signs. Flip the signs and you invert every regime call downstream.</p>
+<p>The package-level CLAUDE.md calls this out explicitly as the project's sign convention and flags that single-name applications should revisit it. This isn't a detail — it's a structural assumption that sits at the foundation of everything else in Part 5.</p>
+<h2 id="delta-hedging-in-practice">Delta-hedging in practice<a class="headerlink" href="#delta-hedging-in-practice" title="Permanent link">&para;</a></h2>
+<p>A market maker who has sold an SPY call with <span class="arithmatex">\(\Delta = 0.40\)</span> has gained <span class="arithmatex">\(-0.40\)</span> share-equivalents of exposure per share covered by the contract. For a 100-share contract, that's <span class="arithmatex">\(-40\)</span> shares. To neutralize, the MM buys 40 shares of SPY. Their portfolio is now:</p>
 <ul>
-<li>Why MM flow is dominant near key strikes at expiry — OI × gamma × spot² concentrates hedging demand.</li>
-<li>The distinction between <strong>customer flow</strong> and <strong>dealer flow</strong>, and why they push in opposite directions.</li>
-<li>Why single-name options have different dealer positioning than index options — customer flow skews differently (more covered-call overwriting, less put-hedging).</li>
+<li>Short 1 call (premium collected).</li>
+<li>Long 40 shares of SPY (purchased at the ask).</li>
+<li>First-order directional exposure: zero.</li>
 </ul>
-<p><strong>Implemented at:</strong> — (the convention is documented in <code>packages/gex/CLAUDE.md</code> and encoded in the sign of per-strike GEX aggregation.)</p>
+<p>What they earn: the option's time decay (theta) plus any bid-ask spread captured in the initial trade. What they still have: gamma risk (delta will change as <span class="arithmatex">\(S\)</span> moves), vega risk (the IV could shift), rho (small), and all the second-order Greeks.</p>
+<p><strong>Continuous rebalancing.</strong> As <span class="arithmatex">\(S\)</span> moves, the call's delta changes. Every move requires a hedge adjustment: a few more shares bought, a few sold. In practice, rebalancing happens at discrete intervals (every few minutes, or every significant move). The cumulative cost of rebalancing — bid-ask spread, slippage, opportunity cost — is real. Theoretical Black-Scholes assumes continuous rebalancing is free; real-world MMs build the cost into their quotes.</p>
+<h2 id="what-the-hedging-flow-actually-looks-like">What the hedging flow actually looks like<a class="headerlink" href="#what-the-hedging-flow-actually-looks-like" title="Permanent link">&para;</a></h2>
+<p>Suppose dealers are <strong>short calls</strong> (as assumed for indices). Call delta is positive. Dealers' hedge is to be long the underlying — they buy stock when they sell calls. As the stock rises, call delta rises (gamma), so dealers' hedge requirement grows — they must <strong>buy more stock</strong>. As the stock falls, call delta falls, and dealers reduce their hedge — they <strong>sell stock</strong>.</p>
+<p>Buying on the way up, selling on the way down. That's the short-gamma hedging signature: <strong>dealers are forced to trade in the direction of the move</strong>, amplifying it. Every upside move creates more upside pressure; every downside move creates more downside pressure. This is the mechanism behind "short gamma squeezes."</p>
+<p>Now flip. Suppose dealers are <strong>long calls</strong> (less common for indices, but possible if customer flow shifts). Call delta hedge is short stock. As the stock rises, the dealers' long-call delta grows, so their short-stock hedge grows — they <strong>sell stock on the way up</strong>. As it falls, they <strong>buy on the way down</strong>. Selling into strength, buying into weakness — trend-dampening, mean-reverting hedging.</p>
+<p>The same math produces the same two cases for puts. What matters is the sign of the aggregate dealer gamma position across all outstanding contracts, because every dealer has to hedge their total exposure, not one contract at a time.</p>
+<h2 id="why-index-options-matter-differently">Why index options matter differently<a class="headerlink" href="#why-index-options-matter-differently" title="Permanent link">&para;</a></h2>
+<p>Three reasons the index options market is where the regime story plays cleanly:</p>
+<ol>
+<li><strong>Scale.</strong> SPX and SPY options collectively carry billions of dollars in gamma. Dealer hedging flow is large enough to move the underlying index measurably.</li>
+<li><strong>Customer flow is directionally consistent.</strong> Net-long-options from hedgers and speculators on indices is well-established empirically.</li>
+<li><strong>The single-asset simplicity.</strong> SPX options trade against SPX futures and SPY shares — a relatively simple hedging universe. Single-name options might hedge with the ticker, the sector ETF, or a basket, and the hedging flow dilutes.</li>
+</ol>
+<p>The regime classifier applies cleanly to SPX and QQQ. The signs would need revisiting for single-name work, a point the package CLAUDE.md explicitly notes.</p>
+<h2 id="where-this-goes-next">Where this goes next<a class="headerlink" href="#where-this-goes-next" title="Permanent link">&para;</a></h2>
+<p>The next lesson puts numbers on the dealer gamma position — quantifying how much dealers are long or short at each strike, aggregating to a total, and showing what flows that aggregate implies. The lesson after that derives the <strong>gamma flip strike</strong> — the specific strike where the aggregate crosses zero, separating long-gamma and short-gamma regimes.</p>
+<p>By the end of Part 5, you'll be able to read a chain, compute total GEX, locate the flip, and name the regime — exactly what <code>classify_regime</code> in the code does from its gex/skew/term-structure inputs.</p>
+<h2 id="what-you-can-now-reason-about">What you can now reason about<a class="headerlink" href="#what-you-can-now-reason-about" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Why market makers are structurally different from directional traders — their business model requires delta-neutrality, which forces persistent hedging flow.</li>
+<li>The "dealers short customer-preferred flow" assumption and its scope: reliable on SPX/QQQ, ambiguous on single names, flip the signs for long-gamma customer regimes.</li>
+<li>Why short-gamma dealer positioning amplifies moves: hedging requires buying-into-strength and selling-into-weakness, which pushes the underlying in the same direction it's already moving.</li>
+</ul>
+<h2 id="implemented-at">Implemented at<a class="headerlink" href="#implemented-at" title="Permanent link">&para;</a></h2>
+<p>The sign convention lives in <code>trading/packages/gex/src/gex/gex.py:53</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">signs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">opt</span> <span class="o">==</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+</code></pre></div>
+<p>— dealer short calls (<code>-1</code>), dealer long puts (<code>+1</code>). This line is the encoding of the assumption in this lesson. Every downstream regime call is downstream of this one line. The package-level <code>CLAUDE.md</code> notes it explicitly as the sign convention to revisit for single-name applications.</p>
 <hr />
 <p><strong>Next:</strong> <a href="../dealer-gamma/">Dealer gamma — long vs short →</a></p>
 
