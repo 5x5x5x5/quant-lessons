@@ -1479,7 +1479,7 @@
   <a href="#market-profile-tpo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Market Profile / TPO
+        Market Profile (TPO)
       
     </span>
   </a>
@@ -1487,10 +1487,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-this-edge-is-durable" class="md-nav__link">
+  <a href="#sources-of-durable-edge" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why this edge is durable
+        Sources of durable edge
       
     </span>
   </a>
@@ -1520,10 +1520,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1687,7 +1687,7 @@
   <a href="#market-profile-tpo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Market Profile / TPO
+        Market Profile (TPO)
       
     </span>
   </a>
@@ -1695,10 +1695,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-this-edge-is-durable" class="md-nav__link">
+  <a href="#sources-of-durable-edge" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why this edge is durable
+        Sources of durable edge
       
     </span>
   </a>
@@ -1728,10 +1728,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you can now reason about
+        Summary
       
     </span>
   </a>
@@ -1770,8 +1770,8 @@
 
 
 <h1 id="microstructure-and-order-flow">Microstructure and order flow<a class="headerlink" href="#microstructure-and-order-flow" title="Permanent link">&para;</a></h1>
-<p>Everything in this curriculum so far assumes you care about bars — daily, hourly, maybe 5-minute. Microstructure is what happens <em>inside</em> a bar. At this scale, the tape doesn't move smoothly; it ticks. Every tick is a transaction between a buyer and a seller, happening at a specific price in a specific order book, possibly triggering a chain of further transactions. Read at this scale, the tape tells a different story than the bar chart does.</p>
-<p>This is where prop traders live. Retail almost never does, because the data is expensive, the latency matters, and the backtest fidelity is hard to achieve. The edge is real but the moat to get there is real too.</p>
+<p>The curriculum to this point has assumed the analysis operates on bars — daily, hourly, or 5-minute. Microstructure is the activity within a bar. At this scale, prices move in discrete ticks rather than continuously. Each tick represents a transaction between a buyer and a seller at a specific price in a specific order book, potentially triggering a chain of further transactions. The view at this scale differs substantially from the bar-chart view.</p>
+<p>Microstructure is the domain of proprietary trading firms. Retail participation is rare because the required data is expensive, latency matters, and backtest fidelity is difficult to achieve. The edge is real but the barriers to access are substantial.</p>
 <h2 id="the-order-book">The order book<a class="headerlink" href="#the-order-book" title="Permanent link">&para;</a></h2>
 <p>At any moment, a security's market state is summarized by the order book — a list of <strong>bids</strong> (buy orders at specific prices) and <strong>asks</strong> (sell orders at specific prices).</p>
 <div class="highlight"><pre><span></span><code>         size   price
@@ -1783,19 +1783,19 @@ bid 1:    800   100.98   ← best bid (highest buy price)
 bid 2:   1800   100.96
 bid 3:   2500   100.94
 </code></pre></div>
-<p>The <strong>best bid</strong> and <strong>best ask</strong> (Level 1) are what most quote feeds report. The <strong>depth</strong> behind them (Level 2, sometimes deeper) is where the information lives. Which side has more size? Where do the orders thin out? A 100,000-share buy order submitted into a book with only 50,000 of ask depth will blow through multiple price levels, producing a price spike visible on the bar chart as "the close ran up." Knowing the depth tells you that in advance.</p>
+<p>The best bid and best ask (Level 1) are what most quote feeds report. The depth behind them (Level 2, sometimes deeper) contains the additional information. Which side has more size? Where do orders thin out? A 100,000-share buy order submitted into a book with only 50,000 of ask depth will traverse multiple price levels, producing a price spike visible on the bar chart as "the close ran up." Depth information identifies this condition in advance.</p>
 <h2 id="trade-classification-lee-ready">Trade classification: Lee-Ready<a class="headerlink" href="#trade-classification-lee-ready" title="Permanent link">&para;</a></h2>
-<p>When a trade prints on the tape at some price <span class="arithmatex">\(P\)</span>, was the aggressor the buyer or the seller? Equivalently, did someone hit the bid (sell aggression), or lift the ask (buy aggression)?</p>
-<p>The answer isn't in the raw tick feed directly — trades print without a tag. The <strong>Lee-Ready algorithm</strong> infers direction from price location and timing:</p>
+<p>When a trade prints at price <span class="arithmatex">\(P\)</span>, which side was the aggressor — the buyer or the seller? Equivalently, was the bid hit (sell aggression) or the ask lifted (buy aggression)?</p>
+<p>The raw tick feed does not carry this tag. The <strong>Lee-Ready algorithm</strong> infers direction from price location and timing:</p>
 <ol>
-<li>If the trade price is above the midpoint, classify as a buy (lifted the ask, or above-mid in the nearest tick).</li>
+<li>If the trade price is above the midpoint, classify as a buy (ask lifted, or closest tick above mid).</li>
 <li>If below the midpoint, classify as a sell.</li>
-<li>If exactly at the midpoint, use the tick rule: compare to the previous trade's price. Higher → buy; lower → sell. If equal, use the previous classification.</li>
+<li>If at the midpoint exactly, apply the tick rule: compare with the previous trade price. Higher previous trade implies buy; lower implies sell. When equal, carry forward the previous classification.</li>
 </ol>
-<p>Lee-Ready (1991) is the default classification in equity microstructure research. Accuracy is high for active stocks (&gt;90% for liquid names) but degrades for illiquid names or during fast markets where quotes lag trades.</p>
-<p>Modern alternatives (BVC, tick-sign, direct venue-tagged classifications) exist and offer marginal improvements. For a first implementation, Lee-Ready is the right starting point.</p>
+<p>Lee-Ready (1991) is the standard classification method in equity microstructure research. Accuracy is high for active stocks (above 90% for liquid names) and degrades for illiquid names or fast markets where quotes lag trades.</p>
+<p>Alternative methods (BVC, tick-sign, venue-tagged classifications) offer marginal improvements. For a first implementation, Lee-Ready is the appropriate starting point.</p>
 <h2 id="volume-footprint">Volume footprint<a class="headerlink" href="#volume-footprint" title="Permanent link">&para;</a></h2>
-<p>Given trade-direction classification, aggregate volume at each price level and split into bid-volume vs ask-volume. A <strong>footprint chart</strong> visualizes this:</p>
+<p>Given trade-direction classifications, aggregate volume at each price level into bid-volume and ask-volume components. A <strong>footprint chart</strong> visualizes the result:</p>
 <div class="highlight"><pre><span></span><code>price     bid-vol    ask-vol
 101.00     100        500      ← ask-heavy at this level
 100.98     200        450
@@ -1803,35 +1803,35 @@ bid 3:   2500   100.94
 100.94     450        200
 100.92     500        150      ← bid-heavy at this level
 </code></pre></div>
-<p>The pattern across a bar (say, a 5-minute interval) shows where buying was aggressive and where selling was aggressive. A bar that closes up with bid-heavy volume at the bottom and ask-heavy at the top tells a different story than a bar that closes up with ask-heavy throughout: the first suggests short-covering absorbed, the second suggests continued demand.</p>
-<p>Reading footprints well is a skill. The interpretation space is rich — stacked imbalances (multiple consecutive price levels all heavily ask-biased), absorption (heavy volume without price movement at a key level), and divergence (price makes a new high while cumulative ask-volume decays) are all patterns practitioners track.</p>
+<p>The pattern across a bar (for example, a 5-minute interval) shows where buying and selling were aggressive. A bar that closes up with bid-heavy volume at the bottom and ask-heavy volume at the top differs from a bar that closes up with ask-heavy volume throughout: the first suggests absorbed short-covering, the second suggests continued demand.</p>
+<p>Reading footprints effectively is a skill. The interpretive space includes stacked imbalances (multiple consecutive price levels all heavily ask-biased), absorption (heavy volume without price movement at a key level), and divergence (price makes a new high while cumulative ask-volume decays).</p>
 <h2 id="cumulative-delta">Cumulative delta<a class="headerlink" href="#cumulative-delta" title="Permanent link">&para;</a></h2>
-<p>Sum the signed volume (+ask_volume, -bid_volume) across a period to get <strong>cumulative delta</strong>. When cumulative delta rises, more aggressive buying than selling happened. When it falls, the opposite.</p>
-<p>The useful signal is when cumulative delta <strong>diverges</strong> from price. If price makes a new intraday high but cumulative delta doesn't, the move was thin — more short-covering than genuine demand, likely to fade. Likewise, a new low on thin cumulative delta often retraces.</p>
-<p>Delta divergence is among the most-cited microstructure signals in retail education. The reality is that it works in some regimes (typically ranging or late-trend) and fails in others (early-trend or sudden-regime-change breakouts). It's not a free signal, but it's a meaningful input to a broader signal set.</p>
-<h2 id="market-profile-tpo">Market Profile / TPO<a class="headerlink" href="#market-profile-tpo" title="Permanent link">&para;</a></h2>
-<p>Another view on the same underlying data. <strong>Time-price opportunity (TPO)</strong> charts show, for a given session, the set of price levels traded during each 30-minute period. Over a full session, each price level gets a count of how many 30-minute slots it was traded in.</p>
+<p>Summing signed volume (+ask_volume, −bid_volume) across a period produces <strong>cumulative delta</strong>. Rising cumulative delta indicates more aggressive buying than selling; falling cumulative delta indicates the reverse.</p>
+<p>The useful signal appears when cumulative delta diverges from price. If price makes a new intraday high but cumulative delta does not, the move is thin — more short-covering than genuine demand — and is likely to fade. Similarly, a new low on thin cumulative delta often retraces.</p>
+<p>Delta divergence is among the most-cited microstructure signals in retail education. Its reliability varies by regime: it tends to work in ranging or late-trend markets and fails in early-trend or sudden-regime-change breakouts. The signal is not free, but it is a meaningful input to a broader signal set.</p>
+<h2 id="market-profile-tpo">Market Profile (TPO)<a class="headerlink" href="#market-profile-tpo" title="Permanent link">&para;</a></h2>
+<p>A related view of the same underlying data. <strong>Time-price opportunity (TPO)</strong> charts show, for a given session, the set of price levels traded during each 30-minute period. Over a full session, each price level receives a count of the 30-minute slots during which it was traded.</p>
 <p>From the count distribution:</p>
 <ul>
 <li><strong>Point of Control (POC)</strong>: the price level traded for the most time.</li>
-<li><strong>Value Area High (VAH)</strong> and <strong>Low (VAL)</strong>: the upper and lower bounds of the 70% band (typically) around the POC.</li>
-<li><strong>Single prints</strong>: price levels that traded in only one 30-minute period, often at session extremes.</li>
+<li><strong>Value Area High (VAH)</strong> and <strong>Low (VAL)</strong>: the upper and lower bounds of the band (typically 70%) around the POC.</li>
+<li><strong>Single prints</strong>: price levels traded in only one 30-minute period, often at session extremes.</li>
 </ul>
-<p>Market Profile interpretation is old-school (Peter Steidlmayer's 1980s work) but durable. The key intuition: <strong>prices that traded heavily in the past tend to act as magnets in the future.</strong> POCs from yesterday's session often draw price back to them today. Single-print extremes are areas where price passed through without finding counterparty agreement, often fast-filled if revisited.</p>
-<h2 id="why-this-edge-is-durable">Why this edge is durable<a class="headerlink" href="#why-this-edge-is-durable" title="Permanent link">&para;</a></h2>
-<p>Microstructure strategies — as distinct from technical analysis on bar charts — have durable edge for three reasons:</p>
+<p>Market Profile interpretation originates in Peter Steidlmayer's 1980s work and remains relevant. The central intuition: prices that traded heavily in the past tend to act as magnets in the future. The prior session's POC often attracts price the following day. Single-print extremes — areas where price passed through without finding counterparty agreement — are often filled quickly when revisited.</p>
+<h2 id="sources-of-durable-edge">Sources of durable edge<a class="headerlink" href="#sources-of-durable-edge" title="Permanent link">&para;</a></h2>
+<p>Microstructure strategies, as distinct from technical analysis on bar charts, retain durable edge for three reasons:</p>
 <ol>
 <li>
-<p><strong>Data costs create a moat.</strong> Clean L2 tick data from exchanges is expensive (Databento starts at thousands per month for SPX alone; direct exchange feeds are five to six figures annually). This prices most retail out of the game. The strategies that survive the cost are the ones that make back multiples of data cost in P&L; the ones that don't, die. Adverse selection keeps the competitive field small.</p>
+<p><strong>Data costs.</strong> Clean L2 tick data from exchanges is expensive (Databento starts at thousands per month for SPX alone; direct exchange feeds are five to six figures annually). This cost excludes most retail participants. Strategies that survive the data cost generate returns that exceed it; those that do not are discontinued. Adverse selection keeps the competitive field small.</p>
 </li>
 <li>
-<p><strong>Latency matters.</strong> A signal computed on yesterday's close is available to everyone. A signal computed from this millisecond's order book is available only to infrastructure that can do that computation fast. Co-location in exchange data centers is not optional for the sharpest strategies.</p>
+<p><strong>Latency.</strong> A signal computed on yesterday's close is available to all participants. A signal computed from the current order book is available only to infrastructure capable of producing it quickly. Co-location in exchange data centers is necessary for the sharpest strategies.</p>
 </li>
 <li>
-<p><strong>Simulation is hard.</strong> Backtesting a microstructure strategy requires simulating your own order interaction with the book — queue position, fill probability, slippage, adverse selection. Cheap simulators use midpoint fills and systematically overstate strategy quality; a strategy that looks profitable on midpoint fills often bleeds in reality. Building a faithful L2 simulator is a significant engineering effort on its own.</p>
+<p><strong>Simulation difficulty.</strong> Backtesting a microstructure strategy requires simulating order interaction with the book — queue position, fill probability, slippage, adverse selection. Midpoint-fill simulators systematically overstate strategy quality; a strategy that appears profitable at midpoint often loses money live. A faithful L2 simulator requires substantial engineering effort.</p>
 </li>
 </ol>
-<p>The first two moats shrink over time (data gets cheaper, hosted services offer co-location); the third stays.</p>
+<p>The first two barriers shrink over time as data becomes cheaper and co-location becomes more accessible. The third persists.</p>
 <h2 id="what-the-trading-project-plans">What the trading project plans<a class="headerlink" href="#what-the-trading-project-plans" title="Permanent link">&para;</a></h2>
 <p><code>packages/microstructure/</code> is spec'd but not built. The rough outline from the root CLAUDE.md:</p>
 <ul>
@@ -1845,18 +1845,19 @@ bid 3:   2500   100.94
 </ul>
 <p>The package isn't scaffolded yet, and getting it right will require paid data. When it's built, it will plug into the same <code>harness</code> primitives the other strategies use — walk-forward, cost models, metrics — with its own specialized fill simulator.</p>
 <h2 id="retail-accessible-microstructure">Retail-accessible microstructure<a class="headerlink" href="#retail-accessible-microstructure" title="Permanent link">&para;</a></h2>
-<p>A cheaper entry point: free or low-cost data sources provide enough microstructure information for <em>some</em> strategies:</p>
+<p>Lower-cost data sources provide enough microstructure information for some strategies:</p>
 <ul>
-<li><strong>1-minute OHLCV with volume</strong>: Yahoo, IEX, Alpaca free-tier. Too coarse for real microstructure work, but volume-at-price can be approximated.</li>
-<li><strong>Level 1 tick data</strong>: tick-level trades without book depth. Lee-Ready works (tick rule fallback dominates when book state isn't known).</li>
-<li><strong>IBKR delayed L2</strong>: 15-minute delayed Level 2 for most U.S. equities, free. Insufficient for live trading; useful for building and sanity-checking strategy logic.</li>
+<li><strong>1-minute OHLCV with volume</strong>: Yahoo, IEX, Alpaca free tier. Too coarse for full microstructure work, but volume-at-price can be approximated.</li>
+<li><strong>Level 1 tick data</strong>: tick-level trades without book depth. Lee-Ready is usable (the tick-rule fallback dominates when book state is unknown).</li>
+<li><strong>IBKR delayed L2</strong>: 15-minute delayed Level 2 for most U.S. equities, free. Insufficient for live trading but useful for building and sanity-checking strategy logic.</li>
 </ul>
-<p>A strategy built on these substrates won't compete with prop shops. But it can still exhibit meaningful alpha patterns — especially in less-liquid markets (small caps, some crypto pairs) where the moat against institutions is smaller.</p>
-<h2 id="what-you-can-now-reason-about">What you can now reason about<a class="headerlink" href="#what-you-can-now-reason-about" title="Permanent link">&para;</a></h2>
+<p>Strategies built on these substrates will not compete with proprietary trading firms. They can still exhibit meaningful alpha patterns, particularly in less liquid markets (small caps, certain crypto pairs) where the barrier against institutional competition is smaller.</p>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>The reader can now reason about:</p>
 <ul>
-<li>Why microstructure edge is considered durable despite public awareness — the data-cost moat, latency requirement, and simulation fidelity are all structural barriers.</li>
-<li>Why the Lee-Ready algorithm is the default trade-classification method and where it fails (illiquid names, fast markets where quotes lag).</li>
-<li>The distinction between volume footprint (price-level bid vs ask volume) and TPO (price-level time counts) — different aggregations of the same underlying tick data, producing different interpretive frameworks.</li>
+<li>Why microstructure edge is considered durable despite public awareness: data cost, latency requirements, and simulation fidelity are all structural barriers.</li>
+<li>Why the Lee-Ready algorithm is the standard trade-classification method and where it fails (illiquid names, fast markets with lagging quotes).</li>
+<li>The distinction between volume footprint (price-level bid versus ask volume) and TPO (price-level time counts): different aggregations of the same underlying tick data producing different interpretive frameworks.</li>
 </ul>
 <h2 id="implemented-at">Implemented at<a class="headerlink" href="#implemented-at" title="Permanent link">&para;</a></h2>
 <p><code>packages/microstructure/</code> is planned but not scaffolded. When it's built, expect:</p>
