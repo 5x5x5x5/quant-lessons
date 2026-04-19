@@ -666,6 +666,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gamma: the second derivative
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -682,6 +700,113 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The definition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-gamma-is-large-and-when-it-isnt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When gamma is large, and when it isn't
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pl-of-a-delta-hedged-position" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P&amp;L of a delta-hedged position
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gamma-scalping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gamma scalping
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#short-gamma-the-other-side" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Short gamma: the other side
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scale-why-gex-is-dollar-per-percent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scale: why GEX is dollar-per-percent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you can now reason about
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implemented-at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implemented at
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1486,6 +1611,102 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The definition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-gamma-is-large-and-when-it-isnt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When gamma is large, and when it isn't
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pl-of-a-delta-hedged-position" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P&amp;L of a delta-hedged position
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gamma-scalping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gamma scalping
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#short-gamma-the-other-side" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Short gamma: the other side
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scale-why-gex-is-dollar-per-percent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scale: why GEX is dollar-per-percent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-can-now-reason-about" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you can now reason about
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implemented-at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implemented at
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1505,21 +1726,76 @@
 
 
 <h1 id="gamma-the-second-derivative">Gamma — the second derivative<a class="headerlink" href="#gamma-the-second-derivative" title="Permanent link">&para;</a></h1>
-<blockquote>
-<p><strong>Status:</strong> Draft pending.</p>
-</blockquote>
-<p><strong>Scope:</strong> Gamma as <span class="arithmatex">\(\partial \Delta / \partial S = \partial^2 V / \partial S^2\)</span>. ATM options have the highest gamma; gamma collapses for deep ITM / deep OTM and for long-dated options. Derive the P&amp;L of a delta-hedged position:</p>
+<p>Delta is the option's exposure to the underlying. Gamma is delta's exposure to the underlying. Two facts emerge from that nesting: the hedge you set at <span class="arithmatex">\(t\)</span> is stale by <span class="arithmatex">\(t + dt\)</span>, and the rate at which it goes stale is itself a tradable quantity. Everything about dealer positioning and market regimes in Part 5 flows from gamma.</p>
+<h2 id="the-definition">The definition<a class="headerlink" href="#the-definition" title="Permanent link">&para;</a></h2>
 <div class="arithmatex">\[
-\text{PnL} \approx \frac{1}{2} \Gamma (\Delta S)^2 - \Theta \Delta t
+\Gamma = \frac{\partial \Delta}{\partial S} = \frac{\partial^2 V}{\partial S^2}.
 \]</div>
-<p>— you get paid for realized variance and pay theta. Then the dealer-hedging implication: long gamma → buy low, sell high (dampening); short gamma → sell low, buy high (amplifying). This sets up Part 5.</p>
-<p><strong>You'll be able to reason about:</strong></p>
+<p>Gamma measures how much delta changes per $1 move in the underlying. It is always non-negative for long options (calls and puts alike) — the payoff is convex in <span class="arithmatex">\(S\)</span>, and the second derivative of a convex function is non-negative.</p>
+<p>Under Black-Scholes:</p>
+<div class="arithmatex">\[
+\Gamma = \frac{\phi(d_1)}{S \sigma \sqrt{T}},
+\]</div>
+<p>where <span class="arithmatex">\(\phi\)</span> is the standard normal PDF. Notice: gamma is <strong>the same for a call and a put of the same strike and expiry</strong>. The call and put deltas differ by 1 (put-call parity), but their derivatives with respect to <span class="arithmatex">\(S\)</span> are identical. This is why the GEX pipeline uses one <code>bs_gamma</code> function regardless of whether a contract is a call or a put.</p>
+<h2 id="when-gamma-is-large-and-when-it-isnt">When gamma is large, and when it isn't<a class="headerlink" href="#when-gamma-is-large-and-when-it-isnt" title="Permanent link">&para;</a></h2>
+<p>Three drivers:</p>
+<ol>
+<li>
+<p><strong>Moneyness.</strong> <span class="arithmatex">\(\phi(d_1)\)</span> is the standard normal density at <span class="arithmatex">\(d_1\)</span>. It peaks when <span class="arithmatex">\(d_1 = 0\)</span>, which is approximately when <span class="arithmatex">\(S = K\)</span> (for short-dated options with modest rates). <strong>ATM options have the highest gamma.</strong> Deep ITM or deep OTM options have low gamma — delta is already near 1 or 0 and doesn't change much with <span class="arithmatex">\(S\)</span>.</p>
+</li>
+<li>
+<p><strong>Time to expiry.</strong> The <span class="arithmatex">\(\sqrt{T}\)</span> in the denominator means <strong>gamma explodes as expiry approaches</strong> for ATM options. A 30-day ATM call has moderate gamma; a 1-day ATM call has enormous gamma. Delta whipsaws between near-0 and near-1 as the underlying crosses the strike on expiry day. This is the setup for the "pin risk" around expiration.</p>
+</li>
+<li>
+<p><strong>Volatility.</strong> The <span class="arithmatex">\(\sigma\)</span> in the denominator means gamma is higher when implied vol is lower. Counterintuitive at first — but think about it this way: when <span class="arithmatex">\(\sigma\)</span> is high, <span class="arithmatex">\(d_1\)</span> is far from zero for a wider range of <span class="arithmatex">\(S\)</span>, and <span class="arithmatex">\(\phi(d_1)\)</span> is small; when <span class="arithmatex">\(\sigma\)</span> is low, small moves in <span class="arithmatex">\(S\)</span> cross <span class="arithmatex">\(d_1 = 0\)</span> sharply, and gamma concentrates there.</p>
+</li>
+</ol>
+<h2 id="pl-of-a-delta-hedged-position">P&amp;L of a delta-hedged position<a class="headerlink" href="#pl-of-a-delta-hedged-position" title="Permanent link">&para;</a></h2>
+<p>This is the punchline of Part 3. Take a position long one call, hedged short <span class="arithmatex">\(\Delta\)</span> shares. Over a small time <span class="arithmatex">\(dt\)</span> during which the underlying moves by <span class="arithmatex">\(dS\)</span>, the portfolio P&amp;L is:</p>
+<div class="arithmatex">\[
+d\Pi \approx \underbrace{\Theta\, dt}_{\text{time decay, negative}} \;+\; \underbrace{\tfrac{1}{2} \Gamma\, (dS)^2}_{\text{gamma, always positive}}.
+\]</div>
+<p>Where did the delta terms go? Cancelled — that's what the hedge does. First-order moves in <span class="arithmatex">\(S\)</span> in the call are offset by first-order moves in <span class="arithmatex">\(-\Delta S\)</span>. What remains is second-order in the underlying (gamma) and first-order in time (theta).</p>
+<p>Two things to notice:</p>
 <ul>
-<li>Why gamma-scalping is a legitimate strategy under high realized-vs-implied-vol spread.</li>
-<li>Why short-dated options have punishingly high gamma (and theta).</li>
-<li>The exact link between option P&amp;L and realized variance — the <span class="arithmatex">\(\Gamma \epsilon^2\)</span> term.</li>
+<li><strong>Gamma P&amp;L is always non-negative.</strong> <span class="arithmatex">\((dS)^2\)</span> is non-negative, and <span class="arithmatex">\(\Gamma\)</span> is non-negative. Every price move — up or down — contributes a positive increment to the hedged position.</li>
+<li><strong>Theta P&amp;L is always non-positive for long options.</strong> Time decay erodes the position whether or not the underlying moves.</li>
 </ul>
-<p><strong>Implemented at:</strong> <code>trading/packages/gex/src/gex/greeks.py</code> — <code>bs_gamma(spot, strike, tau, iv, rate)</code>.</p>
+<p>The hedged option holder makes money from volatility (however realized) and loses money from the passage of time. These compete. The break-even condition has a clean form:</p>
+<div class="arithmatex">\[
+\tfrac{1}{2} \Gamma\, (dS)^2 = -\Theta\, dt \quad\Longrightarrow\quad \left(\frac{dS}{S}\right)^2 \approx \sigma_\text{implied}^2\, dt.
+\]</div>
+<p>That is: a long, delta-hedged position breaks even exactly when realized squared return equals implied variance per unit time. <strong>The option's implied vol is the vol at which the hedged position has zero expected P&amp;L</strong>. If realized &gt; implied, long gamma profits. If realized &lt; implied, long gamma loses.</p>
+<p>This is the single most important relationship in options trading. It reframes "option price" as "the market's forecast of realized vol such that a hedged position breaks even." Vol traders think in these units exclusively.</p>
+<h2 id="gamma-scalping">Gamma scalping<a class="headerlink" href="#gamma-scalping" title="Permanent link">&para;</a></h2>
+<p>A long-vol position, hedged regularly, makes money by buying low and selling high — mechanically. Here's why:</p>
+<ul>
+<li>At <span class="arithmatex">\(S_0\)</span>, you hold long 1 call with delta <span class="arithmatex">\(\Delta_0\)</span>. You short <span class="arithmatex">\(\Delta_0\)</span> shares.</li>
+<li>Stock moves up to <span class="arithmatex">\(S_1\)</span>. The call's delta is now <span class="arithmatex">\(\Delta_1 &gt; \Delta_0\)</span> (because gamma). Your portfolio is <strong>under-hedged</strong> — you're implicitly long <span class="arithmatex">\(\Delta_1 - \Delta_0\)</span> shares of exposure.</li>
+<li>To re-hedge, you short more shares. You're selling at <span class="arithmatex">\(S_1 &gt; S_0\)</span>.</li>
+<li>Stock moves back to <span class="arithmatex">\(S_0\)</span>. Delta returns to <span class="arithmatex">\(\Delta_0\)</span>. You're now <strong>over-hedged</strong> — too short.</li>
+<li>To re-hedge, you buy back shares at <span class="arithmatex">\(S_0 &lt; S_1\)</span>. You bought low, sold high.</li>
+</ul>
+<p>The round-trip scalp captures realized variance. The more volatile the underlying is over your hedging interval, the more you scalp. In the limit of continuous hedging, you capture <span class="arithmatex">\(\tfrac{1}{2}\Gamma (dS)^2\)</span> per move, summed over the path — which is proportional to realized variance.</p>
+<p>You paid for this privilege upfront: the call premium cost some amount, and the <span class="arithmatex">\(\Theta\)</span> term erodes that premium as time passes. Profit exists if realized variance over the life of the trade exceeds what the premium priced in. This is why "gamma scalping" is the working version of "short implied, long realized" — you are essentially long realized variance and short implied variance.</p>
+<h2 id="short-gamma-the-other-side">Short gamma: the other side<a class="headerlink" href="#short-gamma-the-other-side" title="Permanent link">&para;</a></h2>
+<p>Someone sold you that call. They are short gamma. The same path that produced positive scalp P&amp;L for you produces equal-and-opposite <em>negative</em> P&amp;L for them. If the underlying is stable, they collect theta; if it moves, they lose. <strong>Short-gamma positions profit from calm and lose from motion.</strong></p>
+<p>Now extend: dealers who systematically sell options to retail and institutional customers are, on aggregate, short gamma. Every move costs them; they hedge by buying on strength and selling on weakness, which amplifies the move. Every long-gamma dealer hedges by selling on strength and buying on weakness, dampening moves. This is the feedback loop that creates market regimes, which <a href="../../regime/market-makers/">Part 5</a> develops in detail.</p>
+<h2 id="scale-why-gex-is-dollar-per-percent">Scale: why GEX is dollar-per-percent<a class="headerlink" href="#scale-why-gex-is-dollar-per-percent" title="Permanent link">&para;</a></h2>
+<p>Raw gamma has units of <span class="arithmatex">\(\text{shares}/\$\)</span>. Dealers and researchers don't want that unit. They want to know: <strong>if the underlying moves 1%, how many dollars of hedging flow do I need to execute?</strong> Multiply:</p>
+<div class="arithmatex">\[
+\text{$\$GEX per 1\% move} = \Gamma \times \text{OI} \times \text{contract multiplier} \times S^2 \times 0.01.
+\]</div>
+<p>The <span class="arithmatex">\(S^2\)</span> converts gamma into dollar-per-percent units: <span class="arithmatex">\(\Gamma\)</span> has units of <span class="arithmatex">\(\partial\text{shares}/\partial\$\)</span>; multiplying by <span class="arithmatex">\(S\)</span> turns it into <span class="arithmatex">\(\partial\text{\$}/\partial\$\)</span>; multiplying by <span class="arithmatex">\(S\)</span> again turns a <span class="arithmatex">\(1%\)</span> move into a dollar hedging flow. Open interest and the contract multiplier scale to the aggregate position size.</p>
+<p>This is why <code>packages/gex/src/gex/gex.py</code> reports GEX in dollars per 1% move. The regime logic in <a href="../../regime/gamma-flip/">the gamma-flip lesson</a> operates on this aggregated quantity.</p>
+<h2 id="what-you-can-now-reason-about">What you can now reason about<a class="headerlink" href="#what-you-can-now-reason-about" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Why gamma is the same for calls and puts of the same strike — the second derivative of price depends only on the shape of the payoff, and call/put payoffs have identical second derivatives.</li>
+<li>Why short-dated ATM options have punishingly high gamma: the <span class="arithmatex">\(\sqrt{T}\)</span> in the denominator explodes near expiry.</li>
+<li>The exact relationship between an option's implied vol and the break-even point of a delta-hedged position: long gamma profits if realized &gt; implied, loses if realized &lt; implied.</li>
+</ul>
+<h2 id="implemented-at">Implemented at<a class="headerlink" href="#implemented-at" title="Permanent link">&para;</a></h2>
+<p><code>trading/packages/gex/src/gex/greeks.py:31</code> — <code>bs_gamma(spot, strike, rate, sigma, tenor_years)</code> returns <span class="arithmatex">\(\phi(d_1) / (S \sigma \sqrt{T})\)</span> vectorized. One function for calls and puts. Used in <code>packages/gex/src/gex/gex.py:per_strike_gex</code>, which multiplies by OI, multiplier, <span class="arithmatex">\(S^2\)</span>, and <span class="arithmatex">\(0.01\)</span> to produce the <span class="arithmatex">\(\text{\$GEX per 1\%}\)</span> quantity that Part 5 reasons about.</p>
 <hr />
 <p><strong>Next:</strong> <a href="../theta-vega-rho/">Theta, vega, rho →</a></p>
 
