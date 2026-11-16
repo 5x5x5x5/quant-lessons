@@ -2,7 +2,7 @@
 
 A curriculum from first principles to the primitives behind the [trading](https://github.com/5x5x5x5/trading) project. Each lesson arrives at something concrete — a metric, an instrument, or a specific piece of code you can open and run.
 
-**Site:** https://5x5x5x5.github.io/quant-lessons/
+**Site:** https://danielsiegle.com/quant-lessons/
 
 ## Local development
 
